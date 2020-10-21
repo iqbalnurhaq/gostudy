@@ -16,36 +16,27 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label class="bmd-label-floating">Nama Materi</label>
-                <input type="text" class="form-control" name="nip" required>
+                <input type="text" name="nama_materi" class="form-control" name="nip" required>
               </div>
             </div>
           </div> 
-          <!-- <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label class="badge badge-primary" style="width: 160px; font-size: 15px" for="exampleFormControlFile1">Pilih File </label>
-                <input type="fi le" class="form-control-file" id="exampleFormControlFile1">
-              
-              </div>
-            </div>
-          </div> -->
 
           <div class="row">
             <div class="col-md-12">
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="customFile" name="file_materi">
-              <label class="custom-file-label" for="customFile">Klik Untuk Memilih File</label>
-            </div>
+              <div class="form-group form-file-upload form-file-multiple">
+                <input type="file" multiple="" class="inputFileHidden" name="file">
+                <div class="input-group">
+                    <input type="text" class="form-control inputFileVisible" placeholder="Single File">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-fab btn-round btn-primary">
+                            <i class="material-icons">attach_file</i>
+                        </button>
+                    </span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <input type="hidden" name="kode_kelas" id="idkelas">
-
-    
-
-          
-
-          
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -74,7 +65,33 @@
             <p class="card-category">New employees on 15th September, 2016</p>
       </div>
       <div class="card-body table-responsive">
-       
+        <table id="example1" class="table table-hover" style="width:100%">
+          <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama Materi</th>
+                <th>Nama File</th>
+                <th>Ukuran File</th>
+                <th>Format File </th>
+                <th>Download </th>
+                <th>Hapus </th>
+            </tr>
+          </thead>
+          <tbody>
+                
+          </tbody>
+          <tfoot>
+              <tr>
+                <th>No</th>
+                <th>Nama Materi</th>
+                <th>Nama File</th>
+                <th>Ukuran File</th>
+                <th>Format File </th>
+                <th>Download </th>
+                <th>Hapus </th>
+            </tr>
+          </tfoot>
+        </table>  
       </div>
     </div>
   </div>
@@ -109,8 +126,8 @@ $(document).ready(function() {
 
       "ajax":
       {
-        "dataSrc": "dataGuru",
-        "url": "http://localhost/gostudy/go_ciclx_usradmin/A_guru/data_guru", // URL file untuk proses select datanya
+        "dataSrc": "data_materi",
+        "url": "http://localhost/gostudy/guru_usr_clx/G_materi/ambil_data_materi", // URL file untuk proses select datanya
         "type": "GET"
       },
 
@@ -121,78 +138,35 @@ $(document).ready(function() {
             return html
           }
         },
-        { "data": "nip" }, // Tampilkan nis
-        { "data": "nama_guru" },  // Tampilkan nama
-        { "render": function ( data, type, row ) {  // Tampilkan jenis kelamin
-            var html = ""
-            if(row.kode_mapel == null){ // Jika jenis kelaminnya 1
-              html = '<button class="btn btn-primary btn-xs" onClick="aksiTmbMapel(\'' + row.kode_guru + '\' )"> Pilih <i class="material-icons">report</i> </button>' // Set laki-laki
-            }else{ // Jika bukan 1
-              html = '<button class="btn btn-success btn-xs" onClick="aksiTmbMapel(\'' + row.kode_guru + '\' )">  ' +  row.nama_mapel +'   </button>'
-            }   
-            return html; // Tampilkan jenis kelaminnya
-          }
-        },
-       
+        { "data": "nama_materi" }, // Tampilkan nis
+        { "data": "nama_file" },
+        { "data": "size" },
+        { "data": "tipe_file" },
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
-
             
-            html = '<button class="btn btn-warning btn-xs" onClick="aksiBanned(\'' + row.kode_guru + '\' , \'' + row.nama_guru + '\')"> Banned <i class="material-icons">report</i> </button> <button class="btn btn-danger btn-xs" onClick="aksiHapus(\'' + row.kode_guru + '\' , \'' + row.nama_guru + '\')"> Hapus <i class="material-icons">delete_forever</i> </button>';
+            html = '<a class="btn btn-outline-primary btn-sm" href="<?php echo site_url('guru_usr_clx/G_materi/aksi_download/')?>'+ row.nama_file +'"> Download </a> ';
 
             return html
           }
         },
-      ],
-    });
+        { "render": function ( data, type, row ) { // Tampilkan kolom aksi
+            
+            html = '<button class="btn btn-outline-danger btn-sm" onClick="aksiHapus('+ row.id +')"> Hapus </button>';
 
-    tabel2 = $('#example2').DataTable({
-
-        "ajax":
-        {
-          "dataSrc": "dataGuru",
-          "url": "http://localhost/gostudy/go_ciclx_usradmin/A_guru/data_guru_ban", // URL file untuk proses select datanya
-          "type": "GET"
+            return html
+          }
         },
 
-        // "aLengthMenu": [[5, 10, 50],[ 5, 10, 50]], // Combobox Limit
-        "columns": [
-          { "render": function ( data, type, row ) { // Tampilkan kolom aksi
-              var html  = no++;
-              return html
-            }
-          },
-          { "data": "nip" }, // Tampilkan nis
-          { "data": "nama_guru" },  // Tampilkan nama
-          { "render": function ( data, type, row ) {  // Tampilkan jenis kelamin
-              var html1 = ""
-              if(row.kode_mapel == null){ // Jika jenis kelaminnya 1
-                html1 += 'Belum ditentukan' // Set laki-laki
-              }else{ // Jika bukan 1
-                html1 += row.nama_mapel; 
-              }
-              return html1; // Tampilkan jenis kelaminnya
-            }
-          },
-        
-          { "render": function ( data, type, row ) { // Tampilkan kolom aksi
-
-              
-              html = '<button class="btn btn-primary btn-xs" onClick="aksiAktif(\'' + row.kode_guru + '\' , \'' + row.nama_guru + '\')"> Aktifkan <i class="material-icons">report</i> </button> ';
-
-              return html
-            }
-          },
-        ],
-        });
+      ],
+    });
     
 }); 
 
-function aksiHapus(data, nama){
+function aksiHapus(data){
   var id = data;
-  var namaGuru = nama;
   Swal.fire({
   title: 'Are you sure?',
-  text: "Apakah kamu ingin menhapus Guru " + namaGuru + "!",
+  text: "Apakah kamu ingin menhapus materi ini ?",
   type: 'warning',
   showCancelButton: true,
   confirmButtonColor: '#3085d6',
@@ -201,7 +175,7 @@ function aksiHapus(data, nama){
   }).then((result) => {
     if (result.value) {
       $.ajax({
-        url : "http://localhost/gostudy/go_ciclx_usradmin/A_guru/hapus_guru",
+        url : "http://localhost/gostudy/guru_usr_clx/G_materi/hapus_materi",
         method: 'POST',
         dataType: 'json',
         data: {id : id},
@@ -209,7 +183,7 @@ function aksiHapus(data, nama){
         success: function(data){
           Swal.fire('Deleted!', 'Berhasil menghapus.', 'success');
           setTimeout(function(){
-             window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_guru'); ?>";
+             window.location.href = "<?php echo base_url('guru_usr_clx/G_materi'); ?>";
           }, 1100);
 
         },
@@ -226,152 +200,70 @@ function aksiHapus(data, nama){
 }
 
 
-function aksiBanned(data, nama){
-  var id = data;
-  var namaGuru = nama;
-  Swal.fire({
-  title: 'Are you sure?',
-  text: "Apakah kamu ingin membekukan Guru " + namaGuru + "!",
-  type: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes, delete it!'
-  }).then((result) => {
-    if (result.value) {
-      $.ajax({
-        url : "http://localhost/gostudy/go_ciclx_usradmin/A_guru/ban_guru",
-        method: 'POST',
-        dataType: 'json',
-        data: {id : id},
-        contentType: 'application/x-www-form-urlencoded',
-        success: function(data){
-          Swal.fire('Deleted!', 'Berhasil membekukan.', 'success');
-          setTimeout(function(){
-             window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_guru'); ?>";
-          }, 1100);
-
-        },
-        error: function( errorThrown ){
-          console.log( errorThrown);
-
-        }
-
-      });
-
-    }
+// FileInput
+  $('.form-file-simple .inputFileVisible').click(function() {
+    $(this).siblings('.inputFileHidden').trigger('click');
   });
 
-}
-
-
-function aksiAktif(data, nama){
-  var id = data;
-  var namaGuru = nama;
-  Swal.fire({
-  title: 'Are you sure?',
-  text: "Apakah kamu ingin mengaktifkan Guru " + namaGuru + "?",
-  type: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes!'
-  }).then((result) => {
-    if (result.value) {
-      $.ajax({
-        url : "http://localhost/gostudy/go_ciclx_usradmin/A_guru/aktifkan_guru",
-        method: 'POST',
-        dataType: 'json',
-        data: {id : id},
-        contentType: 'application/x-www-form-urlencoded',
-        success: function(data){
-          Swal.fire('Deleted!', 'Berhasil membekukan.', 'success');
-          setTimeout(function(){
-             window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_guru'); ?>";
-          }, 1100);
-
-        },
-        error: function( errorThrown ){
-          console.log( errorThrown);
-
-        }
-
-      });
-
-    }
+  $('.form-file-simple .inputFileHidden').change(function() {
+    var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+    $(this).siblings('.inputFileVisible').val(filename);
   });
 
-}
+  $('.form-file-multiple .inputFileVisible, .form-file-multiple .input-group-btn').click(function() {
+    $(this).parent().parent().find('.inputFileHidden').trigger('click');
+    $(this).parent().parent().addClass('is-focused');
+  });
 
-async function aksiPilih(data, kode_guru){
-  const { value: fruit } = await Swal.fire({
-  title: 'Select field validation',
-  input: 'select',
-  inputOptions: data,
-  inputPlaceholder: 'Select a fruit',
-  showCancelButton: true,
-  inputValidator: (value) => {
-    return new Promise((resolve) => {
-      resolve()
-    })
-  }
-})
+  $('.form-file-multiple .inputFileHidden').change(function() {
+    var names = '';
+    for (var i = 0; i < $(this).get(0).files.length; ++i) {
+      if (i < $(this).get(0).files.length - 1) {
+        names += $(this).get(0).files.item(i).name + ',';
+      } else {
+        names += $(this).get(0).files.item(i).name;
+      }
+    }
+    $(this).siblings('.input-group').find('.inputFileVisible').val(names);
+  });
 
-if (fruit) {
-  aksi_tambah_pengampu(fruit, kode_guru)
-}
-}
+  $('.form-file-multiple .btn').on('focus', function() {
+    $(this).parent().siblings().trigger('focus');
+  });
 
-function aksiTmbMapel(kode_guru){
-  $.ajax({
-        url : "http://localhost/gostudy/go_ciclx_usradmin/A_mapel/data_mapel",
-        method: 'GET',
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded',
-        success: function(data){
-          console.log(data);
-          aksiPilih(data.dataMapel, kode_guru);
-        },
-        error: function( errorThrown ){
-          console.log( errorThrown);
+  $('.form-file-multiple .btn').on('focusout', function() {
+    $(this).parent().siblings().trigger('focusout');
+  });
 
-        }
-
-      });
-}
-
-
-function aksi_tambah_pengampu(kode_mapel, kode_guru){
-  $.ajax({
-        url : "http://localhost/gostudy/go_ciclx_usradmin/A_guru/tambah_pengampu",
-        method: 'POST',
-        data : {kode_mapel:kode_mapel, kode_guru:kode_guru}, 
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded',
-        success: function(data){
-          console.log(data);
-          
-        },
-        error: function( errorThrown ){
-          console.log( errorThrown);
-
-        }
-
-      });
-}
 
 </script>
 
 <?php 
-
-if ($this->session->flashdata('pesan') == 'sukses') { ?>
-  <script>
+if($this->session->flashdata('pesan')){
+  if ($this->session->flashdata('pesan') == 'sukses') { ?>
+    <script>
+      $.notify({
+            icon: "done",
+            message: "Data berhasil ditambahkan."
+  
+        },{
+            type: 'success',
+            timer: 400,
+            placement: {
+                from: 'top',
+                align: 'center'
+            }
+        });
+    </script>  
+  <?php 
+  }else{ ?>
+    <script>
     $.notify({
           icon: "done",
-          message: "Data berhasil ditambahkan."
-
+          message: "something went wrong"
+  
       },{
-          type: 'success',
+          type: 'danger',
           timer: 400,
           placement: {
               from: 'top',
@@ -379,10 +271,18 @@ if ($this->session->flashdata('pesan') == 'sukses') { ?>
           }
       });
   </script>  
-<?php 
+  <?php }
+  
+  
 }
 
-?>
+?>  
+
+
+
+
+
+
 
 
 

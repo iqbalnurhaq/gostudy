@@ -9,15 +9,11 @@ class G_dashboard extends CI_Controller {
 		if ($this->session->userdata('kode_kelas')) {
             true;
         }else{
-            echo 'Salah';
-            exit(); 
+            redirect('Login');
         }
 		$this->load->helper('create_random_helper');
        
     }
-
-   
-      
 
 
 	public function index()

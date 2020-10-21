@@ -133,16 +133,19 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
+
+                    <?php foreach ($data_kelas as $kls) { ?>
+                    
                     <div class="col-md-4">
                     <div class="card text-center">
                         <div class="card-header">
                             Ruang Kelas
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title"><b>Kelas 7A</b></h5>
+                            <h5 class="card-title"><b>Kelas <?php echo $kls->nama_kelas ?></b></h5>
                             <p class="card-text">Jumlah Siswa 33</p>
                             <form action="<?php echo base_url('guru_usr_clx/Pilih_kelas/masuk_kelas') ?>" method="POST">
-                                <input type="hidden" name="kode_kelas" value="Kl3MRXPHN">
+                                <input type="hidden" name="kode_kelas" value="<?php echo $kls->kode_kelas ?>">
                                 <input type="submit" class="btn btn-primary" value="Masuk Kelas">
                             </form>
                         </div>
@@ -152,43 +155,9 @@
                     </div>
                     </div>
 
-                    <div class="col-md-4">
-                    <div class="card text-center">
-                        <div class="card-header">
-                            Ruang Kelas
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title"><b>Kelas 7A</b></h5>
-                            <p class="card-text">Jumlah Siswa 33</p>
-                            <form action="<?php echo base_url('guru_usr_clx/Pilih_kelas/masuk_kelas') ?>" method="POST">
-                                <input type="hidden" name="kode_kelas" value="3333">
-                                <input type="submit" class="btn btn-primary" value="Masuk Kelas">
-                            </form>
-                        </div>
-                        <div class="card-footer text-muted">
-                            Tekahir masuk 14.12.10
-                        </div>
-                    </div>
-                    </div>
+                    <?php } ?>
 
-                    <div class="col-md-4">
-                    <div class="card text-center">
-                        <div class="card-header">
-                            Ruang Kelas
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title"><b>Kelas 7A</b></h5>
-                            <p class="card-text">Jumlah Siswa 33</p>
-                            <form action="<?php echo base_url('guru_usr_clx/Pilih_kelas/masuk_kelas') ?>" method="POST">
-                                <input type="hidden" name="kode_kelas" value="Kl">
-                                <input type="submit" class="btn btn-primary" value="Masuk Kelas">
-                            </form>
-                        </div>
-                        <div class="card-footer text-muted">
-                            Tekahir masuk 14.12.10
-                        </div>
-                    </div>
-                    </div>
+            
                 </div>
             </div>
         </div>

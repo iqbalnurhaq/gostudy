@@ -84,7 +84,7 @@ $(document).ready(function() {
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
 
             
-            html = '<button class="btn btn-primary btn-xs" onClick="next_kelas(\'' + row.kode_kelas + '\' , \'' + row.nama_kelas + '\')"> Edit <i class="material-icons">report</i> </button> <button class="btn btn-warning btn-xs" onClick="edit_kelas(\'' + row.kode_kelas + '\' , \'' + row.nama_kelas + '\')"> Edit <i class="material-icons">report</i> </button> <button class="btn btn-danger btn-xs" onClick="aksiHapus(\'' + row.kode_kelas + '\' , \'' + row.nama_kelas + '\')"> Hapus <i class="material-icons">delete_forever</i> </button>';
+            html = '<button class="btn btn-primary btn-sm" onClick="next_kelas(\'' + row.kode_kelas + '\' , \'' + row.nama_kelas + '\')"> Lihat  </button> <button class="btn btn-warning btn-sm" onClick="edit_kelas(\'' + row.kode_kelas + '\' , \'' + row.nama_kelas + '\')"> Edit </button> <button class="btn btn-danger btn-sm" onClick="aksiHapus(\'' + row.kode_kelas + '\' , \'' + row.nama_kelas + '\')"> Hapus </button>';
 
             return html
           }

@@ -34,6 +34,15 @@ class M_a_nilai extends CI_Model{
     return $this->db->update('nilai', array('nama_nilai' => $nama_nilai));
   }
 
+  function slc_siswa(){
+    return $this->db->get('siswa');
+  }
+
+  function insert_nilai($kode_siswa, $kode_nilai){
+    $data = array('kode_siswa' => $kode_siswa,
+                  'kode_nilai' => $kode_nilai);
+  }
+
  
 
 }

@@ -64,6 +64,46 @@ class M_a_siswa extends CI_Model{
     return $this->db->update('users', array('akses' => 1));
   }
 
+  // ---------------- Edit Siswa ----------
+  function get_siswa_edit($kode_siswa){
+    
+    // $this->db->where('kode_siswa', $kode_siswa);
+    return $this->db->query("SELECT * FROM siswa WHERE kode_siswa='$kode_siswa'")->row_array();
+  }
+
+  function update_siswa($data, $kode_siswa){
+    $this->db->where('kode_siswa', $kode_siswa);
+    return $this->db->update('siswa', $data);
+  }
+
+
+  // ------------- Import Excel -------------------
+  public function upload_file($filename){
+    $this->load->library('upload'); // Load librari upload
+    $config['upload_path'] = './excel/';
+    $config['allowed_types'] = 'xlsx';
+    $config['max_size']  = '2048';
+    $config['overwrite'] = true;
+    $config['file_name'] = $filename;
+    $this->upload->initialize($config); // Load konfigurasi uploadnya
+    if($this->upload->do_upload('file')){ // Lakukan upload dan Cek jika proses upload berhasil
+      // Jika berhasil :
+      $return = array('result' => 'success', 'file' => $this->upload->data(), 'error' => '');
+      return $return;
+    }else{
+      // Jika gagal :
+      $return = array('result' => 'failed', 'file' => '', 'error' => $this->upload->display_errors());
+      return $return;
+    }
+  }    // Buat sebuah fungsi untuk melakukan insert lebih dari 1 data
+
+  public function insert_multiple($data){
+    $this->db->insert_batch('siswa', $data);
+  }
+
+  public function insert_multiple_user($data){
+    $this->db->insert_batch('users', $data);
+  }
 
 }
 

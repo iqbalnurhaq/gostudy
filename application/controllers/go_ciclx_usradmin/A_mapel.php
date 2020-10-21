@@ -43,7 +43,6 @@ class A_mapel extends CI_Controller {
             if ($cek_kode_mapel == 0) {
                 $datamapel = array('kode_mapel' => $kode_mapel,
                 'nama_mapel' => $this->input->post('nama_mapel'));
-
                 $insert_mapel = $this->M_a_mapel->tambah_mapel($datamapel);
                 if ($insert_mapel) {
                     $r += 1;

@@ -147,12 +147,7 @@
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="<?php echo base_url('assets/js/material-dashboard.js?v=2.1.1') ?>" type="text/javascript"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-  <script src="https://cdnjs.com/libraries/jquery.mask"></script>
 
-  <!-- Mask -->
-  <script src="<?php echo base_url('assets/input-mask/jquery.inputmask.js') ?>"></script>
-  <script src="<?php echo base_url('assets/input-mask/jquery.inputmask.date.extensions.js') ?>"></script>
-  <script src="<?php echo base_url('assets/input-mask/jquery.inputmask.extensions.js') ?>"></script>
   
 
   <script src="<?php echo base_url('assets/demo/demo.js') ?>"></script>

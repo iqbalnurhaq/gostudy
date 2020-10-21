@@ -51,10 +51,20 @@ class M_a_kelas extends CI_Model{
     return $this->db->query($sql)->result();   
   }
 
+  // --------
+
   function slc_mapel_aktif($kode_kelas){
     $sql = "SELECT * FROM mapel WHERE kode_mapel IN (SELECT kode_mapel FROM has_kelas WHERE kode_kelas='$kode_kelas')";
     return $this->db->query($sql)->result();
   }
+
+  function slc_data_mapel_aktif($arr, $kode_kelas){
+    $ids = join("','", $arr);
+    $sql = "SELECT * FROM has_kelas JOIN mapel ON has_kelas.kode_mapel=mapel.kode_mapel WHERE has_kelas.kode_mapel IN ('$ids') AND has_kelas.kode_kelas='$kode_kelas'";
+    return $this->db->query($sql)->result();  
+  }
+
+  // -----------
 
   function slc_siswa_aktif($kode_kelas){
     $sql = "SELECT * FROM siswa WHERE kode_kelas='$kode_kelas'";
@@ -77,6 +87,32 @@ class M_a_kelas extends CI_Model{
 
   function tmb_nilai_aktif($kode_nilai, $kode_kelas){
     return $this->db->insert('has_nilai', array('kode_nilai' => $kode_nilai, 'kode_kelas' => $kode_kelas));
+  }
+
+
+
+  // ----------- Tmb guru in mapel -----------
+  function load_data_guru_in_mapel($kode_mapel){
+    $sql = "SELECT * FROM guru WHERE kode_mapel='$kode_mapel'";
+    return $this->db->query($sql)->result();
+  }
+
+  function load_data_guru_in_mapel_p($kode_mapel, $kode_kelas){
+    $sql = "SELECT kode_guru FROM has_kelas WHERE kode_mapel='$kode_mapel' AND kode_kelas='$kode_kelas'";
+    return $this->db->query($sql)->result();  
+  }
+
+  function update_data_kelas_guru_in_mapel($kode_guru, $nama_guru, $kode_mapel, $kode_kelas){
+    $this->db->where('kode_mapel', $kode_mapel);
+    $this->db->where('kode_kelas', $kode_kelas);
+    return $this->db->update('has_kelas', array('kode_guru' => $kode_guru, 'nama_guru' => $nama_guru));
+  }
+
+
+  // -------- Modal delete in kelas --------
+
+  function delete_mapel_in_kelas($kode_kelas, $kode_mapel){
+    return $this->db->delete('has_kelas', array('kode_kelas' => $kode_kelas, 'kode_mapel' => $kode_mapel));
   }
  
 

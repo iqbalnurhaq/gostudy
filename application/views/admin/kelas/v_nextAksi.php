@@ -58,6 +58,7 @@
                 <th>No</th>
                 <th>NIS</th>
                 <th>Nama</th>
+                
                 <th>Aksi</th>
                 
             </tr>
@@ -70,6 +71,7 @@
                 <th>No</th>
                 <th>NIS</th>
                 <th>Nama</th>
+               
                 <th>Aksi</th>
               
             </tr>
@@ -134,6 +136,9 @@
 
 <div class="row">
   <div class="col-md-12">
+    <div class="alert alert-warning text-center" id="nama_kelas" role="alert">
+      
+    </div>
   <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-nilai">Tambah Nilai</button> <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-excel">Tambah Siswa</button>  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg">Tambah Mapel</button>
   </div>
 </div>
@@ -175,6 +180,7 @@
               <tr>
                   <th>No</th>
                   <th>Nama Mapel</th>
+                  <th>Pengampu</th>
                   <th>Aksi</th>
                   
               </tr>
@@ -186,6 +192,7 @@
                 <tr>
                   <th>No</th>
                   <th>Nama Mapel</th>
+                  <th>Pengampu</th>
                   <th>Aksi</th>
               </tr>
             </tfoot>
@@ -263,6 +270,7 @@
 <script>
 
 $(document).ready(function() {
+  $('#nama_kelas').text('Kelas : ' + localStorage.getItem('nama_kelas'));
   $('.nav li a[href~="http://localhost/gostudy/go_ciclx_usradmin/A_kelas"]').parents('li').addClass("active");    
     var no =1;
     var noG =1;
@@ -296,9 +304,22 @@ $(document).ready(function() {
         { "data": "nama_mapel" }, // Tampilkan nis
         { "render": function ( data, type, row ) {  // Tampilkan jenis kelamin
             var html = ""
+            if (row.kode_guru == null) {
+              html = '<button class="btn btn-warning btn-sm" onClick="aksiPilihGuru( \'' + row.kode_mapel + '\')"> Pilih  </button>' // Set laki-laki
+            }else{
+              html = '<button class="btn btn-primary btn-sm" onClick="aksiPilihGuru( \'' + row.kode_mapel + '\')"> ' + row.nama_guru + ' </button>' // Set laki-laki  
+            }
             
-              html = '<button class="btn btn-danger btn-xs" onClick="aksi_hps_mapel_aktif(\'' + row.kode_mapel + '\' )"> Pilih <i class="material-icons">report</i> </button>' // Set laki-laki
+              
             return html; // Tampilkan jenis kelaminnya
+          }
+        },
+        { "render": function ( data, type, row ) {  // Tampilkan jenis kelamin
+            var html1 = ""
+              html1 = '<button class="btn btn-danger btn-sm" onClick="aksiHapusMapel( \'' + row.kode_mapel + '\', \'' + row.nama_mapel + '\')"> Hapus  </button>'
+            
+              
+            return html1; // Tampilkan jenis kelaminnya
           }
         },
        
@@ -329,7 +350,7 @@ $(document).ready(function() {
           { "render": function ( data, type, row ) { // Tampilkan kolom aksi
 
               
-              html = '<button class="btn btn-primary btn-xs" onClick="aksiAktif(\'' + row.kode_kelas + '\' , \'' + row.nama_kelas + '\')"> Aktifkan <i class="material-icons">report</i> </button> ';
+              html = '<button class="btn btn-danger btn-sm" onClick="aksiKeluar(\'' + row.kode_kelas + '\' , \'' + row.nama_kelas + '\')"> Keluarkan  </button> ';
 
               return html
             }
@@ -359,7 +380,7 @@ $(document).ready(function() {
           { "render": function ( data, type, row ) { // Tampilkan kolom aksi
 
               
-              html = '<button class="btn btn-primary btn-xs" onClick="aksiAktif(\'' + row.kode_kelas + '\' , \'' + row.nama_kelas + '\')"> Aktifkan <i class="material-icons">report</i> </button> ';
+              html = '<button class="btn btn-danger btn-sm" onClick="aksiHapusNilai(\'' + row.kode_kelas + '\' , \'' + row.nama_kelas + '\')"> Hapus  </button> ';
 
               return html
             }
@@ -465,12 +486,82 @@ $(document).ready(function() {
     
 }); 
 
-function aksiHapus(data, nama){
-  var id = data;
-  var namakelas = nama;
+
+
+// ----------------- Pilih Guru di mapel ------------------
+function aksiPilihGuru(kode_mapel){
+  console.log(kode_mapel);
+  console.log(localStorage.getItem('kode_kelas'));
+  $.ajax({
+        url : "http://localhost/gostudy/go_ciclx_usradmin/A_kelas/guru_in_mapel",
+        method: 'GET',
+        data: {kode_mapel : kode_mapel, kode_kelas : localStorage.getItem('kode_kelas')},
+        dataType: 'json',
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(data){
+          console.log(data);
+          nextAksiPilihGuru(data.dataGuru, localStorage.getItem('kode_kelas'), kode_mapel);
+        },
+        error: function( errorThrown ){
+          console.log( errorThrown);
+
+        }
+
+      });
+}
+
+async function nextAksiPilihGuru(data, kode_kelas, kode_mapel){
+  const { value: kode_guru } = await Swal.fire({
+  title: 'Select field validation',
+  input: 'select',
+  inputOptions: data,
+  inputPlaceholder: 'Pilih Guru',
+  showCancelButton: true,
+  inputValidator: (value) => {
+    return new Promise((resolve) => {
+      resolve()
+    })
+  }
+})
+
+if (kode_guru) {
+  insert_guru_in_mapel(kode_guru, kode_kelas, kode_mapel)
+}
+}
+
+
+function insert_guru_in_mapel(kode_guru, kode_kelas, kode_mapel){
+  $.ajax({
+        url : "http://localhost/gostudy/go_ciclx_usradmin/A_kelas/insert_guru_in_mapel",
+        method: 'POST',
+        data : {kode_guru:kode_guru, kode_kelas:kode_kelas, kode_mapel:kode_mapel}, 
+        dataType: 'json',
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(data){
+          
+          setTimeout(function(){
+            window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_kelas/nextAksi'); ?>";
+          }, 400);
+          
+        },
+        error: function( errorThrown ){
+          console.log( errorThrown);
+
+        }
+
+      });
+}
+
+
+// ---------------- End ---------------------------------
+
+
+
+function aksiHapusMapel(kode_mapel, nama){
+  var namaMapel = nama;
   Swal.fire({
   title: 'Are you sure?',
-  text: "Apakah kamu ingin menhapus kelas " + namakelas + "!",
+  text: "Apakah kamu ingin menhapus mapel " + namaMapel + "!",
   type: 'warning',
   showCancelButton: true,
   confirmButtonColor: '#3085d6',
@@ -479,15 +570,15 @@ function aksiHapus(data, nama){
   }).then((result) => {
     if (result.value) {
       $.ajax({
-        url : "http://localhost/gostudy/go_ciclx_usradmin/A_kelas/hapus_kelas",
+        url : "http://localhost/gostudy/go_ciclx_usradmin/A_kelas/hapus_mapel",
         method: 'POST',
         dataType: 'json',
-        data: {id : id},
+        data: {kode_kelas : localStorage.getItem('kode_kelas'), kode_mapel : kode_mapel },
         contentType: 'application/x-www-form-urlencoded',
         success: function(data){
           Swal.fire('Deleted!', 'Berhasil menghapus.', 'success');
           setTimeout(function(){
-             window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_kelas'); ?>";
+             window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_kelas/nextAksi'); ?>";
           }, 1100);
 
         },

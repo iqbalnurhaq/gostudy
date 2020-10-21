@@ -62,27 +62,27 @@ function helper_kodeUser(){
     return 'Kl_'.$string;
   }
 
-  function helper_createCodeTugas(){
+  function helper_kodeTugas(){
     $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $string = '';
     for($i = 0; $i < 7; $i++) {
         $pos = rand(0, strlen($data)-1);
         $string .= $data{$pos};
     }
-    return 'Tg'.$string;
+    return 'Tg_'.$string;
   }
 
-  function helper_createCodeQuiz(){
+  function helper_kodeujian(){
     $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $string = '';
     for($i = 0; $i < 7; $i++) {
         $pos = rand(0, strlen($data)-1);
         $string .= $data{$pos};
     }
-    return 'Qz'.$string;
+    return 'Qz_'.$string;
   }
 
-  function helper_createCodeSoal(){
+  function helper_kodesoal(){
     $data = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $string = '';
     for($i = 0; $i < 7; $i++) {

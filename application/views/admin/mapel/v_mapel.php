@@ -83,7 +83,7 @@ $(document).ready(function() {
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
 
             
-            html = '<button class="btn btn-warning btn-xs" onClick="edit_mapel(\'' + row.kode_mapel + '\' , \'' + row.nama_mapel + '\')"> Edit <i class="material-icons">report</i> </button> <button class="btn btn-danger btn-xs" onClick="aksiHapus(\'' + row.kode_mapel + '\' , \'' + row.nama_mapel + '\')"> Hapus <i class="material-icons">delete_forever</i> </button>';
+            html = '<button class="btn btn-warning btn-sm" onClick="edit_mapel(\'' + row.kode_mapel + '\' , \'' + row.nama_mapel + '\')"> Edit </button> <button class="btn btn-danger btn-sm" onClick="aksiHapus(\'' + row.kode_mapel + '\' , \'' + row.nama_mapel + '\')"> Hapus  </button>';
 
             return html
           }

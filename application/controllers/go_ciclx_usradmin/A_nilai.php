@@ -41,9 +41,12 @@ class A_nilai extends CI_Controller {
             if ($cek_kode_nilai == 0) {
                 $datanilai = array('kode_nilai' => $kode_nilai,
                 'nama_nilai' => $this->input->post('nama_nilai'));
-
                 $insert_nilai = $this->M_a_nilai->tambah_nilai($datanilai);
                 if ($insert_nilai) {
+                    $slc_siswa = $this->M_a_nilai->slc_siswa();
+                    foreach ($slc_siswa as $siswa) {
+                        $ins_nilai = $this->M_a_nilai->insert_nilai($siswa->kode_siswa, $kode_nilai);
+                    }
                     $r += 1;
                     $output['status'] = 'success';
     	            echo json_encode($output);

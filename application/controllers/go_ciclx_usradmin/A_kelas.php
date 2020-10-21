@@ -105,8 +105,14 @@ class A_kelas extends CI_Controller {
     }
 
     function data_mapel_aktif(){
+        $arr = [];
         $kode_kelas = $this->input->get('kode_kelas'); 
-        $output['data_mapel'] = $this->M_a_kelas->slc_mapel_aktif($kode_kelas);
+        $data_mapel = $this->M_a_kelas->slc_mapel_aktif($kode_kelas);
+        foreach ($data_mapel as $val) {
+            $arr[$val->kode_mapel] = $val->kode_mapel;
+        }
+        
+        $output['data_mapel'] = $this->M_a_kelas->slc_data_mapel_aktif($arr, $kode_kelas);
     	echo json_encode($output);
     }
 
@@ -163,4 +169,50 @@ class A_kelas extends CI_Controller {
 		echo json_encode($output);
     }
 
+    // ------------------ Aksi Tambah Guru In Mapel ------------------
+
+    function guru_in_mapel(){
+        $arr = [];
+        $kode_mapel = $this->input->get('kode_mapel');
+        $kode_kelas = $this->input->get('kode_kelas');
+        $dataGuru = $this->M_a_kelas->load_data_guru_in_mapel($kode_mapel);
+        $dataGuru_p = $this->M_a_kelas->load_data_guru_in_mapel_p($kode_mapel, $kode_kelas);
+        foreach ($dataGuru as $val) {
+            foreach ($dataGuru_p as $val_p) {
+                if ($val->kode_guru == $val_p->kode_guru) {
+                    
+                }else{
+                    $arr[$val->kode_guru] = $val->nama_guru . ' (' . $val->nip . ')';
+                }
+            }
+        }
+        $output['dataGuru'] = $arr;
+    	echo json_encode($output);
+    }
+
+    function insert_guru_in_mapel(){
+        $kode_guru = $this->input->post('kode_guru');
+        $kode_mapel = $this->input->post('kode_mapel');
+        $kode_kelas = $this->input->post('kode_kelas');
+        $nama_guru = $this->db->query("SELECT nama_guru FROM guru WHERE kode_guru='$kode_guru'")->row_array()['nama_guru'];
+        $update_data = $this->M_a_kelas->update_data_kelas_guru_in_mapel($kode_guru, $nama_guru, $kode_mapel, $kode_kelas);
+        if($update_data){
+            $this->session->set_flashdata('pesan', 'sukses');
+            $output['msg'] = 'success';
+            echo json_encode($output);
+        } 
+    }
+
+
+    // --------- function  haspus in nextAksi --------
+
+    function hapus_mapel(){
+        $kode_kelas = $this->input->post('kode_kelas');
+        $kode_mapel = $this->input->post('kode_mapel');
+		$del = $this->M_a_kelas->delete_mapel_in_kelas($kode_kelas, $kode_mapel);
+		if ($del) {
+		$output['msg'] = 'success';
+		echo json_encode($output);
+		}
+    }
 }

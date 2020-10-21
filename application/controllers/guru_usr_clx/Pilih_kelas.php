@@ -13,7 +13,10 @@ class Pilih_kelas extends CI_Controller {
 
 	public function index()
 	{
-        $this->load->view('guru/v_pilih_kelas');
+        $kode_guru = $this->session->userdata('kode_guru');
+        $kode_mapel = $this->session->userdata('kode_mapel');
+        $data['data_kelas'] = $this->db->query("SELECT * FROM has_kelas JOIN kelas ON has_kelas.kode_kelas=kelas.kode_kelas WHERE has_kelas.kode_guru='$kode_guru' AND has_kelas.kode_mapel='$kode_mapel'")->result();
+        $this->load->view('guru/v_pilih_kelas', $data);
     }
     
     public function masuk_kelas(){
