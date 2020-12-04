@@ -29,17 +29,25 @@ class Login extends CI_Controller {
                     $ambil_data = $this->M_login->ambil_data_guru($kode_user);
                     $data = array(
                         'kode_guru' => $ambil_data['kode_guru'],
-                        'kode_mapel' => $ambil_data['kode_mapel']
+                        'kode_mapel' => $ambil_data['kode_mapel'],
+                        'nama_guru' => $ambil_data['nama_guru'],
+                        'nip' => $ambil_data['nip'],
+                        'user_code' => $ambil_data['user_code'],
+                        'role' => 'Guru',
                     );
-                    $this->session->set_userdata($ambil_data);
+                    $this->session->set_userdata($data);
                     redirect('guru_usr_clx/pilih_kelas');
                 }elseif($cek_lvl == 'siswa'){
                     $ambil_data = $this->M_login->ambil_data_siswa($kode_user);
                     $data = array(
-                        'kode_siswa' => $ambil_data['kode_guru'],
-                        'kode_kelas' => $ambil_data['kode_kelas']
+                        'kode_siswa' => $ambil_data['kode_siswa'],
+                        'kode_kelas' => $ambil_data['kode_kelas'],
+                        'nama_siswa' => $ambil_data['nama_siswa'],
+                        'nis' => $ambil_data['nis'],
+                        'user_code' => $ambil_data['user_code'],
+                        'role' => 'Siswa',
                     );
-                    $this->session->set_userdata($ambil_data);
+                    $this->session->set_userdata($data);
                     redirect('siswa/Pilih_mapel');
                 }else{
                     redirect('Login');

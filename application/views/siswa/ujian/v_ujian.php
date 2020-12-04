@@ -2,25 +2,30 @@
 <div class="content">
   <div class="container-fluid">
 
-
+<div class="row">
+  
+</div>
 <div class="row">
   <div class="col-md-12">
   <div class="card">
       <div class="card-header card-header-primary">
-            <h4 class="card-title">Materi</h4>
+            <h4 class="card-title">Ujian</h4>
             <p class="card-category">New employees on 15th September, 2016</p>
+            
       </div>
       <div class="card-body table-responsive">
         <table id="example1" class="table table-hover" style="width:100%">
           <thead>
             <tr>
                 <th>No</th>
-                <th>Nama Tugas</th>
+                <th>Nama Ujian</th>
                 <th>Tanggal Dibuat</th>
                 <th>Aktif</th>
                 <th>Deadline</th>
-                <th>Tipe</th>
-                <th>Lihat</th>
+                <th>Durasi</th>
+                <th>Jumlah Soal</th>
+                <th>Kerjakan</th>
+                <th>Hasil</th>
               
             </tr>
           </thead>
@@ -30,12 +35,14 @@
           <tfoot>
               <tr>
               <th>No</th>
-                <th>Nama Tugas</th>
+                <th>Nama Ujian</th>
                 <th>Tanggal Dibuat</th>
                 <th>Aktif</th>
                 <th>Deadline</th>
-                <th>Tipe</th>
-                <th>Lihat</th>
+                <th>Durasi</th>
+                <th>Jumlah Soal</th>
+                <th>Kerjakan</th>
+                <th>Hasil</th>
             </tr>
           </tfoot>
         </table>  
@@ -60,22 +67,6 @@
 
 $(document).ready(function() {
 
-  // DecoupledEditor
-  //   .create( document.querySelector( '.document-editor__editable' ), {
-      
-  //   } )
-  //   .then( editor => {
-  //       const toolbarContainer = document.querySelector( '.document-editor__toolbar' );
-
-  //       toolbarContainer.appendChild( editor.ui.view.toolbar.element );
-
-  //       window.editor = editor;
-  //   } )
-  //   .catch( err => {
-  //       console.error( err );
-  //   } );
-
-
 
 
 
@@ -90,8 +81,8 @@ $(document).ready(function() {
 
       "ajax":
       {
-        "dataSrc": "data_tugas",
-        "url": "http://localhost/gostudy/siswa/S_tugas/ambil_data_tugas", // URL file untuk proses select datanya
+        "dataSrc": "data_ujian",
+        "url": "http://localhost/gostudy/siswa/S_ujian/ambil_data_ujian", // URL file untuk proses select datanya
         "type": "GET"
       },
 
@@ -102,7 +93,7 @@ $(document).ready(function() {
             return html
           }
         },
-        { "data": "nama_tugas" }, // Tampilkan nis
+        { "data": "nama_ujian" }, // Tampilkan nis
         { "data": "tgl_dibuat"},
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
             
@@ -111,17 +102,32 @@ $(document).ready(function() {
             return html
           }
         },
-        { "render": function ( data, type, row ) { // Tampilkan kolom aksi
+         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
             
             html = row.tgl_akhir + ' || ' + row.wkt_akhir;
 
             return html
           }
         },
-        { "data": "tipe"},
+         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
+            
+            html = row.durasi + ' menit ';
+
+            return html
+          }
+        },
+        { "data": "jml_soal"},
+      
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
             
-            html = '<a class="btn btn-outline-primary btn-sm" href="<?php echo site_url('siswa/S_tugas/detail_tugas/')?>'+ row.kode_tugas +'"> Lihat </a> ';
+            html = '<a class="btn btn-warning btn-sm" href="<?php echo site_url('siswa/S_ujian/kerjakan/')?>'+ row.kode_ujian +'"> Kerjakan </a> ';
+
+            return html
+          }
+        },
+        { "render": function ( data, type, row ) { // Tampilkan kolom aksi
+            
+            html = '<a class="btn btn-success btn-sm" href="<?php echo site_url('siswa/S_ujian/hasil_ujian/')?>'+ row.kode_ujian +'"> Hasil </a> ';
 
             return html
           }
@@ -160,7 +166,7 @@ if($this->session->flashdata('pesan')){
     <script>
     $.notify({
           icon: " ",
-          message: "<?php echo $this->session->flashdata('message') ?>"
+         message: "<?php echo $this->session->flashdata('message') ?>"
   
       },{
           type: 'danger',

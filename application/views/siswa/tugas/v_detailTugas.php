@@ -64,9 +64,18 @@
   
   <div class="row">
       <div class="col-md-12">
-                        <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-excel" style="margin-bottom: 10px">Upload</button>  
-                          
-              
+     
+      <?php 
+              if ($tipe == "Ontime") { ?>
+                <button type="button" class="btn btn-primary pull-right" disabled> Upload Disabled</button>
+                
+                 <?php } else { ?>
+                <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-excel" style="margin-bottom: 10px">Upload</button>                   
+              <?php }
+         
+        
+     
+      ?>
       </div>
   </div>
 
@@ -278,8 +287,8 @@ if($this->session->flashdata('pesan')){
   }else{ ?>
     <script>
     $.notify({
-          icon: "done",
-          message: "something went wrong"
+          icon: " ",
+          message: "<?php echo $this->session->flashdata('message') ?>"
   
       },{
           type: 'danger',

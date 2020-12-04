@@ -61,31 +61,19 @@
           <thead>
             <tr>
                 <th>No</th>
-                <th>NIS</th>
-                <th>Nama Siswa</th>
+                <th>Nilai</th>
                 <th>Input Nilai</th>
                 
             </tr>
           </thead>
           <tbody>
-                <?php  
-                    $no = 1;
-                    foreach ($siswa as $val) { ?>
-                        <tr>
-                            <td><?php echo $no++ ?></td>
-                            <td><?php echo $val->nis ?></td>
-                            <td><?php echo $val->nama_siswa ?></td>
-                            <td><button type="button" class="btn btn-primary btn-sm" onClick="inputNilaiModal('<?php echo $val->kode_siswa; ?>')">input Nilai</button></td>
-                        </tr>
-                    <?php }
-                ?>
+              
           </tbody>
           <tfoot>
               <tr>
              
                 <th>No</th>
                 <th>NIS</th>
-                <th>Nama Siswa</th>
                 <th>Input Nilai</th>
             </tr>
           </tfoot>
@@ -111,51 +99,6 @@
 
 $(document).ready(function() {
 
-  DecoupledEditor
-    .create( document.querySelector( '.document-editor__editable' ), {
-      
-    } )
-    .then( editor => {
-        const toolbarContainer = document.querySelector( '.document-editor__toolbar' );
-
-        toolbarContainer.appendChild( editor.ui.view.toolbar.element );
-
-        window.editor = editor;
-    } )
-    .catch( err => {
-        console.error( err );
-    } );
-
-
-  $('.datetimepicker').datetimepicker({
-    format: 'DD/MM/YYYY',
-    icons: {
-        time: "fa fa-clock-o",
-        date: "fa fa-calendar",
-        up: "fa fa-chevron-up",
-        down: "fa fa-chevron-down",
-        previous: 'fa fa-chevron-left',
-        next: 'fa fa-chevron-right',
-        today: 'fa fa-screenshot',
-        clear: 'fa fa-trash',
-        close: 'fa fa-remove'
-        }
-    });
-
-    $('.datetimepicker1').datetimepicker({
-    format: 'LT',
-    icons: {
-        time: "fa fa-clock-o",
-        date: "fa fa-calendar",
-        up: "fa fa-chevron-up",
-        down: "fa fa-chevron-down",
-        previous: 'fa fa-chevron-left',
-        next: 'fa fa-chevron-right',
-        today: 'fa fa-screenshot',
-        clear: 'fa fa-trash',
-        close: 'fa fa-remove'
-        }
-    });
 
     var no =1;
     $('#example').DataTable();
@@ -165,7 +108,37 @@ $(document).ready(function() {
         $('.custom-file-label').html(fileName);
     });
 
-    tabel = $('#example1').DataTable();
+    tabel = $('#example1').DataTable({
+
+      "ajax":
+      {
+        "dataSrc": "data_nilai_siswa",
+        "url": "http://localhost/gostudy/guru_usr_clx/G_nilai/data_nilai", // URL file untuk proses select datanya
+        "type": "GET"
+      },
+
+      // "aLengthMenu": [[5, 10, 50],[ 5, 10, 50]], // Combobox Limit
+      "columns": [
+        { "render": function ( data, type, row ) { // Tampilkan kolom aksi
+            var html  = no++;
+            return html
+          }
+        },
+        { "data": "nama_nilai" }, // Tampilkan nis
+        { "render": function ( data, type, row ) { // Tampilkan kolom aksi
+            html = '';
+            if (row.status == 0) {
+              html += '</button> <button class="btn btn-warning btn-sm" onClick="aksiOpen(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Open </button>'
+            }else{
+              html += '<a class="btn btn-primary btn-sm" href="<?php echo site_url('guru_usr_clx/G_nilai/link_nilai/')?>'+ row.kode_nilai +'"> Input Nilai </a>'
+              html += '<button class="btn btn-danger btn-sm" onClick="aksiClear(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Clear </button> ';
+            }
+            return html
+          }
+        },
+
+      ],
+    });
 }); 
 
 function inputNilaiModal(kode_siswa){
@@ -185,6 +158,81 @@ function inputNilaiModal(kode_siswa){
 
       });
 }
+
+function aksiOpen(kode_nilai, nama){
+  var namaGuru = nama;
+  Swal.fire({
+  title: 'Are you sure?',
+  text: "Apakah kamu ingin membuka nilai " + namaGuru + "!",
+  type: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, Open!'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url : "http://localhost/gostudy/guru_usr_clx/G_nilai/open",
+        method: 'POST',
+        dataType: 'json',
+        data: {kode_nilai : kode_nilai},
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(data){
+          Swal.fire('Success!', 'Berhasil Membuka.', 'success');
+          setTimeout(function(){
+             window.location.href = "<?php echo base_url('guru_usr_clx/G_nilai'); ?>";
+          }, 1100);
+
+        },
+        error: function( errorThrown ){
+          console.log( errorThrown);
+
+        }
+
+      });
+
+    }
+  });
+
+}
+
+function aksiClear(kode_nilai, nama){
+  var namaGuru = nama;
+  Swal.fire({
+  title: "Apakah kamu ingin membersihkan nilai " + namaGuru + "!",
+  text: "Membersihkan nilai akan menghapus semua  nilai siswa pada kategori ini!!",
+  type: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Ya, Hapus!'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url : "http://localhost/gostudy/guru_usr_clx/G_nilai/clear",
+        method: 'POST',
+        dataType: 'json',
+        data: {kode_nilai : kode_nilai},
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(data){
+          Swal.fire('Success!', 'Berhasil Membersihkan.', 'success');
+          setTimeout(function(){
+             window.location.href = "<?php echo base_url('guru_usr_clx/G_nilai'); ?>";
+          }, 1100);
+
+        },
+        error: function( errorThrown ){
+          console.log( errorThrown);
+
+        }
+
+      });
+
+    }
+  });
+
+}
+
 
 
 

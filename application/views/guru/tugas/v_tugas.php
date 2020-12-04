@@ -34,8 +34,22 @@
                 <input type="text" name="tgl_aktif" class="form-control datetimepicker" required />
               </div>
             </div>
-         
           </div>
+
+          <div class="row">
+            <div class="col-md-12">
+               <div class="form-group">
+                <label for="exampleFormControlSelect1">Pilih Tipe</label>
+                <select class="form-control selectpicker" data-style="btn btn-link" id="exampleFormControlSelect1" name="tipe">
+                  <option value="Ontime">ONTIME</option>
+                  <option value="Late">LATE</option>
+                 
+                </select>
+              </div>
+            </div>
+          </div>
+
+
           <br>
         </div>
         <div class="modal-footer">
@@ -72,6 +86,7 @@
                 <th>Tanggal Dibuat</th>
                 <th>Aktif</th>
                 <th>Deadline</th>
+                <th>Tipe</th>
                 <th>Lihat</th>
                 <th>Hapus </th>
             </tr>
@@ -86,6 +101,7 @@
                 <th>Tanggal Dibuat</th>
                 <th>Aktif</th>
                 <th>Deadline</th>
+                <th>Tipe</th>
                 <th>Lihat</th>
                 <th>Hapus </th>
             </tr>
@@ -165,8 +181,21 @@ $(document).ready(function() {
         },
         { "data": "nama_tugas" }, // Tampilkan nis
         { "data": "tgl_dibuat"},
-        { "data": "tgl_aktif"},
-        { "data": "tgl_akhir"},
+        { "render": function ( data, type, row ) { // Tampilkan kolom aksi
+            
+            html = row.tgl_aktif + ' || ' + row.wkt_aktif;
+
+            return html
+          }
+        },
+        { "render": function ( data, type, row ) { // Tampilkan kolom aksi
+            
+            html = row.tgl_akhir + ' || ' + row.wkt_akhir;
+
+            return html
+          }
+        },
+        { "data": "tipe"},
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
             
             html = '<a class="btn btn-outline-primary btn-sm" href="<?php echo site_url('guru_usr_clx/G_tugas/detail_tugas/')?>'+ row.kode_tugas +'"> Lihat </a> ';

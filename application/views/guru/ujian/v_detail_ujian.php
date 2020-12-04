@@ -229,6 +229,10 @@
               <td>Deadline ujian</td>
               <td><?php echo $val->tgl_akhir ?> / <?php echo $val->wkt_akhir ?></td>
             </tr>
+            <tr>
+              <td>Siswa Mengerjakan</td>
+              <td><?php echo $siswa_mengerjakan ?></td>
+            </tr>
             <?php } ?>
           </tbody>
         </table>  
@@ -236,8 +240,17 @@
         <div class="row">
           <div class="col-md-12">
 
-            <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target=".bd-example-modal-lg">Upload Siswa</button>
-            
+            <a href="<?php echo site_url('guru_usr_clx/G_ujian/load_hasil_ujian') ?>" class="btn btn-success" style="color : white">Nilai Siswa</a>
+            <?php 
+              if ($siswa_mengerjakan > 0) { ?>
+     
+                <span class="d-inline-block" data-toggle="popover" data-content="Tombol hapus disbled ketika ada siswa yg sudah mengerjakan">
+                  <button class="btn btn-danger" style="pointer-events: none;" type="button" disabled>Hapus</button>
+                </span>
+              <?php }else{ ?>
+                <a href="<?php echo site_url('guru_usr_clx/G_ujian/hapus') ?>" class="btn btn-danger" style="color : white">Hapus Ujian</a>
+              <?php }
+            ?>
           </div>
         </div>
 

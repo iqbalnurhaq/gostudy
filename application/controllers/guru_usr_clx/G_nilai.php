@@ -16,14 +16,75 @@ class G_nilai extends CI_Controller {
 	{
         $kode_kelas = $this->session->userdata('kode_kelas');
         $data['nama_kelas'] = $this->db->query("SELECT nama_kelas FROM kelas WHERE kode_kelas='$kode_kelas'")->row_array()['nama_kelas'];
-        $data['siswa'] = $this->M_g_nilai->data_siswa($kode_kelas); 
         $this->load->view('guru/header', $data);
         $this->load->view('guru/nilai/v_nilai');
     }
     
     function data_nilai(){
-        // $kode_siswa 
-    }
+		$kode_kelas = $this->session->userdata('kode_kelas');
+		// $output['data_nilai'] = $this->M_g_nilai->data_siswa($kode_kelas); 
+		$output['data_nilai_siswa'] = $this->M_g_nilai->data_nilai_siswa($kode_kelas);
+    	echo json_encode($output);
+	}
+    function nilai_siswa(){
+		$kode_siswa = $this->uri->segment(4);
+		$kode_mapel = $this->session->userdata('kode_mapel');
+		$kode_kelas = $this->session->userdata('kode_kelas');
+		$kode_guru = $this->session->userdata('kode_guru');
+		// $output['data_nilai'] = $this->M_g_nilai->data_siswa($kode_kelas); 
+		// $output['data_siswa'] = $this->M_g_nilai->data_siswa($kode_kelas);
+		$output['nilai_siswa'] = $this->M_g_nilai->nilai_siswa($kode_kelas);
+    	echo json_encode($output);
+	}
+
+	function link_nilai(){
+		$kode_nilai = $this->uri->segment(4);
+		$this->session->set_userdata(array('kode_nilai' => $kode_nilai));
+		$kode_kelas = $this->session->userdata('kode_kelas');
+		$data['nama_kelas'] = $this->db->query("SELECT nama_kelas FROM kelas WHERE kode_kelas='$kode_kelas'")->row_array()['nama_kelas'];
+        $this->load->view('guru/header', $data);
+        $this->load->view('guru/nilai/v_link_siswa');
+	}
+
+	function input_nilai(){
+		$nilai = $this->input->post('nilai');
+		$kode_siswa = $this->input->post('kode_siswa');
+		$kode_nilai = $this->session->userdata('kode_nilai');
+		$kode_mapel = $this->session->userdata('kode_mapel');
+		$kode_kelas = $this->session->userdata('kode_kelas');
+		$kode_guru = $this->session->userdata('kode_guru');
+		$cek = $this->M_g_nilai->cek_nilai($kode_siswa, $kode_nilai, $kode_mapel);
+		if ($cek) {
+			$update = $this->M_g_nilai->update_nilai($nilai, $kode_siswa, $kode_nilai, $kode_guru, $kode_mapel);
+			$output['pesan'] = 'success';
+			$output['kode_nilai'] = $kode_nilai;
+			echo json_encode($output);  
+		} else {
+			$insert_nilai = $this->M_g_nilai->insert_nilai($nilai, $kode_siswa, $kode_nilai, $kode_guru, $kode_mapel);
+			$output['pesan'] = 'success';
+			$output['kode_nilai'] = $kode_nilai;
+			echo json_encode($output);  
+		}
+	}
+
+	function open(){
+		$kode_nilai = $this->input->post('kode_nilai');
+		$kode_kelas = $this->session->userdata('kode_kelas');
+		$this->M_g_nilai->open_nilai($kode_nilai, $kode_kelas);
+		$output['pesan'] = 'success';
+		echo json_encode($output);  
+	}
+
+	function clear(){
+		$kode_kelas = $this->session->userdata('kode_kelas');
+		$kode_nilai = $this->input->post('kode_nilai');
+		$this->M_g_nilai->clear_nilai($kode_nilai, $kode_kelas);
+		$this->M_g_nilai->delete_nilai($kode_nilai, $kode_kelas);
+		$output['pesan'] = 'success';
+		echo json_encode($output);  
+	}
+	
+
 
 	// function ambil_data_tugas(){
 	// 	$kode_mapel = $this->session->userdata('kode_mapel');

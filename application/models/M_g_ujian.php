@@ -75,6 +75,44 @@ class M_g_ujian extends CI_Model{
     $this->db->update('soal', $data_soal);
   }
 
+  function get_hasil_ujian($kode_ujian, $kode_kelas){
+    $sql = "SELECT *, siswa.kode_siswa FROM siswa LEFT JOIN nilai_ujian ON siswa.kode_siswa=nilai_ujian.kode_siswa AND nilai_ujian.kode_ujian='$kode_ujian' WHERE siswa.kode_kelas='$kode_kelas'";
+    return $this->db->query($sql)->result();
+  }
+
+  function get_jml_siswa($kode_kelas){
+    $sql = "SELECT * FROM siswa WHERE kode_kelas='$kode_kelas'";
+    return $this->db->query($sql)->num_rows();
+  }
+
+  function get_jml_nilai($kode_ujian){
+    $sql = "SELECT * FROM nilai_ujian WHERE kode_ujian='$kode_ujian'";
+    return $this->db->query($sql)->num_rows();
+  }
+  function cek_backup($kode_ujian){
+    $sql = "SELECT * FROM nilai_ujian WHERE kode_ujian='$kode_ujian' AND kode_nilai=null";
+    return $this->db->query($sql)->num_rows();
+  }
+
+  // ==============
+  function delete_hasil_siswa($kode_siswa, $kode_ujian){
+    return $this->db->delete('nilai_ujian', array('kode_siswa' => $kode_siswa, 'kode_ujian' => $kode_ujian));
+  }
+  
+  function delete_jwb_siswa($kode_siswa, $kode_ujian){
+    return $this->db->delete('jwb_siswa', array('kode_siswa' => $kode_siswa, 'kode_ujian' => $kode_ujian));
+  }
+
+  function get_nilai_backup($kode_kelas){
+    $sql = "SELECT *, nilai.kode_nilai FROM nilai JOIN has_nilai ON nilai.kode_nilai=has_nilai.kode_nilai WHERE has_nilai.kode_kelas='$kode_kelas' AND status=0";
+    return $this->db->query($sql)->result();
+  }
+
+  function get_nilai_ujian_siswa($kode_ujian){
+    $this->db->where('kode_ujian', $kode_ujian);
+    return $this->db->get('nilai_ujian')->result();
+  }
+
 
 
 }

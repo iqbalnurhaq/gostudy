@@ -1,49 +1,60 @@
-
-<div class="modal fade bd-upload-siswa" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-     
+      <form class="form" action="<?php echo base_url('guru_usr_clx/G_tugas/tambah_tugas') ?>" method="POST">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Upload Siswa</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Tambah Tugas</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">    
-          <table id="example3" class="table table-hover" style="width:100%">
+        <div class="modal-body">
+
+          <table id="data_hasil_siswa" class="table table-hover" style="width:100%">
           <thead>
             <tr>
                 <th>No</th>
                 <th>NIS</th>
                 <th>Nama Siswa</th>
-                <th>Download</th>
-
+               
+                <th>Input Nilai</th>
             </tr>
           </thead>
           <tbody>
-                
+            <?php $no = 1; ?>
+                <?php 
+                    foreach ($daftar_siswa as $val) { ?>
+                        <tr>
+                            <td><?php echo $no++ ?></td>
+                            <td><?php echo $val->nis ?></td>
+                            <td><?php echo $val->nama_siswa ?></td>
+  
+                            <td>
+                          
+                              <?php if ($val->nilai) { ?>
+                              <?php echo $val->nilai  ?>
+                              <?php }else{ ?>
+                              <span class="badge badge-pill badge-danger">--</span>
+                              
+                             <?php  } ?>
+                           </td>
+                        </tr>
+                   <?php }
+                ?>
           </tbody>
-          <tfoot>
-              <tr>
-                <th>No</th>
-                <th>NIS</th>
-                <th>Nama Siswa</th>
-                <th>Download</th>
-            </tr>
-          </tfoot>
-          </table>
-          
+      
+        </table>  
+              
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" id="simpan_mapel_aktif">Save</button>
+          <input type="submit" class="btn btn-primary" name="submit" value="Save">
         </div>
-     
+      </form>
     </div>
   </div>
 </div>
-
-
 
 
 
@@ -80,14 +91,15 @@
               <td>Deadline Tugas</td>
               <td><?php echo $val->tgl_akhir ?>  ( <?php echo $val->wkt_akhir ?> )</td>
             </tr>
-            <?php } ?>
           </tbody>
         </table>  
 
         <div class="row">
         <div class="col-md-12">
-          <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target=".bd-upload-siswa">Upload Siswa</button>
+          <a href="<?php echo base_url("guru_usr_clx/G_tugas/hasil_siswa/").$val->kode_tugas ?>" class="btn btn-success pull-right">Upload Nilai</a>
+              <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target=".bd-example-modal-lg">Nilai Siswa</button>
         </div>
+            <?php } ?>
       </div>
 
 
@@ -139,6 +151,8 @@
 <script>
 
 $(document).ready(function() {
+
+  tabel = $('#data_hasil_siswa').DataTable();
   var params = window.location.pathname.split("/")
   var kode_tugas = params[params.length - 1]
  

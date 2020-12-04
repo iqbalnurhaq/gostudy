@@ -3,8 +3,283 @@
 <div class="content">
   <div class="container-fluid">
 
+    <div class="row">
 
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">content_copy</i>
+            </div>
+            <p class="card-category">Siswa</p>
+            <h3 class="card-title"> <?php echo $jml_ujian ?>
+              <small>siswa</small>
+            </h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+             
+              <a href="<?php echo site_url("guru_usr_clx/G_siswa") ?>">Get More ...</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-success card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">content_copy</i>
+            </div>
+            <p class="card-category">Materi</p>
+            <h3 class="card-title"> <?php echo $jml_materi ?>
+              <small>materi</small>
+            </h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+             
+              <a href="<?php echo site_url("guru_usr_clx/G_materi") ?>">Get More ...</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-warning card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">content_copy</i>
+            </div>
+            <p class="card-category">Tugas</p>
+            <h3 class="card-title"> <?php echo $jml_tugas ?>
+              <small>tugas</small>
+            </h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+             
+              <a href="<?php echo site_url("guru_usr_clx/G_tugas") ?>">Get More ...</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-danger card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">content_copy</i>
+            </div>
+            <p class="card-category">Uijan</p>
+            <h3 class="card-title"> <?php echo $jml_ujian ?>
+              <small>ujian</small>
+            </h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+             
+              <a href="<?php echo site_url("guru_usr_clx/G_ujian") ?>">Get More ...</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  
+  
   <!-- ------------------------------- ///// ------------------ -->
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-header card-header-primary">
+              <h4 class="card-title">Tugas</h4>
+        </div>
+        <div class="card-body">
+           
+            <table class="table table-hover">
+              <thead>
+                <th>Nama Tugas</th>
+                <th>Open</th>
+              </thead>
+              <tbody>
+                <?php  
+                  if ($tugas) { 
+                      foreach ($tugas as $val) { ?>
+                        <tr>
+                          <td><?php echo $val->nama_tugas ?></td>
+                          <td><a class="btn btn-primary btn-sm" href="<?php echo site_url().'guru_usr_clx/G_tugas/detail_tugas/'.$val->kode_tugas ?>">Open</a></td>
+                        </tr>
+                    <?php 
+                      }
+                      
+                    
+                    }else { ?>
+                    
+                  <?php }
+                  
+                ?>
+                <tr>
+                    <td colspan="2" style="text-align: center"><a class="btn btn-primary btn-sm" href="<?php echo site_url().'guru_usr_clx/G_tugas' ?>">--More--</a></td>
+                </tr>
+              </tbody>
+            </table>
+          
+        </div>
+      </div>    
+    </div>
+
+    <div class="col-md-6">
+       <div class="card">
+        <div class="card-header card-header-primary">
+              <h4 class="card-title">Beranda</h4>
+        </div>
+        <div class="card-body">
+
+          <form action="<?php echo base_url("guru_usr_clx/G_dashboard/kirim_beranda") ?>" method="POST">
+
+            
+            <div class="form-group">
+              <label>Apa yang anda pikirkan?</label>
+            <div class="form-group">
+              <label class="bmd-label-floating"> Masukkan pertanyaan dan diskusi diberanda</label>
+              <textarea class="form-control" rows="3" name="isi" required></textarea>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn btn-primary pull-right">Kirim</button>
+        </form>
+          <br>
+          <br>
+
+          
+
+          <?php 
+          if ($beranda) {
+    
+          foreach ($beranda as  $ber) { ?>
+            <div class="card">
+              <div class="card-body">
+                <h4><?php echo $ber->nama_user ?> 
+                  <?php if ($ber->role == "Guru") { ?>
+                    <span class="pull-right badge badge-primary"> <?php echo $ber->role ?> </span>
+                  <?php }else{ ?>
+
+                    <span class="pull-right badge badge-secondary"><?php echo $ber->role ?> </span>
+                  <?php } ?>
+              
+                </h4>
+                <hr>
+                
+                  <h5><?php echo $ber->isi ?></h5>
+                
+                  <p>--<?php echo $ber->created_at ?>-- <?php if($kode_user == $ber->user_code){echo '<span class="pull-right"><a href="#" style="color:red; margin-left:10px" onClick="aksi_hapus('.$ber->id.',1)">Hapus</a></span>';}else{} ?>  <span class="pull-right"><a href="#" style="color:blue" onClick="aksi_balas('<?php echo $ber->id ?>', '<?php echo $ber->nama_user ?>')">Balas</a></span> </p>
+
+               
+                   
+                  
+                  <hr>
+                  <?php if ($com_one) { ?>
+                    
+                    <?php foreach ($com_one as $c_one) { 
+                      if ($ber->id == $c_one->id_beranda) { ?>
+                        <p>| <?php echo $c_one->nama_user ?>  <span class="badge badge-<?php if($c_one->role == "Guru"){?>primary<?php }else{ ?>secondary<?php } ?>"><?php echo $c_one->role ?> </span> | --> <?php echo $c_one->isi ?>  <?php if($kode_user == $c_one->user_code){echo '<span class="pull-right"><a href="#" style="color:red; margin-left:10px" onClick="aksi_hapus('.$c_one->id.', 2)">Tarik Pesan</a></span>';}else{} ?> <span class="pull-right"><a href="#" style="color:blue" onClick="aksi_balas_one('<?php echo $c_one->id ?>', '<?php echo $c_one->nama_user ?>')">Balas</a></span></p>  
+                        <?php if ($com_two) { 
+                            foreach ($com_two as $key => $c_two) { 
+                                if ($c_one->id == $c_two->id_comment_one) { ?>
+                                    <p style="margin-left: 30px">| <?php echo $c_two->nama_user ?>  <span class="badge badge-<?php if($c_two->role == "Guru"){?>primary<?php }else{ ?>secondary<?php } ?>"><?php echo $c_two->role ?> </span> | --> <?php echo $c_two->isi ?> <?php if($kode_user == $c_two->user_code){echo '<span class="pull-right"><a href="#" style="color:red; margin-left:10px" onClick="aksi_hapus('.$c_two->id.', 3)">Tarik Pesan</a></span>';}else{} ?></p>  
+                                <?php }
+                              ?>
+
+                            <?php }
+                          ?>
+                            
+                       <?php }else{ ?>
+                            <div class="card">
+                              <div class="card-body">
+                                Belum ada balasan
+                              </div>
+                            </div>
+                       <?php } ?>
+                      
+                      <?php 
+                      } 
+                    }
+                  }else{
+                     ?>
+                        <div class="card">
+                          <div class="card-body">
+                            Belum ada balasan
+                          </div>
+                        </div>
+                     <?php } ?>
+              </div>
+            </div>
+           
+          <?php }
+          
+          }else{
+          ?>
+              <div class="card">
+                <div class="card-body">
+                  Belum ada isi
+                </div>
+              </div>
+          <?php } ?>
+          
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="row">
+       
+        
+        <div class="col-sm-12">
+            <div class="card">
+              <div class="card-header card-header-primary">
+                    <h4 class="card-title">Ujian</h4>
+              </div>
+              <div class="card-body">
+                 <table class="table table-hover">
+                  <thead>
+                    <th>Nama Ujian</th>
+                    <th>Open</th>
+                  </thead>
+                  <tbody>
+                    <?php  
+                      if ($ujian) { 
+                          foreach ($ujian as $val) { ?>
+                            <tr>
+                              <td><?php echo $val->nama_ujian ?></td>
+                              <td><a class="btn btn-primary btn-sm" href="<?php echo site_url().'guru_usr_clx/G_ujian/' ?>">Open</a></td>
+                            </tr>
+                        <?php 
+                          }
+                          
+                        
+                       }else { ?>
+                        
+                      <?php }
+                      
+                    ?>
+                    <tr>
+                        <td colspan="2" style="text-align: center"><a class="btn btn-primary btn-sm" href="<?php echo site_url().'guru_usr_clx/G_ujian' ?>">--More--</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+
+
+      </div>
+            
+    </div>
+  </div>
+
     
     
   </div>
@@ -27,252 +302,66 @@ $(document).ready(function() {
         $('.custom-file-label').html(fileName);
     });
 
-    tabel = $('#example1').DataTable({
-
-      "ajax":
-      {
-        "dataSrc": "dataGuru",
-        "url": "http://localhost/gostudy/go_ciclx_usradmin/A_guru/data_guru", // URL file untuk proses select datanya
-        "type": "GET"
-      },
-
-      // "aLengthMenu": [[5, 10, 50],[ 5, 10, 50]], // Combobox Limit
-      "columns": [
-        { "render": function ( data, type, row ) { // Tampilkan kolom aksi
-            var html  = no++;
-            return html
-          }
-        },
-        { "data": "nip" }, // Tampilkan nis
-        { "data": "nama_guru" },  // Tampilkan nama
-        { "render": function ( data, type, row ) {  // Tampilkan jenis kelamin
-            var html = ""
-            if(row.kode_mapel == null){ // Jika jenis kelaminnya 1
-              html = '<button class="btn btn-primary btn-xs" onClick="aksiTmbMapel(\'' + row.kode_guru + '\' )"> Pilih <i class="material-icons">report</i> </button>' // Set laki-laki
-            }else{ // Jika bukan 1
-              html = '<button class="btn btn-success btn-xs" onClick="aksiTmbMapel(\'' + row.kode_guru + '\' )">  ' +  row.nama_mapel +'   </button>'
-            }   
-            return html; // Tampilkan jenis kelaminnya
-          }
-        },
-       
-        { "render": function ( data, type, row ) { // Tampilkan kolom aksi
-
-            
-            html = '<button class="btn btn-warning btn-xs" onClick="aksiBanned(\'' + row.kode_guru + '\' , \'' + row.nama_guru + '\')"> Banned <i class="material-icons">report</i> </button> <button class="btn btn-danger btn-xs" onClick="aksiHapus(\'' + row.kode_guru + '\' , \'' + row.nama_guru + '\')"> Hapus <i class="material-icons">delete_forever</i> </button>';
-
-            return html
-          }
-        },
-      ],
-    });
-
-    tabel2 = $('#example2').DataTable({
-
-        "ajax":
-        {
-          "dataSrc": "dataGuru",
-          "url": "http://localhost/gostudy/go_ciclx_usradmin/A_guru/data_guru_ban", // URL file untuk proses select datanya
-          "type": "GET"
-        },
-
-        // "aLengthMenu": [[5, 10, 50],[ 5, 10, 50]], // Combobox Limit
-        "columns": [
-          { "render": function ( data, type, row ) { // Tampilkan kolom aksi
-              var html  = no++;
-              return html
-            }
-          },
-          { "data": "nip" }, // Tampilkan nis
-          { "data": "nama_guru" },  // Tampilkan nama
-          { "render": function ( data, type, row ) {  // Tampilkan jenis kelamin
-              var html1 = ""
-              if(row.kode_mapel == null){ // Jika jenis kelaminnya 1
-                html1 += 'Belum ditentukan' // Set laki-laki
-              }else{ // Jika bukan 1
-                html1 += row.nama_mapel; 
-              }
-              return html1; // Tampilkan jenis kelaminnya
-            }
-          },
-        
-          { "render": function ( data, type, row ) { // Tampilkan kolom aksi
-
-              
-              html = '<button class="btn btn-primary btn-xs" onClick="aksiAktif(\'' + row.kode_guru + '\' , \'' + row.nama_guru + '\')"> Aktifkan <i class="material-icons">report</i> </button> ';
-
-              return html
-            }
-          },
-        ],
-        });
-    
 }); 
 
-function aksiHapus(data, nama){
-  var id = data;
-  var namaGuru = nama;
-  Swal.fire({
-  title: 'Are you sure?',
-  text: "Apakah kamu ingin menhapus Guru " + namaGuru + "!",
-  type: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes, delete it!'
-  }).then((result) => {
-    if (result.value) {
-      $.ajax({
-        url : "http://localhost/gostudy/go_ciclx_usradmin/A_guru/hapus_guru",
-        method: 'POST',
-        dataType: 'json',
-        data: {id : id},
-        contentType: 'application/x-www-form-urlencoded',
-        success: function(data){
-          Swal.fire('Deleted!', 'Berhasil menghapus.', 'success');
-          setTimeout(function(){
-             window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_guru'); ?>";
-          }, 1100);
-
-        },
-        error: function( errorThrown ){
-          console.log( errorThrown);
-
-        }
-
-      });
-
-    }
-  });
-
-}
 
 
-function aksiBanned(data, nama){
-  var id = data;
-  var namaGuru = nama;
-  Swal.fire({
-  title: 'Are you sure?',
-  text: "Apakah kamu ingin membekukan Guru " + namaGuru + "!",
-  type: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes, delete it!'
-  }).then((result) => {
-    if (result.value) {
-      $.ajax({
-        url : "http://localhost/gostudy/go_ciclx_usradmin/A_guru/ban_guru",
-        method: 'POST',
-        dataType: 'json',
-        data: {id : id},
-        contentType: 'application/x-www-form-urlencoded',
-        success: function(data){
-          Swal.fire('Deleted!', 'Berhasil membekukan.', 'success');
-          setTimeout(function(){
-             window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_guru'); ?>";
-          }, 1100);
-
-        },
-        error: function( errorThrown ){
-          console.log( errorThrown);
-
-        }
-
-      });
-
-    }
-  });
-
-}
-
-
-function aksiAktif(data, nama){
-  var id = data;
-  var namaGuru = nama;
-  Swal.fire({
-  title: 'Are you sure?',
-  text: "Apakah kamu ingin mengaktifkan Guru " + namaGuru + "?",
-  type: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes!'
-  }).then((result) => {
-    if (result.value) {
-      $.ajax({
-        url : "http://localhost/gostudy/go_ciclx_usradmin/A_guru/aktifkan_guru",
-        method: 'POST',
-        dataType: 'json',
-        data: {id : id},
-        contentType: 'application/x-www-form-urlencoded',
-        success: function(data){
-          Swal.fire('Deleted!', 'Berhasil membekukan.', 'success');
-          setTimeout(function(){
-             window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_guru'); ?>";
-          }, 1100);
-
-        },
-        error: function( errorThrown ){
-          console.log( errorThrown);
-
-        }
-
-      });
-
-    }
-  });
-
-}
-
-async function aksiPilih(data, kode_guru){
-  const { value: fruit } = await Swal.fire({
-  title: 'Select field validation',
-  input: 'select',
-  inputOptions: data,
-  inputPlaceholder: 'Select a fruit',
-  showCancelButton: true,
-  inputValidator: (value) => {
-    return new Promise((resolve) => {
-      resolve()
+async function aksi_balas(id_beranda, nama){
+    
+    const { value: text } = await Swal.fire({
+      input: 'textarea',
+      inputLabel: 'Message',
+      inputPlaceholder: 'Balas pesan '+nama,
+      inputAttributes: {
+        'aria-label': 'Balas pesan '+nama,
+      },
+      showCancelButton: true
     })
-  }
-})
 
-if (fruit) {
-  aksi_tambah_pengampu(fruit, kode_guru)
+    if (text) {
+      input_balas(text, id_beranda)
+    }
+
+
 }
-}
-
-function aksiTmbMapel(kode_guru){
-  $.ajax({
-        url : "http://localhost/gostudy/go_ciclx_usradmin/A_mapel/data_mapel",
-        method: 'GET',
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded',
-        success: function(data){
-          console.log(data);
-          aksiPilih(data.dataMapel, kode_guru);
-        },
-        error: function( errorThrown ){
-          console.log( errorThrown);
-
-        }
-
-      });
-}
-
-
-function aksi_tambah_pengampu(kode_mapel, kode_guru){
-  $.ajax({
-        url : "http://localhost/gostudy/go_ciclx_usradmin/A_guru/tambah_pengampu",
+async function aksi_hapus(id, table){
+    
+  
+    Swal.fire({
+    title: 'Are you sure?',
+    text: "Apakah kamu ingin menhapus Guru !",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        $.ajax({
+        url : "http://localhost/gostudy/guru_usr_clx/G_dashboard/hapus_pesan",
         method: 'POST',
-        data : {kode_mapel:kode_mapel, kode_guru:kode_guru}, 
         dataType: 'json',
+        data: {id:id, table:table},
         contentType: 'application/x-www-form-urlencoded',
         success: function(data){
-          console.log(data);
+          $.notify({
+              icon: "done",
+              message: "Pesan berhasil dihapus."
+
+          },{
+              type: 'success',
+              timer: 400,
+              placement: {
+                  from: 'top',
+                  align: 'center'
+              }
+          });
+
+          setTimeout(function(){
+              window.location.href = "<?php echo base_url('guru_usr_clx/G_dashboard'); ?>";
+          }, 1100);
           
+
         },
         error: function( errorThrown ){
           console.log( errorThrown);
@@ -280,7 +369,141 @@ function aksi_tambah_pengampu(kode_mapel, kode_guru){
         }
 
       });
+
+      }
+    });
+
 }
+
+
+async function aksi_balas_one(id, nama){
+    
+    const { value: text } = await Swal.fire({
+      input: 'textarea',
+      inputLabel: 'Message',
+      inputPlaceholder: 'Balas pesan '+nama,
+      inputAttributes: {
+        'aria-label': 'Balas pesan '+nama,
+      },
+      showCancelButton: true
+    })
+
+    if (text) {
+      input_balas_one(text, id)
+    }
+}
+
+function input_balas(isi, id_beranda){
+  $.ajax({
+      url : "http://localhost/gostudy/guru_usr_clx/G_dashboard/kirim_balas",
+      method: 'POST',
+      dataType: 'json',
+      data: {isi:isi, id_beranda:id_beranda},
+      contentType: 'application/x-www-form-urlencoded',
+      success: function(data){
+         $.notify({
+            icon: "done",
+            message: "Pesan berhasil terkirim."
+
+        },{
+            type: 'success',
+            timer: 400,
+            placement: {
+                from: 'top',
+                align: 'center'
+            }
+        });
+
+        setTimeout(function(){
+            window.location.href = "<?php echo base_url('guru_usr_clx/G_dashboard'); ?>";
+        }, 1100);
+
+      },
+      error: function( errorThrown ){
+        console.log( errorThrown);
+
+      }
+
+    });
+}
+
+
+function input_balas_one(isi, id_com_one){
+  $.ajax({
+      url : "http://localhost/gostudy/guru_usr_clx/G_dashboard/kirim_balas_one",
+      method: 'POST',
+      dataType: 'json',
+      data: {isi:isi, id_com_one:id_com_one},
+      contentType: 'application/x-www-form-urlencoded',
+      success: function(data){
+         $.notify({
+            icon: "done",
+            message: "Pesan berhasil terkirim."
+
+        },{
+            type: 'success',
+            timer: 400,
+            placement: {
+                from: 'top',
+                align: 'center'
+            }
+        });
+
+        setTimeout(function(){
+            window.location.href = "<?php echo base_url('guru_usr_clx/G_dashboard'); ?>";
+        }, 1100);
+        
+
+      },
+      error: function( errorThrown ){
+        console.log( errorThrown);
+
+      }
+
+    });
+}
+
+
+
+// ===========================
+
+
+function hapus_pesan(id){
+  $.ajax({
+      url : "http://localhost/gostudy/guru_usr_clx/G_dashboard/hapus_pesan",
+      method: 'POST',
+      dataType: 'json',
+      data: {id:id},
+      contentType: 'application/x-www-form-urlencoded',
+      success: function(data){
+         $.notify({
+            icon: "done",
+            message: "Pesan berhasil dihapus."
+
+        },{
+            type: 'success',
+            timer: 400,
+            placement: {
+                from: 'top',
+                align: 'center'
+            }
+        });
+
+        setTimeout(function(){
+            window.location.href = "<?php echo base_url('guru_usr_clx/G_dashboard'); ?>";
+        }, 1100);
+        
+
+      },
+      error: function( errorThrown ){
+        console.log( errorThrown);
+
+      }
+
+    });
+}
+
+
 
 </script>
 

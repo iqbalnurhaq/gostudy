@@ -95,7 +95,7 @@
                 <th>Aktif</th>
                 <th>Deadline</th>
                 <th>Lihat</th>
-                <th>Hapus </th>
+               
             </tr>
           </thead>
           <tbody>
@@ -109,7 +109,7 @@
                 <th>Aktif</th>
                 <th>Deadline</th>
                 <th>Lihat</th>
-                <th>Hapus </th>
+               
             </tr>
           </tfoot>
         </table>  
@@ -146,26 +146,6 @@ $(document).ready(function() {
     }
   });
 
-  // $('#wkt_pengerjaan').inputmask({
-  //           mask: "999"
-  //         });
-
-//     $('.datetimepicker1').datetimepicker({
-//     format: 'LT',
-//  minDate: new Date(),
-//     icons: {
-//         time: "fa fa-clock-o",
-//         date: "fa fa-calendar",
-//         up: "fa fa-chevron-up",
-//         down: "fa fa-chevron-down",
-//         previous: 'fa fa-chevron-left',
-//         next: 'fa fa-chevron-right',
-//         today: 'fa fa-screenshot',
-//         clear: 'fa fa-trash',
-//         close: 'fa fa-remove'
-//         }
-//     });
-
     var no =1;
     $('#example').DataTable();
     $('#date_time_mask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
@@ -192,8 +172,22 @@ $(document).ready(function() {
         },
         { "data": "nama_ujian" }, // Tampilkan nis
         { "data": "tgl_dibuat"},
-        { "data": "tgl_aktif"},
-        { "data": "tgl_akhir"},
+        
+     
+        { "render": function ( data, type, row ) { // Tampilkan kolom aksi
+            
+            html = row.tgl_aktif + ' || ' + row.wkt_aktif;
+
+            return html
+          }
+        },
+        { "render": function ( data, type, row ) { // Tampilkan kolom aksi
+            
+            html = row.tgl_akhir + ' || ' + row.wkt_akhir;
+
+            return html
+          }
+        },
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
             
             html = '<a class="btn btn-outline-primary btn-sm" href="<?php echo site_url('guru_usr_clx/G_ujian/detail_ujian/')?>'+ row.kode_ujian +'"> Lihat </a> ';
@@ -201,13 +195,7 @@ $(document).ready(function() {
             return html
           }
         },
-        { "render": function ( data, type, row ) { // Tampilkan kolom aksi
-            
-            html = '-';
-
-            return html
-          }
-        },
+        
 
       ],
     });

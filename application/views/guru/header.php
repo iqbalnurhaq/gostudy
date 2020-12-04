@@ -215,10 +215,18 @@ Preserve the relative scale, though. */
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item">
+
+
+          <!-- <li class="nav-item">
             <a class="nav-link" href="./dashboard.html">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
+            </a>
+          </li> -->
+            <li class="nav-item">
+            <a class="nav-link" href="<?php echo site_url('guru_usr_clx/G_dashboard'); ?>">
+              <i class="material-icons">home</i>
+              <p>Home</p>
             </a>
           </li>
           <hr>
@@ -258,7 +266,7 @@ Preserve the relative scale, though. */
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?php echo site_url('guru_usr_clx/A_kelas'); ?>">
+            <a class="nav-link" href="<?php echo site_url('guru_usr_clx/G_nilai'); ?>">
               <i class="material-icons">bubble_chart</i>
               <p>Nilai Siswa</p>
             </a>
@@ -346,7 +354,7 @@ Preserve the relative scale, though. */
                   <a class="dropdown-item" href="#">Profile</a>
                   <a class="dropdown-item" href="#">Settings</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Log out</a>
+                  <a class="dropdown-item" href="<?php echo site_url('guru_usr_clx/Logout') ?>">Log out</a>
                 </div>
               </li>
             </ul>

@@ -9,6 +9,7 @@ class G_ujian extends CI_Controller {
         $this->load->helper('create_random_helper');
         $this->load->library('pagination');
 		$this->load->model('M_g_ujian');
+		$this->load->model('M_s_ujian');
        
     }
 
@@ -170,6 +171,7 @@ class G_ujian extends CI_Controller {
 		$this->session->set_userdata(array('kode_ujian' => $kode_ujian));
 		$kode_kelas = $this->session->userdata('kode_kelas');
 		$data['nama_kelas'] = $this->db->query("SELECT nama_kelas FROM kelas WHERE kode_kelas='$kode_kelas'")->row_array()['nama_kelas'];
+		$data['siswa_mengerjakan'] = $this->db->query("SELECT * FROM jwb_siswa WHERE kode_ujian='$kode_ujian'")->num_rows();
 		$data['analisis_soal'] = $this->db->query("SELECT * FROM ujian_has_soal WHERE kode_ujian='$kode_ujian'")->result(); 
         $data['data_ujian'] = $this->M_g_ujian->load_detail_ujian($kode_ujian);
 		// $data['numRow'] = $this->M_g_ujian->getAllSoal($kode_ujian)->num_rows();
@@ -356,6 +358,91 @@ class G_ujian extends CI_Controller {
 		$this->load->helper('download');
 		force_download('excel/template_guru.xlsx', NULL);
 	}
+
+	function load_hasil_ujian(){
+		$kode_ujian = $this->session->userdata('kode_ujian');
+		$kode_kelas = $this->session->userdata('kode_kelas');
+		$jml_siswa = $this->M_g_ujian->get_jml_siswa($kode_kelas);
+		$jml_nilai = $this->M_g_ujian->get_jml_nilai($kode_ujian);
+		$progress = number_format(($jml_nilai / $jml_siswa) * 100 , 2);
+		$hasil = $this->M_g_ujian->get_hasil_ujian($kode_ujian, $kode_kelas);
+		
+		$backup = $this->M_g_ujian->cek_backup($kode_ujian);
+
+		$cek_backup = $backup / $jml_siswa;
+
+
+	
+		$data['nama_kelas'] = $this->db->query("SELECT nama_kelas FROM kelas WHERE kode_kelas='$kode_kelas'")->row_array()['nama_kelas'];
+		$data['hasil'] = $hasil;
+		$data['progress'] = $progress;
+		$data['backup'] = $cek_backup;
+		$this->load->view('guru/header', $data);
+        $this->load->view('guru/ujian/v_hasil_ujian', $data);
+	}
+
+	function diskualifikasi(){
+		$kode_siswa = $this->input->post('kode_siswa');
+		$kode_ujian = $this->session->userdata('kode_ujian');
+		$this->M_s_ujian->input_nilai_ujian($kode_siswa, $kode_ujian, 0);
+		$output['pesan'] = "success";
+    	echo json_encode($output);
+	}
+
+	function reset(){
+		$kode_siswa = $this->input->post('kode_siswa');
+		$kode_ujian = $this->session->userdata('kode_ujian');
+		$this->M_g_ujian->delete_hasil_siswa($kode_siswa, $kode_ujian);
+		$this->M_g_ujian->delete_jwb_siswa($kode_siswa, $kode_ujian);
+		$output['pesan'] = "success";
+    	echo json_encode($output);
+	}
+
+	function ambil_nilai(){
+		// $kode_ujian = $this->session->userdata('kode_ujian');
+		$kode_kelas = $this->session->userdata('kode_kelas');
+		// $jml_siswa = $this->M_g_ujian->get_jml_siswa($kode_kelas);
+		// $jml_nilai = $this->M_g_ujian->get_jml_nilai($kode_ujian);
+		// $progress = ($jml_nilai / $jml_siswa) * 100;
+		// if ($progress == 100) {
+				
+		// }
+		$arr = [];
+        $nilai = $this->M_g_ujian->get_nilai_backup($kode_kelas);
+        foreach ($nilai as $val) {
+            $arr[$val->kode_nilai] = $val->nama_nilai;
+        }
+    	$output['nilai'] = $arr;
+    	echo json_encode($output);
+		
+	}
+
+	function aksi_backup_nilai(){
+		$kode_nilai = $this->input->post('kode_nilai');
+		$kode_ujian = $this->session->userdata('kode_ujian');
+		$kode_mapel = $this->session->userdata('kode_mapel');
+		$kode_guru = $this->session->userdata('kode_guru');
+		$kode_kelas = $this->session->userdata('kode_kelas');
+		$siswa = $this->M_g_ujian->get_nilai_ujian_siswa($kode_ujian);
+
+		$data = array();
+		foreach ($siswa as $val) {
+			array_push($data, array(
+				'kode_siswa' => $val->kode_siswa,
+				'kode_guru' => $kode_guru,
+				'kode_nilai' => $kode_nilai,
+				'kode_mapel' => $kode_mapel,
+				'nilai' => $val->nilai_ujian
+			));
+		}
+
+		$this->db->insert_batch('nilai_siswa', $data);
+		$this->db->query("UPDATE has_nilai SET status=1 WHERE kode_nilai='$kode_nilai' AND kode_kelas='$kode_kelas'");
+		$output['pesan'] = 'sukses';
+		echo json_encode($output);
+	}
+
+
 
 
     
