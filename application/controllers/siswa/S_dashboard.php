@@ -19,6 +19,7 @@ class S_dashboard extends CI_Controller {
 	public function index()
 	{
         $kode_mapel = $this->session->userdata('kode_mapel');
+        $kode_siswa = $this->session->userdata('kode_siswa');
         $kode_kelas = $this->session->userdata('kode_kelas');
         $user_code = $this->session->userdata('user_code');
         $data['nama_mapel'] = $this->db->query("SELECT nama_mapel FROM mapel WHERE kode_mapel='$kode_mapel'")->row_array()['nama_mapel']; 
@@ -27,6 +28,7 @@ class S_dashboard extends CI_Controller {
         $data['com_two'] = $this->db->query("SELECT * FROM comment_two WHERE kode_mapel='$kode_mapel' AND kode_kelas='$kode_kelas' ORDER BY id DESC")->result();
         $data['tugas'] = $this->db->query("SELECT * FROM tugas WHERE kode_mapel='$kode_mapel' AND kode_kelas='$kode_kelas' ORDER BY tgl_dibuat ASC LIMIT 3")->result();
         $data['ujian'] = $this->db->query("SELECT * FROM ujian WHERE kode_mapel='$kode_mapel' AND kode_kelas='$kode_kelas' ORDER BY tgl_dibuat ASC LIMIT 3")->result();
+        $data['nilai'] = $this->db->query("SELECT * FROM nilai_siswa JOIN nilai ON nilai_siswa.kode_nilai=nilai.kode_nilai WHERE kode_siswa='$kode_siswa' AND kode_mapel='$kode_mapel' LIMIT 3")->result();
         $data['kode_user'] = $user_code;
         $this->load->view('siswa/header', $data);
         $this->load->view('siswa/dashboard/v_dashboard');
@@ -52,6 +54,7 @@ class S_dashboard extends CI_Controller {
     }
 
     public function kirim_balas(){
+        $r = $this->input->post("role");
         $nama_siswa = $this->session->userdata('nama_siswa');
         $role = $this->session->userdata('role');
         $user_code = $this->session->userdata('user_code');

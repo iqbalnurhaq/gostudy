@@ -262,25 +262,14 @@ Preserve the relative scale, though. */
               <p>Ujian</p>
             </a>
           </li>
+      
+    
+          <hr>
+          
           <li class="nav-item">
             <a class="nav-link" href="<?php echo site_url('siswa/S_nilai'); ?>">
               <i class="material-icons">library_books</i>
               <p>Nilai</p>
-            </a>
-          </li>
-      
-    
-          <hr>
-          <li class="nav-item ">
-            <a class="nav-link" href="./notifications.html">
-              <i class="material-icons">notifications</i>
-              <p>Pengumuman</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="./rtl.html">
-              <i class="material-icons">language</i>
-              <p>Chatting</p>
             </a>
           </li>
          

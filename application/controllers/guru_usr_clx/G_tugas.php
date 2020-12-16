@@ -8,6 +8,7 @@ class G_tugas extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('create_random_helper');
 		$this->load->model('M_g_tugas');
+		$this->load->model('M_g_ujian');
     }
 
 
@@ -101,12 +102,21 @@ class G_tugas extends CI_Controller {
 		$kode_kelas = $this->session->userdata('kode_kelas');
 		$this->session->set_userdata(array('kode_tugas' => $kode_tugas));
 		$daftar_siswa = $this->M_g_tugas->daftar_siswa($kode_kelas, $kode_tugas);
-		
+		$jml_siswa = $this->M_g_ujian->get_jml_siswa($kode_kelas); 
+		$jml_nilai = $this->db->query("SELECT COUNT(id) AS jml FROM nilai_tugas WHERE kode_tugas='$kode_tugas'")->row_array()['jml'];
+		$progress = number_format(($jml_nilai / $jml_siswa) * 100 , 2);
+		$backup = $this->M_g_tugas->cek_backup($kode_tugas);
+
+		$cek_backup = $backup / $jml_siswa;
+
+		$data['data_tugas'] = $this->M_g_tugas->load_detail_tugas($kode_tugas);
 		$data['daftar_siswa'] = $daftar_siswa; 
+		$data['progress'] = $progress;
+		$data['backup'] = $cek_backup;
+	
 		$data['nama_kelas'] = $this->db->query("SELECT nama_kelas FROM kelas WHERE kode_kelas='$kode_kelas'")->row_array()['nama_kelas']; 
 		$this->load->view('guru/header', $data);
         $this->load->view('guru/tugas/v_hasil_tugas', $data);
-
 
 	}
 
@@ -125,14 +135,50 @@ class G_tugas extends CI_Controller {
 		$cek = $this->M_g_tugas->cek_nilai_tugas($kode_siswa, $kode_tugas);
 		if ($cek) {
 			$update = $this->M_g_tugas->update_nilai_tugas($nilai, $kode_siswa, $kode_tugas);
+			$output['kode_tugas'] = $kode_tugas;
 			$output['pesan'] = 'success';
 			echo json_encode($output);  
 		} else {
 			$insert_nilai = $this->M_g_tugas->insert_nilai_tugas($nilai, $kode_siswa, $kode_tugas);
+			$output['kode_tugas'] = $kode_tugas;
 			$output['pesan'] = 'success';
 			echo json_encode($output);  
 		}
 		
+	}
+
+	function hapus_tugas(){
+		$kode_tugas = $this->input->post("id");
+		$this->db->delete('tugas', array('kode_tugas' => $kode_tugas));
+		$output['pesan'] = 'success';
+		echo json_encode($output);  
+
+	}
+
+	function aksi_backup_nilai(){
+		$kode_nilai = $this->input->post('kode_nilai');
+		$kode_tugas = $this->session->userdata('kode_tugas');
+		$kode_mapel = $this->session->userdata('kode_mapel');
+		$kode_guru = $this->session->userdata('kode_guru');
+		$kode_kelas = $this->session->userdata('kode_kelas');
+		$siswa = $this->M_g_tugas->get_nilai_tugas_siswa($kode_tugas);
+
+		$data = array();
+		foreach ($siswa as $val) {
+			array_push($data, array(
+				'kode_siswa' => $val->kode_siswa,
+				'kode_guru' => $kode_guru,
+				'kode_nilai' => $kode_nilai,
+				'kode_mapel' => $kode_mapel,
+				'nilai' => $val->nilai
+			));
+		}
+
+		$this->db->insert_batch('nilai_siswa', $data);
+		$this->db->query("UPDATE has_nilai SET status=1 WHERE kode_nilai='$kode_nilai' AND kode_kelas='$kode_kelas'");
+		$output['pesan'] = 'sukses';
+		$output['kode_tugas'] = $kode_tugas;
+		echo json_encode($output);
 	}
 
 

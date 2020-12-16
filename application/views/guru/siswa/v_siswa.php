@@ -10,7 +10,7 @@
   <div class="card">
       <div class="card-header card-header-primary">
             <h4 class="card-title">siswa</h4>
-            <p class="card-category">New employees on 15th September, 2016</p>
+            <p class="card-category"></p>
       </div>
       <div class="card-body table-responsive">
         <table id="example1" class="table table-hover" style="width:100%">
@@ -84,7 +84,7 @@ $(document).ready(function() {
         { "data": "nama_siswa" }, // Tampilkan nis
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
             
-            html = '<a class="btn btn-outline-primary btn-sm" href="<?php echo site_url('guru_usr_clx/G_siswa/aksi_download/')?>'+ row.kode_siswa +'"> Lihat </a> ';
+            html = '<a class="btn btn-outline-primary btn-sm" href="<?php echo site_url('guru_usr_clx/G_siswa/aksi_profile/')?>'+ row.kode_siswa +'"> Lihat </a> ';
 
             return html
           }

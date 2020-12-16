@@ -30,7 +30,17 @@ class G_siswa extends CI_Controller {
         $data_siswa = $this->M_g_siswa->get_data_siswa($kode_kelas);
         $output['data_siswa'] = $data_siswa;
         echo json_encode($output);  
-	}
+    }
+    
+    function aksi_profile(){
+        $kode_siswa = $this->uri->segment(4);
+        $kode_kelas = $this->session->userdata('kode_kelas');
+        $data['nama_kelas'] = $this->db->query("SELECT nama_kelas FROM kelas WHERE kode_kelas='$kode_kelas'")->row_array()['nama_kelas']; 
+        $data['siswa'] = $this->db->query("SELECT * FROM siswa WHERE kode_siswa='$kode_siswa'")->result();
+        $this->load->view('guru/header', $data);
+        $this->load->view('guru/siswa/v_profile');
+        
+    }
 
 
 

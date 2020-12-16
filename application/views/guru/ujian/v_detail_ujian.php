@@ -1,5 +1,112 @@
 
 
+<style>
+  img{
+    max-height: 300px;
+    max-width:100%;
+  }
+</style>
+<div class="modal fade modal_bankload" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form action="<?php echo base_url('guru_usr_clx/G_ujian/save_soal') ?>" method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Tambah Ujian</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+      
+
+         <div class="row"> 
+            <div class="col-md-12">
+              <table id="example5" class="table table-hover" style="width:100%">
+                <thead>
+                  <tr>
+                      <th>No</th>
+                      <th>Nama Ujian</th>
+                      <th>Mapel</th>
+                      <th>Kelas</th>
+                      <th>Nama Guru</th>
+                      <th>Aksi</th>
+                      
+                  </tr>
+                </thead>
+                <tbody>
+                      
+                </tbody>
+                <tfoot>
+                    <tr>
+                       <th>No</th>
+                      <th>Nama Ujian</th>
+                      <th>Mapel</th>
+                      <th>Kelas</th>
+                      <th>Nama Guru</th>
+                      <th>Aksi</th>
+                  </tr>
+                </tfoot>
+                </table>
+            </div>
+          </div>
+
+
+
+          
+     
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-primary" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade bank_soal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >
+  <div class="modal-dialog" >
+    <div class="modal-content" style="width: 1200px; margin-left: -350px">
+      <form action="<?php echo base_url('guru_usr_clx/G_ujian/save_soal') ?>" method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Tambah Ujian</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+      
+
+         
+              <table id="table_bank_soal" class="table table-hover" style="width:100%">
+                <thead>
+                  <tr>
+                      <th>No Soal</th>
+                      <th>Soal</th>
+                      <th>Ambil Soal</th>
+                      
+                  </tr>
+                </thead>
+                <tbody>
+                      
+                </tbody>
+              
+                </table>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-primary" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 <div class="modal fade modal_tambah_soal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -80,6 +187,8 @@
 </div>
 
 
+
+
 <div class="modal fade modal_edit_soal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -94,7 +203,7 @@
          <div class="row"> 
             <div class="col-md-12">
               <div class="form-group">
-                <label class="label-control">Input Soal</label>
+                <h4 class="label-control">Input Soal</h4>
                 <textarea name="soal" id="eckeditor" class="soal_edit" required></textarea>
               </div>
                 
@@ -102,28 +211,30 @@
 
             <div class="col-md-12">
               <div class="form-group">
-                  <label>Pilihan / Option</label>
+              <br>
+                  <h4>Pilihan / Option</h4>
                   <br>
 
                   <input type="hidden" id="hidden_kode">
 
+                    <label class="bmd-label-floating">Masukkan Option A</label>
                   <div class="form-group">
                     <textarea class="form-control" id="eckeditor1"></textarea>
                   </div>
+                    <label class="bmd-label-floating">Masukkan Option B</label>
                   <div class="form-group">
-                   
                     <textarea class="form-control" id="eckeditor2"></textarea>
                   </div>
+                    <label class="bmd-label-floating">Masukkan Option C</label>
                   <div class="form-group">
-                    
                      <textarea class="form-control" id="eckeditor3"></textarea>
                   </div>
+                    <label class="bmd-label-floating">Masukkan Option D</label>
                   <div class="form-group">
-                    
                      <textarea class="form-control" id="eckeditor4"></textarea>
                   </div>
+                    <label class="bmd-label-floating">Masukkan Option E</label>
                   <div class="form-group">
-                    
                     <textarea class="form-control" id="eckeditor5"></textarea>
                   </div>
 
@@ -140,6 +251,8 @@
                     </div>
                     
                   </div>
+                  <input type="hidden" id="kode_soal">
+                  <input type="hidden" id="kode_ujian">
 
                 </div>
                     
@@ -148,7 +261,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <input type="button" class="btn btn-primary" onClick="aksi_edit_soal()" value="Save">
+           <button type="button" class="btn btn-danger pull-right" onClick="hapus_soal()">Hapus Soal</button>
+          <input type="button" class="btn btn-primary" onClick="aksi_edit_soal()" value="Edit">
         </div>
       </form>
     </div>
@@ -160,7 +274,7 @@
 <div class="modal fade bd-example-modal-lg-excel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <form class="form" action="<?php echo base_url('go_ciclx_usradmin/G_ujian/form') ?>" method="POST"  enctype="multipart/form-data">
+      <form class="form" action="<?php echo base_url('guru_usr_clx/G_ujian/form') ?>" method="POST"  enctype="multipart/form-data">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Tambah Soal</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -204,7 +318,7 @@
   <div class="col-md-5">
     <div class="card">
       <div class="card-header card-header-primary">
-            <h4 class="card-title">ujian</h4>
+            <h4 class="card-title">Ujian</h4>
             <p class="card-category">Detail ujian</p>
       </div>
       <div class="card-body table-responsive">
@@ -222,18 +336,17 @@
             </tr>
             <tr>
               <td>Aktif ujian</td>
-              <td><?php echo $val->tgl_aktif ?> / <?php echo $val->wkt_aktif ?></td>
+              <td><?php echo $val->tgl_aktif ?> | <?php echo $val->wkt_aktif ?></td>
               
             </tr>
             <tr>
               <td>Deadline ujian</td>
-              <td><?php echo $val->tgl_akhir ?> / <?php echo $val->wkt_akhir ?></td>
+              <td><?php echo $val->tgl_akhir ?> | <?php echo $val->wkt_akhir ?></td>
             </tr>
             <tr>
               <td>Siswa Mengerjakan</td>
               <td><?php echo $siswa_mengerjakan ?></td>
             </tr>
-            <?php } ?>
           </tbody>
         </table>  
 
@@ -241,19 +354,28 @@
           <div class="col-md-12">
 
             <a href="<?php echo site_url('guru_usr_clx/G_ujian/load_hasil_ujian') ?>" class="btn btn-success" style="color : white">Nilai Siswa</a>
+           
             <?php 
-              if ($siswa_mengerjakan > 0) { ?>
-     
-                <span class="d-inline-block" data-toggle="popover" data-content="Tombol hapus disbled ketika ada siswa yg sudah mengerjakan">
-                  <button class="btn btn-danger" style="pointer-events: none;" type="button" disabled>Hapus</button>
-                </span>
+              if ($siswa_mengerjakan == 0) { ?>
+                <?php if ($progress == 100 || $progress == 0) { ?>
+                  <button class="btn btn-danger" style="color : white" onClick="hapus_ujian('<?php echo $val->kode_ujian ?>')">Hapus Ujian</button>
+                <?php }else{ ?>
+                  <span class="d-inline-block" data-toggle="popover" data-content="Tombol hapus disbled ketika ada siswa yg sudah mengerjakan">
+                    <button class="btn btn-danger" style="pointer-events: none;" type="button" disabled>Hapus Ujian Disabled</button>
+                  </span>
+
+                <?php } ?>
               <?php }else{ ?>
-                <a href="<?php echo site_url('guru_usr_clx/G_ujian/hapus') ?>" class="btn btn-danger" style="color : white">Hapus Ujian</a>
+                   <span class="d-inline-block" data-toggle="popover" data-content="Tombol hapus disbled ketika ada siswa yg sudah mengerjakan">
+                    <button class="btn btn-danger" style="pointer-events: none;" type="button" disabled>Hapus Ujian Disabled</button>
+                  </span>
               <?php }
             ?>
+            <a href="<?php echo site_url('guru_usr_clx/G_ujian') ?>" class="btn btn-primary" style="color : white">Kembali</a>
           </div>
         </div>
 
+            <?php } ?>
 
       </div>
 
@@ -266,13 +388,21 @@
       <div class="card">
           <div class="card-header card-header-primary">
                 <h4 class="card-title">Analisis Soal</h4>
-                <p class="card-category">Detail ujian</p>
+                
           </div>
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
+                
+               
+                <?php if ($jml_soal == 0) { ?>
+                  
+                  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-excel">Tambah Soal Excel</button>
+                <?php }else{ ?>
+                    <button type="button" class="btn btn-primary pull-right disabled">Tambah Soal Excel Disabled</button>
+                
+                <?php } ?>
                 <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".modal_tambah_soal">Tambah Soal</button>
-                <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-excel">Tambah Soal Excel</button>
               
               </div>
             </div>
@@ -311,6 +441,46 @@
 
 $(document).ready(function() {
 
+  tabel5 = $('#example5').DataTable({
+
+      "ajax":
+      {
+      "dataSrc": "ujian",
+      "url": "http://localhost/gostudy/guru_usr_clx/G_ujian/load_data_backup", // URL file untuk proses select datanya
+      "data" : {},
+      "type": "GET"
+      },
+
+      // "aLengthMenu": [[5, 10, 50],[ 5, 10, 50]], // Combobox Limit
+      "columns": [
+      { "render": function ( data, type, row ) { // Tampilkan kolom aksi
+          var html  = no++;
+          return html
+        }
+      },
+      { "data": "nama_ujian" },
+      { "data": "mapel" },
+      { "data": "kelas" },
+      { "data": "guru" },
+      { "render": function ( data, type, row ) {  // Tampilkan jenis kelamin
+          var html = "";
+         
+          html = '<a class="btn btn-primary btn-sm" style="color : white" onClick="load_bank_soal(' + row.id +')">Lihat</a>';
+          return html; // Tampilkan jenis kelaminnya
+        }
+      },
+
+
+      ],
+      });
+
+    // -------------NAVBAR ---------
+  $('.nav li a[href~="http://localhost/gostudy/guru_usr_clx/G_ujian"]').parents('li').addClass("active");    
+  $('.nav li a').click(function(){
+        $('.nav li').removeClass("active");
+        $('.nav li a[href~="' + location.href + '"]').parents('li').addClass("active");    
+    });
+    //------------- END -----------
 
   $(function () {
     CKEDITOR.config.image_previewText = 'Image Preview';
@@ -637,11 +807,11 @@ function aksi_edit_soal(){
 
 }
 
-function aksiHapus(data){
+function hapus_ujian(data){
   var id = data;
   Swal.fire({
   title: 'Are you sure?',
-  text: "Apakah kamu ingin menhapus materi ini ?",
+  text: "Apakah kamu ingin menhapus ujain ini ?",
   type: 'warning',
   showCancelButton: true,
   confirmButtonColor: '#3085d6',
@@ -650,7 +820,7 @@ function aksiHapus(data){
   }).then((result) => {
     if (result.value) {
       $.ajax({
-        url : "http://localhost/guru_usr_clx/G_materi/hapus_materi",
+        url : "http://localhost/gostudy/guru_usr_clx/G_ujian/hapus_ujian",
         method: 'POST',
         dataType: 'json',
         data: {id : id},
@@ -658,7 +828,7 @@ function aksiHapus(data){
         success: function(data){
           Swal.fire('Deleted!', 'Berhasil menghapus.', 'success');
           setTimeout(function(){
-             window.location.href = "<?php echo base_url('guru_usr_clx/G_materi'); ?>";
+             window.location.href = "<?php echo base_url('guru_usr_clx/G_ujian') ?>";
           }, 1100);
 
         },
@@ -671,6 +841,113 @@ function aksiHapus(data){
 
     }
   });
+
+}
+function hapus_soal(){
+  var id = $("#kode_soal").val();
+  Swal.fire({
+  title: 'Are you sure?',
+  text: "Apakah kamu ingin menhapus soal ini ?",
+  type: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url : "http://localhost/gostudy/guru_usr_clx/G_ujian/hapus_soal",
+        method: 'POST',
+        dataType: 'json',
+        data: {id : id},
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(data){
+        
+          Swal.fire('Deleted!', 'Berhasil menghapus.', 'success');
+          setTimeout(function(){
+             window.location.href = "<?php echo base_url('guru_usr_clx/G_ujian/detail_ujian/'); ?>"+data.kode_ujian;
+          }, 1100);
+
+        },
+        error: function( errorThrown ){
+          console.log( errorThrown);
+
+        }
+
+      });
+
+    }
+  });
+
+}
+function bank_soal(kode_ujian){
+  var id = kode_ujian;
+  Swal.fire({
+  title: 'Upload ke bank soal?',
+  text: "Apakah kamu ingin upload ke bank soal?",
+  type: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Ya'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url : "http://localhost/gostudy/guru_usr_clx/G_ujian/upload_bank_soal",
+        method: 'POST',
+        dataType: 'json',
+        data: {id : id},
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(data){
+          Swal.fire('Berhasil!', 'Berhasil upload ke bank soal.', 'success');
+          setTimeout(function(){
+             window.location.href = "<?php echo base_url('guru_usr_clx/G_ujian/detail_ujian/'); ?>"+kode_ujian;
+          }, 1100);
+
+        },
+        error: function( errorThrown ){
+          console.log( errorThrown);
+
+        }
+
+      });
+
+    }
+  });
+
+}
+var noG =1;
+
+function load_bank_soal(id){
+  tabel5 = $('#table_bank_soal').DataTable({
+
+      "ajax":
+      {
+      "dataSrc": "soal",
+      "url": "http://localhost/gostudy/guru_usr_clx/G_ujian/load_data_bank_soal", // URL file untuk proses select datanya
+      "data" : {id : id},
+      "type": "POST"
+      },
+
+      // "aLengthMenu": [[5, 10, 50],[ 5, 10, 50]], // Combobox Limit
+      "columns": [
+      { "data": "no_soal" },
+      { "data": "pertanyaan" },
+      { "render": function ( data, type, row ) {  // Tampilkan jenis kelamin
+            var html = "";
+            var code = noG++;
+            html = '<div class="form-check"> <label class="form-check-label" for="customCheck\'' + code + '\'"> <input class="form-check-input" type="checkbox" id="customCheck\'' + code + '\'" name="mapel_aktif" value="'+ row.id +'"> <span class="form-check-sign"> <span class="check"></span> </span> </label> </div>'
+            return html; // Tampilkan jenis kelaminnya
+          }
+        },
+         
+
+
+      ],
+      });
+
+      $(".bank_soal").modal('show');
+
 
 }
 
@@ -699,6 +976,8 @@ function edit_soal(kode_soal){
          
           var $radios = $('input:radio[name=optradioe]');
           $radios.filter('[value='+ data.data_soal.jwb +']').prop('checked', true);
+
+          $("#kode_soal").val(kode_soal);
 
          $('.modal_edit_soal').modal('show');
         

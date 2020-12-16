@@ -11,6 +11,7 @@ class M_g_siswa extends CI_Model{
   
   function get_data_siswa($kode_kelas){
     $this->db->where('kode_kelas', $kode_kelas);
+    $this->db->order_by('nis', 'ASC');
     return $this->db->get('siswa')->result();
   }
 

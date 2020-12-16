@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class G_ujian extends CI_Controller {
+	private $filename = "import_data_soal";
 
     public function __construct()
   	{
@@ -172,8 +173,17 @@ class G_ujian extends CI_Controller {
 		$kode_kelas = $this->session->userdata('kode_kelas');
 		$data['nama_kelas'] = $this->db->query("SELECT nama_kelas FROM kelas WHERE kode_kelas='$kode_kelas'")->row_array()['nama_kelas'];
 		$data['siswa_mengerjakan'] = $this->db->query("SELECT * FROM jwb_siswa WHERE kode_ujian='$kode_ujian'")->num_rows();
-		$data['analisis_soal'] = $this->db->query("SELECT * FROM ujian_has_soal WHERE kode_ujian='$kode_ujian'")->result(); 
-        $data['data_ujian'] = $this->M_g_ujian->load_detail_ujian($kode_ujian);
+		$data['analisis_soal'] = $this->db->query("SELECT * FROM soal WHERE kode_ujian='$kode_ujian' ORDER BY no_soal")->result(); 
+		$data['jml_soal'] = $this->db->query("SELECT * FROM soal WHERE kode_ujian='$kode_ujian'")->num_rows(); 
+		$data['bank_soal'] = $this->db->query("SELECT * FROM bank_has_ujian WHERE kode_ujian='$kode_ujian'")->num_rows(); 
+		$data['data_ujian'] = $this->M_g_ujian->load_detail_ujian($kode_ujian);
+		
+		$jml_siswa = $this->M_g_ujian->get_jml_siswa($kode_kelas);
+		$jml_nilai = $this->M_g_ujian->get_jml_nilai($kode_ujian);
+		$progress = number_format(($jml_nilai / $jml_siswa) * 100 , 2);
+
+		$data['progress'] = $progress;
+		
 		// $data['numRow'] = $this->M_g_ujian->getAllSoal($kode_ujian)->num_rows();
 		$this->load->view('guru/header', $data);
         $this->load->view('guru/ujian/v_detail_ujian', $data);
@@ -197,6 +207,7 @@ class G_ujian extends CI_Controller {
 			$kode_soal = helper_kodesoal();
 			$cek_kode_soal = $this->M_g_ujian->cek_kode_soal($kode_soal);
 			if ($cek_kode_soal == 0) {
+				$no_soal = $this->db->query("SELECT COUNT(no_soal) AS no_soal FROM soal WHERE kode_ujian='$kode_ujian'")->row_array()['no_soal'];
 				$data_soal = array(
 					'kode_soal' =>$kode_soal,
 					'pertanyaan' => $soal,
@@ -205,20 +216,13 @@ class G_ujian extends CI_Controller {
 					'op_c' => $optC,
 					'op_d' => $optD,
 					'op_e' => $optE,
-					'jwb' => $jwb
+					'jwb' => $jwb,
+					'no_soal' => $no_soal + 1,
+					'kode_ujian' => $kode_ujian,
 				); 
+				$r += 1;
 				$insert_soal = $this->M_g_ujian->insert_soal($data_soal);
-				if ($insert_soal) {
-					$no_soal = $this->db->query("SELECT COUNT(no_soal) AS no_soal FROM ujian_has_soal WHERE kode_ujian='$kode_ujian'")->row_array()['no_soal'];
-					$data_has_soal = array(
-						'no_soal' => $no_soal + 1,
-						'kode_ujian' => $kode_ujian,
-						'kode_soal' => $kode_soal
-					);
-					$insert_has_soal = $this->M_g_ujian->insert_has_soal($data_has_soal);
-					$r += 1;
-					redirect('guru_usr_clx/G_ujian/detail_ujian/'.$kode_ujian);
-				}
+				redirect('guru_usr_clx/G_ujian/detail_ujian/'.$kode_ujian);
 			}else{
 				$r += 0;
 			}
@@ -262,12 +266,14 @@ class G_ujian extends CI_Controller {
 
 
 	public function form(){
+		$kode_ujian = $this->session->userdata('kode_ujian');
+		$kode_kelas = $this->session->userdata('kode_kelas');
 		$data = array();
 		// Buat variabel $data sebagai array
 		if(isset($_POST['preview'])){
 		// Jika user menekan tombol Preview pada form
 		// lakukan upload file dengan memanggil function upload yang ada di SiswaModel.php
-		$upload = $this->M_a_guru->upload_file($this->filename);
+		$upload = $this->M_g_ujian->upload_file($this->filename);
 		if($upload['result'] == "success"){ // Jika proses upload sukses
 			// Load plugin PHPExcel nya
 			include APPPATH.'PHPExcel/PHPExcel.php';
@@ -276,26 +282,33 @@ class G_ujian extends CI_Controller {
 			$sheet = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
 			// Masukan variabel $sheet ke dalam array data yang nantinya akan di kirim ke file form.php
 			// Variabel $sheet tersebut berisi data-data yang sudah diinput di dalam excel yang sudha di upload sebelumnya
+			$no_soal = $this->db->query("SELECT * FROM soal WHERE kode_ujian='$kode_ujian'")->num_rows();
 			$data['sheet'] = $sheet;
+			$data['kode_ujian'] = $kode_ujian;
+			$data['nama_kelas'] = $this->db->query("SELECT nama_kelas FROM kelas WHERE kode_kelas='$kode_kelas'")->row_array()['nama_kelas']; 
+			
 		}else{ // Jika proses upload gagal
 			$data['upload_error'] = $upload['error']; // Ambil pesan error uploadnya untuk dikirim ke file form dan ditampilkan
 		}
 		}
-		$this->load->view('admin/guru/v_previewExcel', $data);
+
+		$this->load->view('guru/ujian/v_previewExcel', $data);
   	}
 
 
 
   public function import(){
+	$kode_ujian = $this->session->userdata('kode_ujian');
     // Load plugin PHPExcel nya
     include APPPATH.'PHPExcel/PHPExcel.php';
     $excelreader = new PHPExcel_Reader_Excel2007();
     $loadexcel = $excelreader->load('excel/'.$this->filename.'.xlsx'); // Load file yang telah diupload ke folder excel
     $sheet = $loadexcel->getActiveSheet()->toArray(null, true, true ,true);
     // Buat sebuah variabel array untuk menampung array data yg akan kita insert ke database
-    $dataUsers = array();
-    $data = array();
+    $data_soal = array();
     $numrow = 1;
+	$no_soal = $this->db->query("SELECT * FROM soal WHERE kode_ujian='$kode_ujian'")->num_rows();
+	$no_soal++;
     foreach($sheet as $row){
       // Cek $numrow apakah lebih dari 1
       // Artinya karena baris pertama adalah nama-nama kolom
@@ -304,35 +317,23 @@ class G_ujian extends CI_Controller {
         // Kita push (add) array data ke variabel data
         $i = 0;
         while ($i == 0) {
-          $kode_user = helper_kodeUser();
-          $cek_kode_user = $this->M_a_guru->cek_kode_user($kode_user);
-          if ($cek_kode_user == 0) {
-            $pwdGuru = helper_createPwd();
-            $cekPwd = $this->M_a_guru->cek_pwd_guru($pwdGuru);
-            if ($cekPwd == 0) {
-              array_push($dataUsers, array(
-                'kode_user'=>$kode_user,
-                'username'=>$kode_user, // Insert data nis dari kolom A di excel
-                'password'=>$pwdGuru, // Insert data nama dari kolom B di excel
-                'lvl_usr'=>'guru', // Insert data jenis kelamin dari kolom C di excel
-                'akses'=>1,
-              ));
-              $kode_guru = helper_kodeGuru();
-              $cek_kode_guru = $this->M_a_guru->cek_kode_guru($kode_guru);
-              if ($cek_kode_guru == 0) {
-                array_push($data, array(
-				  'kode_guru'=>$kode_guru,
-				  'nip' => $row['A'],
-                  'nama_guru'=>$row['B'],
-                  'jk'=>$row['C'], // Insert data jenis kelamin dari kolom C di excel
-                  'user_code' => $kode_user,
-                ));
-                $i += 1;
-              }else
-                $i += 0;
-            }else{
-              $i += 0;         
-            }
+          $kode_soal = helper_kodesoal();
+          $cek_kode_soal = $this->M_g_ujian->cek_kode_soal($kode_soal);
+          if ($cek_kode_soal == 0) {
+			$nomer = $no_soal++;
+			array_push($data_soal, array(
+					'kode_soal' =>$kode_soal,
+					'pertanyaan' => $row['B'],
+					'op_a' => $row['C'],
+					'op_b' => $row['D'],
+					'op_c' => $row['E'],
+					'op_d' => $row['F'],
+					'op_e' => $row['G'],
+					'jwb' => $row['H'],
+					'no_soal' => $nomer,
+					'kode_ujian' => $kode_ujian
+			));               
+            $i += 1;
           }else{
             $i += 0;
           }
@@ -347,10 +348,10 @@ class G_ujian extends CI_Controller {
       $numrow++; // Tambah 1 setiap kali looping
     }
     // Panggil fungsi insert_multiple yg telah kita buat sebelumnya di model
-    $this->M_a_guru->insert_multiple_user($dataUsers);
-    $this->M_a_guru->insert_multiple($data);
+    
+    $this->M_g_ujian->insert_multiple_soal($data_soal);
     $this->session->set_flashdata('message_name', 'Data Berhasil ditambahkan');
-    redirect("go_ciclx_usradmin/A_guru"); // Redirect ke halaman awal (ke controller siswa fungsi index)
+    redirect("guru_usr_clx/G_ujian/detail_ujian/".$kode_ujian); // Redirect ke halaman awal (ke controller siswa fungsi index)
   }
 
 
@@ -375,6 +376,7 @@ class G_ujian extends CI_Controller {
 	
 		$data['nama_kelas'] = $this->db->query("SELECT nama_kelas FROM kelas WHERE kode_kelas='$kode_kelas'")->row_array()['nama_kelas'];
 		$data['hasil'] = $hasil;
+		$data['kode_ujian'] = $kode_ujian;
 		$data['progress'] = $progress;
 		$data['backup'] = $cek_backup;
 		$this->load->view('guru/header', $data);
@@ -439,6 +441,86 @@ class G_ujian extends CI_Controller {
 		$this->db->insert_batch('nilai_siswa', $data);
 		$this->db->query("UPDATE has_nilai SET status=1 WHERE kode_nilai='$kode_nilai' AND kode_kelas='$kode_kelas'");
 		$output['pesan'] = 'sukses';
+		echo json_encode($output);
+	}
+
+	function hapus_soal(){
+		$kode_soal = $this->input->post("id");
+		$kode_ujian = $this->session->userdata('kode_ujian');
+		$this->db->delete('soal', array('kode_soal' => $kode_soal));
+		$soal = $this->db->query("SELECT * FROM soal WHERE kode_ujian='$kode_ujian' ORDER BY no_soal")->result();
+		$data_soal = array();
+		$no_soal = 1;
+		foreach ($soal as $val) {
+			array_push($data_soal, array(
+				'kode_soal' => $val->kode_soal,
+				'no_soal' => $no_soal
+			));
+			$no_soal++;
+		}
+		$this->db->update_batch('soal', $data_soal, 'kode_soal');
+		$output['kode_ujian'] = $kode_ujian;
+		$output['pesan'] = 'sukses';
+		echo json_encode($output);
+	}
+
+	function hapus_ujian(){
+		$kode_ujian = $this->input->post("id");
+		$this->db->delete('ujian', array('kode_ujian' => $kode_ujian));
+		$output['pesan'] = 'sukses';
+		echo json_encode($output);
+	}
+
+	function upload_bank_soal(){
+		$kode_ujian = $this->input->post("id");
+		$kode_guru = $this->session->userdata('kode_guru');
+		$sql = $this->db->query("SELECT * FROM ujian JOIN mapel JOIN kelas WHERE kode_ujian='$kode_ujian'")->row_array();
+		$nama_ujian = $sql['nama_ujian'];
+		$nama_kelas = $sql['nama_kelas'];
+		$nama_mapel = $sql['nama_mapel'];
+		$nama_guru = $this->db->query("SELECT * FROM guru WHERE kode_guru='$kode_guru'")->row_array()['nama_guru'];
+
+		$data_upload = array('nama_ujian' => $nama_ujian,
+							'mapel' => $nama_mapel,
+							'kelas' => $nama_kelas,
+							'guru' => $nama_guru,
+							'kode_ujian' => $kode_ujian);
+		
+		$ins_bank = $this->M_g_ujian->insert_bank_ujian($data_upload); 
+
+		
+		$data_soal = array();
+		$soal = $this->db->query("SELECT * FROM soal WHERE kode_ujian='$kode_ujian'")->result();
+		foreach ($soal as $val) {
+			array_push($data_soal, array(
+				'pertanyaan' => $val->pertanyaan,
+				'op_a' => $val->op_a,
+				'op_b' => $val->op_b,
+				'op_c' => $val->op_c,
+				'op_d' => $val->op_d,
+				'op_e' => $val->op_e,
+				'jwb' => $val->jwb,
+				'kode_bank_ujian' => $ins_bank,
+				'no_soal' => $val->no_soal
+			));
+		}
+
+		$this->db->insert_batch('bank_soal', $data_soal);
+		$output['pesan'] = 'sukses';
+		echo json_encode($output);
+		
+	}
+
+	function load_data_backup(){
+		$output['pesan'] = 'sukses';
+		$output['ujian'] = $this->db->query("SELECT * FROM bank_has_ujian")->result();
+		echo json_encode($output);
+	}
+
+	function load_data_bank_soal(){
+		$id = $this->input->post("id");
+		$output['pesan'] = 'sukses';
+		$output['soal'] = $this->db->query("SELECT * FROM bank_soal WHERE kode_bank_ujian='$id' ORDER BY no_soal ASC")->result();
 		echo json_encode($output);
 	}
 

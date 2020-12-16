@@ -11,7 +11,7 @@ class M_s_ujian extends CI_Model{
 
 
   function get_data_ujian($kode_mapel, $kode_kelas){
-    $sql = "SELECT *, (SELECT COUNT(ujian_has_soal.id) FROM ujian_has_soal WHERE ujian_has_soal.kode_ujian=ujian.kode_ujian) AS jml_soal FROM ujian WHERE kode_mapel='$kode_mapel' AND kode_kelas='$kode_kelas'";
+    $sql = "SELECT *, (SELECT COUNT(soal.no_soal) FROM soal WHERE soal.kode_ujian=ujian.kode_ujian) AS jml_soal FROM ujian WHERE kode_mapel='$kode_mapel' AND kode_kelas='$kode_kelas'";
     return $this->db->query($sql)->result();
   }
 
@@ -21,7 +21,7 @@ class M_s_ujian extends CI_Model{
   }
 
   function load_soal($kode_ujian){
-    $sql = "SELECT * FROM ujian_has_soal JOIN soal ON ujian_has_soal.kode_soal=soal.kode_soal WHERE ujian_has_soal.kode_ujian='$kode_ujian'";
+    $sql = "SELECT * FROM soal WHERE soal.kode_ujian='$kode_ujian' ORDER BY no_soal";
     return $this->db->query($sql)->result();
   }
 

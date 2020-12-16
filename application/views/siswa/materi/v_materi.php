@@ -6,15 +6,10 @@
 
 <div class="row">
   <div class="col-md-12">
-    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg">Tambah Materi</button>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
   <div class="card">
       <div class="card-header card-header-primary">
             <h4 class="card-title">Materi</h4>
-            <p class="card-category">New employees on 15th September, 2016</p>
+           
       </div>
       <div class="card-body table-responsive">
         <table id="example1" class="table table-hover" style="width:100%">

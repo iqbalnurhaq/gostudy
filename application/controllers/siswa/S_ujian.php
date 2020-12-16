@@ -173,7 +173,9 @@ class S_ujian extends CI_Controller {
 
 				$q1 = $tgl_akt1.$tgl_akt2.$tgl_akt3;
 
-				$q = $p2 - $q1;
+				$q = (int)$p2 - (int)$q1;
+
+				
 
 				$w_aktif = date('Hi', strtotime($wkt_aktif));
 
@@ -186,8 +188,6 @@ class S_ujian extends CI_Controller {
 
 
 				// ====================================== end =================================================================
-
-
 				
 				
 				$jwb_siswa = array('kode_ujian' => $kode_ujian,
@@ -203,7 +203,7 @@ class S_ujian extends CI_Controller {
 					if ($p > 0) {
 						if ($years > 0) {
 
-							$data_soal = $this->db->query("SELECT * FROM ujian_has_soal JOIN soal ON ujian_has_soal.kode_soal=soal.kode_soal WHERE ujian_has_soal.kode_ujian='$kode_ujian'")->result();
+							$data_soal = $this->db->query("SELECT * FROM soal WHERE soal.kode_ujian='$kode_ujian'")->result();
 							if ($data_soal) {
 								$insert_jbw = $this->M_s_ujian->insert_jbw($jwb_siswa, $kode_ujian);
 								
@@ -231,7 +231,7 @@ class S_ujian extends CI_Controller {
 
 						}else if($months > 0){
 							
-							$data_soal = $this->db->query("SELECT * FROM ujian_has_soal JOIN soal ON ujian_has_soal.kode_soal=soal.kode_soal WHERE ujian_has_soal.kode_ujian='$kode_ujian'")->result();
+							$data_soal = $this->db->query("SELECT * FROM soal WHERE soal.kode_ujian='$kode_ujian'")->result();
 							if ($data_soal) {
 								$insert_jbw = $this->M_s_ujian->insert_jbw($jwb_siswa, $kode_ujian);
 								
@@ -261,7 +261,7 @@ class S_ujian extends CI_Controller {
 							}
 
 						}else if($days > 0){
-							$data_soal = $this->db->query("SELECT * FROM ujian_has_soal JOIN soal ON ujian_has_soal.kode_soal=soal.kode_soal WHERE ujian_has_soal.kode_ujian='$kode_ujian'")->result();
+							$data_soal = $this->db->query("SELECT * FROM soal WHERE soal.kode_ujian='$kode_ujian'")->result();
 							if ($data_soal) {
 								$insert_jbw = $this->M_s_ujian->insert_jbw($jwb_siswa, $kode_ujian);
 								
@@ -297,7 +297,7 @@ class S_ujian extends CI_Controller {
 
 						if ($dur_fix > $durasi) {
 							
-							$data_soal = $this->db->query("SELECT * FROM ujian_has_soal JOIN soal ON ujian_has_soal.kode_soal=soal.kode_soal WHERE ujian_has_soal.kode_ujian='$kode_ujian'")->result();
+							$data_soal = $this->db->query("SELECT * FROM soal WHERE soal.kode_ujian='$kode_ujian'")->result();
 							if ($data_soal) {
 								$insert_jbw = $this->M_s_ujian->insert_jbw($jwb_siswa, $kode_ujian);
 								
@@ -329,7 +329,7 @@ class S_ujian extends CI_Controller {
 							$dur_t = $dur_fix - 3;
 							if ($dur_t > 0) {	
 
-								$data_soal = $this->db->query("SELECT * FROM ujian_has_soal JOIN soal ON ujian_has_soal.kode_soal=soal.kode_soal WHERE ujian_has_soal.kode_ujian='$kode_ujian'")->result();
+								$data_soal = $this->db->query("SELECT * FROM soal WHERE soal.kode_ujian='$kode_ujian'")->result();
 								if ($data_soal) {
 									$insert_jbw = $this->M_s_ujian->insert_jbw_t($kode_ujian, $kode_siswa, $dur_t);
 									
@@ -368,6 +368,7 @@ class S_ujian extends CI_Controller {
 							redirect('siswa/S_ujian');
 						}
 					}else{
+						
 						$this->session->set_flashdata('pesan', 'error');
 						$this->session->set_flashdata('message', 'Maaf anda tidak bisa mengerjakan ujian ini, silahkan cek dokumentasi atau hubungi guru yang bersangkutan');
 						redirect('siswa/S_ujian');
@@ -381,7 +382,7 @@ class S_ujian extends CI_Controller {
 						if ($p > 0) {
 							if ($years > 0) {
 
-								$data_soal = $this->db->query("SELECT * FROM ujian_has_soal JOIN soal ON ujian_has_soal.kode_soal=soal.kode_soal WHERE ujian_has_soal.kode_ujian='$kode_ujian'")->result();
+								$data_soal = $this->db->query("SELECT * FROM soal WHERE soal.kode_ujian='$kode_ujian'")->result();
 								if ($data_soal) {
 									$insert_jbw = $this->M_s_ujian->insert_jbw($jwb_siswa, $kode_ujian);
 									
@@ -409,7 +410,7 @@ class S_ujian extends CI_Controller {
 
 							}else if($months > 0){
 								
-								$data_soal = $this->db->query("SELECT * FROM ujian_has_soal JOIN soal ON ujian_has_soal.kode_soal=soal.kode_soal WHERE ujian_has_soal.kode_ujian='$kode_ujian'")->result();
+								$data_soal = $this->db->query("SELECT * FROM soal WHERE soal.kode_ujian='$kode_ujian'")->result();
 								if ($data_soal) {
 									$insert_jbw = $this->M_s_ujian->insert_jbw($jwb_siswa, $kode_ujian);
 									
@@ -439,7 +440,7 @@ class S_ujian extends CI_Controller {
 								}
 
 							}else if($days > 0){
-								$data_soal = $this->db->query("SELECT * FROM ujian_has_soal JOIN soal ON ujian_has_soal.kode_soal=soal.kode_soal WHERE ujian_has_soal.kode_ujian='$kode_ujian'")->result();
+								$data_soal = $this->db->query("SELECT * FROM soal WHERE soal.kode_ujian='$kode_ujian'")->result();
 								if ($data_soal) {
 									$insert_jbw = $this->M_s_ujian->insert_jbw($jwb_siswa, $kode_ujian);
 									
@@ -468,6 +469,7 @@ class S_ujian extends CI_Controller {
 									redirect('siswa/S_ujian');
 								}
 							}else{
+								
 								$this->session->set_flashdata('pesan', 'error');
 								$this->session->set_flashdata('message', 'Maaf anda tidak bisa mengerjakan ujian ini, silahkan cek dokumentasi atau hubungi guru yang bersangkutan');	
 								redirect('siswa/S_ujian');
@@ -476,7 +478,7 @@ class S_ujian extends CI_Controller {
 
 							if ($dur_fix > $durasi) {
 								
-								$data_soal = $this->db->query("SELECT * FROM ujian_has_soal JOIN soal ON ujian_has_soal.kode_soal=soal.kode_soal WHERE ujian_has_soal.kode_ujian='$kode_ujian'")->result();
+								$data_soal = $this->db->query("SELECT * FROM soal WHERE soal.kode_ujian='$kode_ujian'")->result();
 								if ($data_soal) {
 									$insert_jbw = $this->M_s_ujian->insert_jbw($jwb_siswa, $kode_ujian);
 									
@@ -508,7 +510,7 @@ class S_ujian extends CI_Controller {
 								$dur_t = $dur_fix - 3;
 								if ($dur_t > 0) {	
 
-									$data_soal = $this->db->query("SELECT * FROM ujian_has_soal JOIN soal ON ujian_has_soal.kode_soal=soal.kode_soal WHERE ujian_has_soal.kode_ujian='$kode_ujian'")->result();
+									$data_soal = $this->db->query("SELECT * FROM soal WHERE soal.kode_ujian='$kode_ujian'")->result();
 									if ($data_soal) {
 										$insert_jbw = $this->M_s_ujian->insert_jbw_t($kode_ujian, $kode_siswa, $dur_t);
 										
@@ -559,6 +561,7 @@ class S_ujian extends CI_Controller {
 						redirect('siswa/S_ujian');
 					}
 				}else{
+				
 					$this->session->set_flashdata('pesan', 'error');
 					$this->session->set_flashdata('message', 'Maaf, ujian belum aktif');
 					redirect('siswa/S_ujian');

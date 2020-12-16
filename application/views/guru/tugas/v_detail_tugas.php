@@ -3,7 +3,7 @@
     <div class="modal-content">
       <form class="form" action="<?php echo base_url('guru_usr_clx/G_tugas/tambah_tugas') ?>" method="POST">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Tambah Tugas</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Nilai Tugas</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -17,7 +17,7 @@
                 <th>NIS</th>
                 <th>Nama Siswa</th>
                
-                <th>Input Nilai</th>
+                <th>Nilai</th>
             </tr>
           </thead>
           <tbody>
@@ -47,10 +47,10 @@
               
 
         </div>
-        <div class="modal-footer">
+        <!-- <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <input type="submit" class="btn btn-primary" name="submit" value="Save">
-        </div>
+        </div> -->
       </form>
     </div>
   </div>
@@ -63,7 +63,7 @@
   <div class="container-fluid">
 
 <div class="row">
-  <div class="col-md-5">
+  <div class="col-md-4">
     <div class="card">
       <div class="card-header card-header-primary">
             <h4 class="card-title">Tugas</h4>
@@ -96,8 +96,9 @@
 
         <div class="row">
         <div class="col-md-12">
-          <a href="<?php echo base_url("guru_usr_clx/G_tugas/hasil_siswa/").$val->kode_tugas ?>" class="btn btn-success pull-right">Upload Nilai</a>
+          <a href="<?php echo base_url("guru_usr_clx/G_tugas/hasil_siswa/").$val->kode_tugas ?>" class="btn btn-success pull-right">Hasil Upload Siswa</a>
               <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target=".bd-example-modal-lg">Nilai Siswa</button>
+        <a href="<?php echo base_url("guru_usr_clx/G_tugas") ?>" class="btn btn-primary pull-right">Kembali</a>
         </div>
             <?php } ?>
       </div>
@@ -110,7 +111,7 @@
 
     </div>
   </div>
-  <div class="col-md-7">
+  <div class="col-md-8">
   <?php foreach ($data_tugas as $val) { ?>
     <form action="<?php echo base_url('guru_usr_clx/G_tugas/save_desc') ?>" method="POST">
     <div class="row">
@@ -151,6 +152,14 @@
 <script>
 
 $(document).ready(function() {
+
+  // -------------NAVBAR ---------
+  $('.nav li a[href~="http://localhost/gostudy/guru_usr_clx/G_tugas"]').parents('li').addClass("active");    
+  $('.nav li a').click(function(){
+        $('.nav li').removeClass("active");
+        $('.nav li a[href~="' + location.href + '"]').parents('li').addClass("active");    
+    });
+    //------------- END -----------
 
   tabel = $('#data_hasil_siswa').DataTable();
   var params = window.location.pathname.split("/")

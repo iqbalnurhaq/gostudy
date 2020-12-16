@@ -19,8 +19,8 @@ class M_g_nilai extends CI_Model{
     return $this->db->query($sql)->result();
   }
 
-  function nilai_siswa($kode_kelas){
-    $sql = "SELECT *, siswa.kode_siswa FROM siswa LEFT JOIN nilai_siswa ON siswa.kode_siswa=nilai_siswa.kode_siswa WHERE siswa.kode_kelas='$kode_kelas'";
+  function nilai_siswa($kode_kelas, $kode_nilai){
+    $sql = "SELECT *, siswa.kode_siswa FROM siswa LEFT JOIN nilai_siswa ON siswa.kode_siswa=nilai_siswa.kode_siswa AND nilai_siswa.kode_nilai='$kode_nilai' WHERE siswa.kode_kelas='$kode_kelas' ORDER BY siswa.nis";
     return $this->db->query($sql)->result();
   }
 
@@ -62,6 +62,35 @@ class M_g_nilai extends CI_Model{
   function delete_nilai($kode_nilai, $kode_kelas){
     $sql = "DELETE nilai_siswa FROM nilai_siswa INNER JOIN siswa ON nilai_siswa.kode_siswa=siswa.kode_siswa WHERE siswa.kode_kelas='$kode_kelas' AND nilai_siswa.kode_nilai='$kode_nilai'";
     return $this->db->query($sql);
+  }
+
+  // ------------- Import Excel -------------------
+  public function upload_file($filename){
+    $this->load->library('upload'); // Load librari upload
+    $config['upload_path'] = './excel/';
+    $config['allowed_types'] = 'xlsx';
+    $config['max_size']  = '2048';
+    $config['overwrite'] = true;
+    $config['file_name'] = $filename;
+    $this->upload->initialize($config); // Load konfigurasi uploadnya
+    if($this->upload->do_upload('file')){ // Lakukan upload dan Cek jika proses upload berhasil
+      // Jika berhasil :
+      $return = array('result' => 'success', 'file' => $this->upload->data(), 'error' => '');
+      return $return;
+    }else{
+      // Jika gagal :
+      $return = array('result' => 'failed', 'file' => '', 'error' => $this->upload->display_errors());
+      return $return;
+    }
+  }    // Buat sebuah fungsi untuk melakukan insert lebih dari 1 data
+
+   public function insert_multiple($data){
+    $this->db->insert_batch('nilai_siswa', $data);
+  }
+
+  function get_data_nilai($kode_kelas, $kode_nilai){
+    $sql = "SELECT * FROM siswa JOIN nilai_siswa ON siswa.kode_siswa=nilai_siswa.kode_siswa WHERE siswa.kode_kelas='$kode_kelas' AND nilai_siswa.kode_nilai='$kode_nilai' ORDER BY siswa.nis";
+    return $this->db->query($sql)->result();
   }
 
   

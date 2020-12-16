@@ -21,6 +21,7 @@ class M_g_tugas extends CI_Model{
   function get_data_tugas($kode_mapel, $kode_kelas){
     $this->db->where('kode_mapel', $kode_mapel);
     $this->db->where('kode_kelas', $kode_kelas);
+    $this->db->order_by('tgl_dibuat', 'DESC');
     return $this->db->get('tugas')->result();
   }
 
@@ -35,7 +36,7 @@ class M_g_tugas extends CI_Model{
   }
 
   function daftar_siswa($kode_kelas, $kode_tugas){
-    return$this->db->query("SELECT *, siswa.kode_siswa FROM siswa LEFT JOIN nilai_tugas ON siswa.kode_siswa=nilai_tugas.kode_siswa AND nilai_tugas.kode_tugas='$kode_tugas' WHERE siswa.kode_kelas='$kode_kelas'")->result();
+    return$this->db->query("SELECT *, siswa.kode_siswa FROM siswa LEFT JOIN nilai_tugas ON siswa.kode_siswa=nilai_tugas.kode_siswa AND nilai_tugas.kode_tugas='$kode_tugas' WHERE siswa.kode_kelas='$kode_kelas' ORDER BY siswa.nis ASC")->result();
   }
 
   function load_hasil_siswa($kode_tugas){
@@ -65,6 +66,14 @@ class M_g_tugas extends CI_Model{
       $this->db->where('kode_siswa', $kode_siswa);
       $this->db->where('kode_tugas', $kode_tugas);
       return $this->db->update('nilai_tugas', array('nilai' => $nilai));
+  }
+  function cek_backup($kode_tugas){
+    $sql = "SELECT * FROM nilai_tugas WHERE kode_tugas='$kode_tugas' AND kode_nilai=null";
+    return $this->db->query($sql)->num_rows();
+  }
+  function get_nilai_tugas_siswa($kode_tugas){
+    $this->db->where('kode_tugas', $kode_tugas);
+    return $this->db->get('nilai_tugas')->result();
   }
 
 

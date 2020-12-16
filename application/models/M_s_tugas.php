@@ -13,6 +13,7 @@ class M_s_tugas extends CI_Model{
   function get_data_tugas($kode_mapel, $kode_kelas){
     $this->db->where('kode_mapel', $kode_mapel);
     $this->db->where('kode_kelas', $kode_kelas);
+    $this->db->order_by('tgl_dibuat', 'DESC');
     return $this->db->get('tugas')->result();
   }
 

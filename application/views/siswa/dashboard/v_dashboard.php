@@ -13,7 +13,34 @@
               <h4 class="card-title">Nilai</h4>
         </div>
         <div class="card-body">
-          
+          <table class="table table-hover">
+                  <thead>
+                    <th>Nama Tugas</th>
+                    <th>Nilai</th>
+                  </thead>
+                  <tbody>
+                    <?php  
+                      if ($nilai) { 
+                          foreach ($nilai as $val) { ?>
+                            <tr>
+                              <td><?php echo $val->nama_nilai ?></td>
+                              <td><?php echo $val->nilai ?></td>
+                             
+                            </tr>
+                        <?php 
+                          }
+                          
+                        
+                       }else { ?>
+                        
+                      <?php }
+                      
+                    ?>
+                    <tr>
+                        <td colspan="2" style="text-align: center"><a class="btn btn-primary btn-sm" href="<?php echo site_url().'siswa/S_nilai' ?>">--More--</a></td>
+                    </tr>
+                  </tbody>
+                </table>
         </div>
       </div>
     </div>
@@ -62,7 +89,7 @@
                 
                   <h5><?php echo $ber->isi ?></h5>
                 
-                  <p>--<?php echo $ber->created_at ?>-- <?php if($kode_user == $ber->user_code){echo '<span class="pull-right"><a href="#" style="color:red; margin-left:10px" onClick="aksi_hapus('.$ber->id.',1)">Hapus</a></span>';}else{} ?>  <span class="pull-right"><a href="#" style="color:blue" onClick="aksi_balas('<?php echo $ber->id ?>', '<?php echo $ber->nama_user ?>')">Balas</a></span> </p>
+                  <p>--<?php echo $ber->created_at ?>-- <?php if($kode_user == $ber->user_code){echo '<span class="pull-right"><a href="#" style="color:red; margin-left:10px" onClick="aksi_hapus('.$ber->id.',1)">Hapus</a></span>';}else{} ?>  <span class="pull-right"><a href="#" style="color:blue" onClick="aksi_balas('<?php echo $ber->id ?>', '<?php echo $ber->nama_user ?>', '<?php echo $ber->role ?>')">Balas</a></span> </p>
 
                
                    
@@ -230,7 +257,7 @@ $(document).ready(function() {
 
 
 
-async function aksi_balas(id_beranda, nama){
+async function aksi_balas(id_beranda, nama, role){
     
     const { value: text } = await Swal.fire({
       input: 'textarea',
@@ -243,7 +270,7 @@ async function aksi_balas(id_beranda, nama){
     })
 
     if (text) {
-      input_balas(text, id_beranda)
+      input_balas(text, id_beranda, role)
     }
 
 
@@ -317,12 +344,12 @@ async function aksi_balas_one(id, nama){
     }
 }
 
-function input_balas(isi, id_beranda){
+function input_balas(isi, id_beranda, role){
   $.ajax({
       url : "http://localhost/gostudy/siswa/S_dashboard/kirim_balas",
       method: 'POST',
       dataType: 'json',
-      data: {isi:isi, id_beranda:id_beranda},
+      data: {isi:isi, id_beranda:id_beranda, role:role},
       contentType: 'application/x-www-form-urlencoded',
       success: function(data){
          $.notify({

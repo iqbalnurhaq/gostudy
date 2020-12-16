@@ -48,7 +48,17 @@
       <?php $this->load->view('guru/footer'); ?>
 
 
-
+<script>
+  $(document).ready(function(){
+     // -------------NAVBAR ---------
+  $('.nav li a[href~="http://localhost/gostudy/siswa/S_ujian"]').parents('li').addClass("active");    
+  $('.nav li a').click(function(){
+        $('.nav li').removeClass("active");
+        $('.nav li a[href~="' + location.href + '"]').parents('li').addClass("active");    
+    });
+    //------------- END -----------
+  })
+</script>
 
 
 

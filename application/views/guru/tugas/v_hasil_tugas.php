@@ -4,7 +4,7 @@
     <div class="modal-content">
       <form class="form" action="<?php echo base_url('guru_usr_clx/G_tugas/tambah_tugas') ?>" method="POST">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Tambah Tugas</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Upload Tugas Siswa</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -34,20 +34,85 @@
   <div class="container-fluid">
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-4">
   <div class="card">
       <div class="card-header card-header-primary">
-            <h4 class="card-title">Materi</h4>
-            <p class="card-category">New employees on 15th September, 2016</p>
+            <h4 class="card-title">Tugas</h4>
+            <p class="card-category">Detail Tugas</p>
       </div>
       <div class="card-body table-responsive">
+        <table class="table table-hover">
+          <tbody>
+            <?php foreach ($data_tugas as $val) { ?>
+            <tr>
+              <td>Kode Tugas</td>
+              <td><?php echo $val->kode_tugas; ?></td>
+            </tr>
+            <tr>
+              <td>Nama Tugas</td>
+              <td><?php echo $val->nama_tugas; ?></td>
+           
+            </tr>
+            <tr>
+              <td>Aktif Tugas</td>
+              <td><?php echo $val->tgl_aktif ?> ( <?php echo $val->wkt_aktif ?> )</td>
+              
+            </tr>
+            <tr>
+              <td>Deadline Tugas</td>
+              <td><?php echo $val->tgl_akhir ?>  ( <?php echo $val->wkt_akhir ?> )</td>
+            </tr>
+          </tbody>
+        </table>  
+
+        <div class="row">
+        <div class="col-md-12">
+         <?php 
+
+        if ($backup == 1) { ?>
+           <button class="btn btn-info pull-right disabled" style="">Backup Nilai Disabled</button>
+        <?php }else{ 
+            if ($progress == 100) { ?>
+            
+            <button class="btn btn-info pull-right" style="" onClick="backup_nilai()">Backup Nilai</button>
+          <?php } else { ?>
+            <button class="btn btn-info pull-right disabled" style="">Backup Nilai Disabled</button>
+          <?php }
+         }
+          
+          
+        ?>  
+          `<a href="<?php echo base_url("guru_usr_clx/G_tugas/detail_tugas/").$val->kode_tugas ?>" class="btn btn-primary pull-right">Kembali</a>`
+             
+        </div>
+            <?php } ?>
+      </div>
+
+
+      </div>
+
+      
+
+
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header card-header-primary">
+            <h4 class="card-title">Input Nilai Siswa</h4>
+            <p class="card-category"></p>
+      </div>
+      <div class="card-body table-responsive">
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: <?php echo $progress ?>%;" aria-valuenow="<?php echo $progress ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $progress ?>%</div>
+        </div>
         <table id="data_hasil_siswa" class="table table-hover" style="width:100%">
           <thead>
             <tr>
                 <th>No</th>
                 <th>NIS</th>
                 <th>Nama Siswa</th>
-                <th>Lihat Tugas</th>
+                <th>Upload Tugas Siswa</th>
                 <th>Input Nilai</th>
             </tr>
           </thead>
@@ -55,20 +120,21 @@
             <?php $no = 1; ?>
                 <?php 
                
+               
                     foreach ($daftar_siswa as $val) { ?>
                         <tr>
                             <td><?php echo $no++ ?></td>
                             <td><?php echo $val->nis ?></td>
                             <td><?php echo $val->nama_siswa ?></td>
-                            <td> <button type="button" class="btn btn-primary" onClick="aksi_lihat_tugas('<?php echo $val->kode_siswa ?>')">Lihat</button></td>
-                           <?php if ($val->nilai) { ?>
-                           <td><button type="button" class="btn btn-primary" onClick="aksiInput('<?php echo $val->kode_siswa ?>', '<?php echo $val->nama_siswa ?>')">
+                            <td> <button type="button" class="btn btn-primary btn-sm" onClick="aksi_lihat_tugas('<?php echo $val->kode_siswa ?>')">Lihat</button></td>
+                           <?php if ($val->nilai != null) { ?>
+                           <td><button type="button" class="btn btn-primary btn-sm" onClick="aksiInput('<?php echo $val->kode_siswa ?>', '<?php echo $val->nama_siswa ?>')">
                               Input Nilai 
                              
                               <span class="badge badge-light"><?php echo $val->nilai  ?></span>
                             </button></td>
                               <?php }else{ ?>
-                              <td><button type="button" class="btn btn-danger" onClick="aksiInput('<?php echo $val->kode_siswa ?>', '<?php echo $val->nama_siswa ?>')">
+                              <td><button type="button" class="btn btn-danger btn-sm" onClick="aksiInput('<?php echo $val->kode_siswa ?>', '<?php echo $val->nama_siswa ?>')">
                               Input Nilai 
                              
                                 <span class="badge badge-light">--</span>
@@ -102,6 +168,13 @@
 <script>
 
 $(document).ready(function() {
+  // -------------NAVBAR ---------
+  $('.nav li a[href~="http://localhost/gostudy/guru_usr_clx/G_tugas"]').parents('li').addClass("active");    
+  $('.nav li a').click(function(){
+        $('.nav li').removeClass("active");
+        $('.nav li a[href~="' + location.href + '"]').parents('li').addClass("active");    
+    });
+    //------------- END -----------
 
 
     var no =1;
@@ -219,9 +292,9 @@ function input_tugas(nilai, kode_siswa){
       contentType: 'application/x-www-form-urlencoded',
       success: function(data){
         console.log(data)
-        Swal.fire('Deleted!', 'Berhasil Merubah', 'success');
+        Swal.fire('Berhasil!', 'Berhasil Menambahkan Nilai', 'success');
         setTimeout(function(){
-            window.location.href = "<?php echo base_url('guru_usr_clx/G_tugas/hasil_siswa/Tg_HH17EGZ'); ?>";
+            window.location.href = "<?php echo base_url('guru_usr_clx/G_tugas/hasil_siswa/'); ?>"+data.kode_tugas;
         }, 1100);
 
       },
@@ -233,6 +306,68 @@ function input_tugas(nilai, kode_siswa){
     });
 }
 
+
+function backup_nilai(){
+
+   $.ajax({
+      url : "http://localhost/gostudy/guru_usr_clx/G_ujian/ambil_nilai",
+      method: 'GET',
+      dataType: 'json',
+      contentType: 'application/x-www-form-urlencoded',
+      success: function(data){
+        console.log(data);
+        aksiPilih(data.nilai);
+      },
+      error: function( errorThrown ){
+        console.log( errorThrown);
+
+      }
+
+    });
+   
+}
+
+async function aksiPilih(data, kode_guru){
+  const { value: fruit } = await Swal.fire({
+  title: 'Select field validation',
+  input: 'select',
+  inputOptions: data,
+  inputPlaceholder: 'Pilih Nilai',
+  showCancelButton: true,
+  inputValidator: (value) => {
+    return new Promise((resolve) => {
+      resolve()
+    })
+  }
+})
+
+if (fruit) {
+  aksi_backup_nilai(fruit)
+}
+}
+
+function aksi_backup_nilai(kode_nilai){
+  $.ajax({
+        url : "http://localhost/gostudy/guru_usr_clx/G_tugas/aksi_backup_nilai",
+        method: 'POST',
+        data : {kode_nilai:kode_nilai}, 
+        dataType: 'json',
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(data){
+          console.log(data);
+          Swal.fire('Berhasil!', 'Berhasil Backup', 'success');
+          setTimeout(function(){
+              window.location.href = "<?php echo base_url('guru_usr_clx/G_tugas/hasil_siswa/'); ?>"+data.kode_tugas;
+          }, 1100);
+          
+        },
+        error: function( errorThrown ){
+          console.log( errorThrown);
+          
+        }
+
+      });
+}
 
 
 

@@ -7,8 +7,8 @@
   <div class="col-md-12">
   <div class="card">
       <div class="card-header card-header-primary">
-            <h4 class="card-title">Materi</h4>
-            <p class="card-category">New employees on 15th September, 2016</p>
+            <h4 class="card-title">Nilai</h4>
+          
       </div>
       <div class="card-body table-responsive">
      

@@ -26,7 +26,7 @@
               <div class="form-group form-file-upload form-file-multiple">
                 <input type="file" multiple="" class="inputFileHidden" name="file">
                 <div class="input-group">
-                    <input type="text" class="form-control inputFileVisible" placeholder="Single File">
+                    <input type="text" class="form-control inputFileVisible" placeholder="Upload File">
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-fab btn-round btn-primary">
                             <i class="material-icons">attach_file</i>
@@ -62,7 +62,7 @@
   <div class="card">
       <div class="card-header card-header-primary">
             <h4 class="card-title">Materi</h4>
-            <p class="card-category">New employees on 15th September, 2016</p>
+            <p class="card-category"></p>
       </div>
       <div class="card-body table-responsive">
         <table id="example1" class="table table-hover" style="width:100%">

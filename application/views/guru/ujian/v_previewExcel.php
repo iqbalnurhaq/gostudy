@@ -1,5 +1,5 @@
 
- <?php $this->load->view('admin/header'); ?>
+ <?php $this->load->view('guru/header'); ?>
 <div class="content">
   <div class="container-fluid">
   
@@ -22,16 +22,20 @@
            ?>
 
 
-           <form method="post" action="<?php echo base_url('go_ciclx_usradmin/G_ujian/import') ?>">
+           <form method="post" action="<?php echo base_url('guru_usr_clx/G_ujian/import') ?>">
 
               <div class="table-responsive">
                 <table class="table table-bordered" id="example1" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <th>No</th>
-                      <th>NIP</th>
-                      <th>Nama ujian</th>
-                      <th>Jenis Kelamin</th>
+                      <th>No Soal</th>
+                      <th>Soal</th>
+                      <th>Option A</th>
+                      <th>Option B</th>
+                      <th>Option C</th>
+                      <th>Option D</th>
+                      <th>Option E</th>
+                      <th>Jawaban</th>
                     </tr>
                   </thead>
 
@@ -43,27 +47,41 @@
                     ?>
                     <?php
                       foreach($sheet as $row){
-                          $nip = $row['A'];
-                          $nama = $row['B']; // Ambil data nama
-                          $jenis_kelamin = $row['C']; // Ambil data jenis kelamin
-                          if($nama == "" && $jenis_kelamin == "" && $nip == ""){
+                          $no_soal = $row['A'];
+                          $soal = $row['B']; // Ambil data nama
+                          $optA = $row['C']; // Ambil data jenis kelamin
+                          $optB = $row['D']; // Ambil data jenis kelamin
+                          $optC = $row['E']; // Ambil data jenis kelamin
+                          $optD = $row['F']; // Ambil data jenis kelamin
+                          $optE = $row['G']; // Ambil data jenis kelamin
+                          $jwb = $row['H']; // Ambil data jenis kelamin
+                          if($no_soal == ""){
                             continue;
                           }
                           if($numrow > 1){
                             // Validasi apakah semua data telah diisi
-                            $nip_td = ( ! empty($nip))? "" : " style='background: #E07171;'"; // Jika Nama kosong, beri warna merah
-                            $nama_td = ( ! empty($nama))? "" : " style='background: #E07171;'"; // Jika Nama kosong, beri warna merah
-                            $jk_td = ( ! empty($jenis_kelamin))? "" : " style='background: #E07171;'"; // Jika Jenis Kelamin kosong, beri warna merah
+                            $no_soal_td = ( ! empty($no_soal))? "" : " style='background: #E07171;'"; // Jika Nama kosong, beri warna merah
+                            $soal_td = ( ! empty($soal))? "" : " style='background: #E07171;'"; // Jika Nama kosong, beri warna merah
+                            $optA_td = ( ! empty($optA))? "" : " style='background: #E07171;'"; // Jika Jenis Kelamin kosong, beri warna merah
+                            $optB_td = ( ! empty($optB))? "" : " style='background: #E07171;'"; // Jika Jenis Kelamin kosong, beri warna merah
+                            $optC_td = ( ! empty($optC))? "" : " style='background: #E07171;'"; // Jika Jenis Kelamin kosong, beri warna merah
+                            $optD_td = ( ! empty($optD))? "" : " style='background: #E07171;'"; // Jika Jenis Kelamin kosong, beri warna merah
+                            $optE_td = ( ! empty($optE))? "" : " style='background: #E07171;'"; // Jika Jenis Kelamin kosong, beri warna merah
+                            $jwb_td = ( ! empty($jwb))? "" : " style='background: #E07171;'"; // Jika Jenis Kelamin kosong, beri warna merah
                             
                             // Jika salah satu data ada yang kosong
-                            if($nama == "" or $jenis_kelamin == "" or $nip == ""){
+                            if($no_soal == ""){
                               $kosong++; // Tambah 1 variabel $kosong
                             }
                               echo "<tr>";
-                              echo "<td>".$noUrut."</td>";
-                              echo "<td".$nip_td.">".$nip."</td>";
-                              echo "<td".$nama_td.">".$nama."</td>";
-                              echo "<td".$jk_td.">".$jenis_kelamin."</td>";
+                              echo "<td".$no_soal_td.">".$no_soal."</td>";
+                              echo "<td".$soal_td.">".$soal."</td>";
+                              echo "<td".$optA_td.">".$optA."</td>";
+                              echo "<td".$optB_td.">".$optB."</td>";
+                              echo "<td".$optC_td.">".$optC."</td>";
+                              echo "<td".$optD_td.">".$optD."</td>";
+                              echo "<td".$optE_td.">".$optE."</td>";
+                              echo "<td".$jwb_td.">".$jwb."</td>";
                               echo "</tr>";
                            }
                           $numrow++;
@@ -91,7 +109,7 @@
                    
                    
                     echo "<input type='submit' class='btn btn-primary pull-right' value='Upload Data' style='margin-left:15px; margin-top: 20px;'> ";
-                    echo "<a href='".base_url("A_ujian")."' class='btn btn-secondary pull-right' style='margin-top: 20px;'>Cancel</a>";      
+                    echo "<a href='".base_url("guru_usr_clx/G_ujian/detail_ujian/").$kode_ujian."' class='btn btn-secondary pull-right' style='margin-top: 20px;'>Cancel</a>";      
                     
                         
                   }
@@ -154,11 +172,24 @@
   </div>
 </div>
 
-      <?php $this->load->view('admin/footer'); ?>
+      <?php $this->load->view('guru/footer'); ?>
 
 
 
       <script>
+
+      $(document).ready(function() {
+
+  // -------------NAVBAR ---------
+  $('.nav li a[href~="http://localhost/gostudy/guru_usr_clx/G_ujian"]').parents('li').addClass("active");    
+  $('.nav li a').click(function(){
+        $('.nav li').removeClass("active");
+        $('.nav li a[href~="' + location.href + '"]').parents('li').addClass("active");    
+    });
+    //------------- END -----------
+    
+  });
+      
          tabel = $('#example1').DataTable({});
       </script>
 

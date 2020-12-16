@@ -83,7 +83,7 @@
   <div class="card">
       <div class="card-header card-header-primary">
             <h4 class="card-title">Ujian</h4>
-            <p class="card-category">New employees on 15th September, 2016</p>
+            
       </div>
       <div class="card-body table-responsive">
         <table id="example1" class="table table-hover" style="width:100%">

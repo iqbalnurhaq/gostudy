@@ -74,8 +74,8 @@
   <div class="col-md-12">
   <div class="card">
       <div class="card-header card-header-primary">
-            <h4 class="card-title">Materi</h4>
-            <p class="card-category">New employees on 15th September, 2016</p>
+            <h4 class="card-title">Tugas</h4>
+            <p class="card-category"></p>
       </div>
       <div class="card-body table-responsive">
         <table id="example1" class="table table-hover" style="width:100%">
@@ -205,7 +205,7 @@ $(document).ready(function() {
         },
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
             
-            html = '-';
+            html = '<button class="btn btn-outline-danger btn-sm" onClick="hapus_tugas(\''+row.kode_tugas+'\')">Hapus</button>';
 
             return html
           }
@@ -238,6 +238,43 @@ function aksiHapus(data){
           Swal.fire('Deleted!', 'Berhasil menghapus.', 'success');
           setTimeout(function(){
              window.location.href = "<?php echo base_url('guru_usr_clx/G_materi'); ?>";
+          }, 1100);
+
+        },
+        error: function( errorThrown ){
+          console.log( errorThrown);
+
+        }
+
+      });
+
+    }
+  });
+
+}
+
+function hapus_tugas(data){
+  var id = data;
+  Swal.fire({
+  title: 'Are you sure?',
+  text: "Apakah kamu ingin menhapus tugas ini ?",
+  type: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Ya'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url : "http://localhost/gostudy/guru_usr_clx/G_tugas/hapus_tugas",
+        method: 'POST',
+        dataType: 'json',
+        data: {id : id},
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(data){
+          Swal.fire('Deleted!', 'Berhasil menghapus.', 'success');
+          setTimeout(function(){
+             window.location.href = "<?php echo base_url('guru_usr_clx/G_tugas') ?>";
           }, 1100);
 
         },

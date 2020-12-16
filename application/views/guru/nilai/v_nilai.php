@@ -39,22 +39,59 @@
   </div>
 </div>
 
+<div class="modal fade bd-example-modal-lg-excel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form class="form" action="<?php echo base_url('guru_usr_clx/G_nilai/form') ?>" method="POST"  enctype="multipart/form-data">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Input Nilai</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">    
+
+         <div class="form-group form-file-upload form-file-multiple">
+            <input type="file" multiple="" class="inputFileHidden" name="file">
+            <div class="input-group">
+                <input type="text" class="form-control inputFileVisible" placeholder="Single File">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-fab btn-round btn-primary">
+                        <i class="material-icons">attach_file</i>
+                    </button>
+                </span>
+            </div>
+          </div>
+
+          <input type="hidden" id="kode_nilai" name="kode_nilai">
+
+      
+      
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-primary" name="preview" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 
 <div class="content">
   <div class="container-fluid">
 
 <div class="row">
-  <div class="col-md-12">
-    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg">Tambah Materi</button>
-  </div>
+ 
 </div>
 <div class="row">
   <div class="col-md-12">
   <div class="card">
       <div class="card-header card-header-primary">
-            <h4 class="card-title">Materi</h4>
-            <p class="card-category">New employees on 15th September, 2016</p>
+            <h4 class="card-title">Nilai Siswa</h4>
+            
       </div>
       <div class="card-body table-responsive">
         <table id="example1" class="table table-hover" style="width:100%">
@@ -128,7 +165,9 @@ $(document).ready(function() {
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
             html = '';
             if (row.status == 0) {
-              html += '</button> <button class="btn btn-warning btn-sm" onClick="aksiOpen(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Open </button>'
+              html += ' <button class="btn btn-warning btn-sm" onClick="aksiOpen(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Open </button>'
+              html += '<button class="btn btn-primary btn-sm" onClick="openExcel(\'' + row.kode_nilai + '\')"> Input Excel </button>'
+              html += ' <a class="btn btn-primary btn-sm" href="<?php echo site_url('guru_usr_clx/G_nilai/export') ?>"> Download Template </a>'
             }else{
               html += '<a class="btn btn-primary btn-sm" href="<?php echo site_url('guru_usr_clx/G_nilai/link_nilai/')?>'+ row.kode_nilai +'"> Input Nilai </a>'
               html += '<button class="btn btn-danger btn-sm" onClick="aksiClear(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Clear </button> ';
@@ -139,6 +178,8 @@ $(document).ready(function() {
 
       ],
     });
+
+      
 }); 
 
 function inputNilaiModal(kode_siswa){
@@ -233,7 +274,48 @@ function aksiClear(kode_nilai, nama){
 
 }
 
+function openExcel(kode_nilai){
+  $("#kode_nilai").val(kode_nilai);
+  $('.bd-example-modal-lg-excel').modal('show');
+}
 
+
+
+
+// FileInput
+  $('.form-file-simple .inputFileVisible').click(function() {
+    $(this).siblings('.inputFileHidden').trigger('click');
+  });
+
+  $('.form-file-simple .inputFileHidden').change(function() {
+    var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+    $(this).siblings('.inputFileVisible').val(filename);
+  });
+
+  $('.form-file-multiple .inputFileVisible, .form-file-multiple .input-group-btn').click(function() {
+    $(this).parent().parent().find('.inputFileHidden').trigger('click');
+    $(this).parent().parent().addClass('is-focused');
+  });
+
+  $('.form-file-multiple .inputFileHidden').change(function() {
+    var names = '';
+    for (var i = 0; i < $(this).get(0).files.length; ++i) {
+      if (i < $(this).get(0).files.length - 1) {
+        names += $(this).get(0).files.item(i).name + ',';
+      } else {
+        names += $(this).get(0).files.item(i).name;
+      }
+    }
+    $(this).siblings('.input-group').find('.inputFileVisible').val(names);
+  });
+
+  $('.form-file-multiple .btn').on('focus', function() {
+    $(this).parent().siblings().trigger('focus');
+  });
+
+  $('.form-file-multiple .btn').on('focusout', function() {
+    $(this).parent().siblings().trigger('focusout');
+  });
 
 
 </script>

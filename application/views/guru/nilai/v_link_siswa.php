@@ -5,20 +5,18 @@
 
 
     
-    
+
 <div class="row">
   <div class="col-md-12">
-    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg">Tambah Materi</button>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-  <div class="card">
+    <div class="card">
       <div class="card-header card-header-primary">
-            <h4 class="card-title">Materi</h4>
-            <p class="card-category">New employees on 15th September, 2016</p>
+            <h4 class="card-title">Input Nilai (<?php echo $nama_nilai; ?>)</h4>
+            
       </div>
       <div class="card-body table-responsive">
+        <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: <?php echo $progress ?>%;" aria-valuenow="<?php echo $progress ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $progress ?>%</div>
+        </div>
        <table id="example1" class="table table-hover" style="width:100%">
           <thead>
             <tr>
@@ -35,6 +33,14 @@
         </table>  
       </div>
     </div>
+    <?php 
+          if ($progress == 100) { ?>
+            <a class="btn btn-info pull-right" href="<?php echo site_url('guru_usr_clx/G_nilai/export_nilai_fix/').$kode_nilai ?>"> Download Nilai </a>
+            
+          <?php } else { ?>
+            <a class="btn btn-info pull-right disabled" href="#"> Download Nilai </a>
+          <?php } ?>
+         
   </div>
 </div>
 
@@ -86,7 +92,7 @@ $(document).ready(function() {
            if(row.nilai == null){ // Jika jenis kelaminnya 1
               html = '<button class="btn btn-danger btn-sm" onClick="aksiInput(\'' + row.kode_siswa + '\', \'' + row.nama_siswa + '\' )"> Input Nilai </button> ';
             }else{ // Jika bukan 1
-              html = '<button class="btn btn-primary btn-sm" onClick="aksiInput(\'' + row.kode_siswa + '\', \'' + row.nama_siswa + '\')"> '+ row.nilai +' </button> ';
+              html = '<button class="btn btn-primary btn-sm" onClick="aksiInputEdit(\'' + row.kode_siswa + '\', \'' + row.nama_siswa + '\', \'' + row.nilai + '\')"> '+ row.nilai +' </button> ';
             }   
             
 
@@ -106,6 +112,30 @@ async function aksiInput(kode_siswa, nama_siswa){
       title: nama_siswa,
       html: '<label style="float: left">Nilai</label>' +
     '<input type="number" class="form-control" name="nilai" pattern="[0-9]+" id="swal-input1" min=0 max=100>',
+      focusConfirm: false,
+      preConfirm: () => {
+        
+        var nilai = document.getElementById('swal-input1').value;
+        if(nilai < 0){
+          console.log("err")
+        }else if(nilai > 100){
+          console.log("err")
+        }else{
+          input_nilai(nilai, kode_siswa);
+        }
+      }
+    })
+    
+// if (formValues) {
+//   Swal.fire(JSON.stringify(formValues))
+// }
+}
+async function aksiInputEdit(kode_siswa, nama_siswa, nilai){
+          const { value: formValues } = Swal.fire({
+
+      title: nama_siswa,
+      html: '<label style="float: left">Nilai</label>' +
+    '<input type="number" class="form-control" name="nilai" pattern="[0-9]+" id="swal-input1" min=0 max=100 value='+ nilai +'>',
       focusConfirm: false,
       preConfirm: () => {
         

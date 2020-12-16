@@ -17,8 +17,8 @@
 
   <div class="card">
       <div class="card-header card-header-primary">
-            <h4 class="card-title">Materi</h4>
-            <p class="card-category">New employees on 15th September, 2016</p>
+            <h4 class="card-title">Hasil Ujian</h4>
+            
       </div>
 
       
@@ -49,7 +49,7 @@
                             <?php if ($val->kode_ujian) { ?>
                                 <td><?php echo $val->nilai_ujian ?></td>
                             <?php }else{ ?>
-                                <td><span class="badge badge-pill badge-danger">Belum Mengerjakan</span></td>
+                                <td><span class="badge badge-pill badge-danger btn-sm">Belum Mengerjakan</span></td>
                             <?php } ?>
                             <td>
                               <?php  
@@ -70,10 +70,12 @@
       
         </table>
 
+        <a href="<?php echo site_url('guru_usr_clx/G_ujian/detail_ujian/').$kode_ujian ?>" class="btn btn-primary pull-right" style="color : white; margin-top:20px">Kembali</a>  
         <?php 
 
         if ($backup == 1) { ?>
            <button class="btn btn-info pull-right disabled" style="margin-top:20px">Backup Nilai Disabled</button>
+           
         <?php }else{ 
             if ($progress == 100) { ?>
             
@@ -82,9 +84,10 @@
             <button class="btn btn-info pull-right disabled" style="margin-top:20px">Backup Nilai Disabled</button>
           <?php }
          }
-          
-          
-        ?>  
+         
+         
+         ?>
+
 
       </div>
     </div>
@@ -108,6 +111,14 @@
 <script>
 
 $(document).ready(function() {
+
+  // -------------NAVBAR ---------
+  $('.nav li a[href~="http://localhost/gostudy/guru_usr_clx/G_ujian"]').parents('li').addClass("active");    
+  $('.nav li a').click(function(){
+        $('.nav li').removeClass("active");
+        $('.nav li a[href~="' + location.href + '"]').parents('li').addClass("active");    
+    });
+    //------------- END -----------
 
 
     var no =1;
@@ -177,7 +188,7 @@ function diskualifikasi(kode_siswa, nama_siswa){
         data: {kode_siswa : kode_siswa},
         contentType: 'application/x-www-form-urlencoded',
         success: function(data){
-          Swal.fire('Success!', 'Berhasil reset.', 'success');
+          Swal.fire('Success!', 'Berhasil diskualifikasi.', 'success');
           setTimeout(function(){
              window.location.href = "<?php echo base_url('guru_usr_clx/G_ujian/load_hasil_ujian'); ?>";
           }, 1100);
