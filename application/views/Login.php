@@ -62,7 +62,7 @@
                   
                 </div>
               </div>
-              <p class="description text-center">GoStudy Your Learn, Everything You Need</p>
+              <p class="description text-center">Go Study</p>
               <div class="card-body">
                 <div class="input-group">
                   <div class="input-group-prepend">
@@ -70,7 +70,7 @@
                       <i class="material-icons">face</i>
                     </span>
                   </div>
-                  <input type="text" name="user" class="form-control" placeholder="NIP...">
+                  <input type="text" name="user" class="form-control" placeholder="NIP / NIS">
                 </div>
                 <div class="input-group">
                   <div class="input-group-prepend">

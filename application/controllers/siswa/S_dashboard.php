@@ -62,6 +62,11 @@ class S_dashboard extends CI_Controller {
         $id_beranda = $this->input->post("id_beranda");
         $kode_mapel = $this->session->userdata('kode_mapel');
         $kode_kelas = $this->session->userdata('kode_kelas');
+        if ($r == 'Guru') {
+            
+        }else{
+            
+        }
 
 
         $data = array('nama_user' => $nama_siswa,

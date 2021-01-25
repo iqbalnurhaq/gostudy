@@ -109,58 +109,13 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
-      <div class="card-header card-header-tabs card-header-primary">
-        <div class="nav-tabs-navigation">
-          <div class="nav-tabs-wrapper">
-            <span class="nav-tabs-title">Data Siswa :</span>
-            <ul class="nav nav-tabs" data-tabs="tabs">
-              <li class="nav-item">
-                <a class="nav-link active" href="#siswa_aktif" data-toggle="tab">
-                  <i class="material-icons">bug_report</i> Daftar Siswa Aktif
-                  <div class="ripple-container"></div>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#siswa_ban" data-toggle="tab">
-                  <i class="material-icons">code</i> Daftar Siswa Banned
-                  <div class="ripple-container"></div>
-                </a>
-              </li>          
-            </ul>
-          </div>
-        </div>
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Siswa</h4>
       </div>
       <div class="card-body">
         <div class="tab-content">
           <div class="tab-pane active" id="siswa_aktif">
           <table id="example1" class="table table-hover" style="width:100%">
-            <thead>
-              <tr>
-                  <th>No</th>
-                  <th>NIS</th>
-                  <th>Nama</th>
-                  <th>Kelas</th>
-                  <th>Aksi</th>
-                  
-              </tr>
-            </thead>
-            <tbody>
-                  
-            </tbody>
-            <tfoot>
-                <tr>
-                  <th>No</th>
-                  <th>NIS</th>
-                  <th>Nama</th>
-                  <th>Kelas</th>
-                  <th>Aksi</th>
-                
-              </tr>
-            </tfoot>
-          </table>
-          </div>
-          <div class="tab-pane" id="siswa_ban">
-          <table id="example2" class="table table-hover" style="width:100%">
             <thead>
               <tr>
                   <th>No</th>
@@ -248,7 +203,7 @@ $(document).ready(function() {
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
 
             
-            html = '<button class="btn btn-warning btn-sm" onClick="aksiEdit(\'' + row.kode_siswa + '\' )"> Edit  </button>  <button class="btn btn-warning btn-sm" onClick="aksiBanned(\'' + row.kode_siswa + '\' , \'' + row.nama_siswa + '\')"> Banned  </button> <button class="btn btn-danger btn-sm" onClick="aksiHapus(\'' + row.kode_siswa + '\' , \'' + row.nama_siswa + '\')"> Hapus  </button>';
+            html = '<button class="btn btn-warning btn-sm" onClick="aksiEdit(\'' + row.kode_siswa + '\' )"> Edit  </button>  <button class="btn btn-danger btn-sm" onClick="aksiHapus(\'' + row.kode_siswa + '\' , \'' + row.nama_siswa + '\')"> Hapus  </button>';
 
             return html
           }

@@ -50,23 +50,9 @@
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="./dashboard.html">
-              <i class="material-icons">dashboard</i>
-              <p>Dashboard</p>
-            </a>
-          </li>
-          <hr>
-            <li class="nav-item">
-              <div class="simple-text logo-normal">
-                <h4 style="margin-left:80px"><b>  </b> </h4>
+           
 
-              </div>  
-              
-              
-            </li>
-
-          <hr>
+         
           <li class="nav-item">
             <a class="nav-link" href="<?php echo site_url('go_ciclx_usradmin/A_guru'); ?>">
               <i class="material-icons">person</i>
@@ -104,18 +90,8 @@
               <p>Data User</p>
             </a>
           </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="./rtl.html">
-              <i class="material-icons">language</i>
-              <p>Chatting</p>
-            </a>
-          </li>
-          <li class="nav-item active-pro ">
-            <a class="nav-link" href="./upgrade.html">
-              <i class="material-icons">unarchive</i>
-              <p>Upgrade to PRO</p>
-            </a>
-          </li>
+         
+         
         </ul>
       </div>
     </div>

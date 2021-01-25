@@ -13,7 +13,7 @@
     <div class="card">
       <div class="card-header card-header-primary">
             <h4 class="card-title">Nilai</h4>
-            <p class="card-category">New employees on 15th September, 2016</p>
+          
       </div>
       <div class="card-body table-responsive">
         <table id="example1" class="table table-hover" style="width:100%">
@@ -83,7 +83,7 @@ $(document).ready(function() {
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
 
             
-            html = '<button class="btn btn-warning btn-xs" onClick="edit_nilai(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Edit <i class="material-icons">report</i> </button> <button class="btn btn-danger btn-xs" onClick="aksiHapus(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Hapus <i class="material-icons">delete_forever</i> </button>';
+            html = '<button class="btn btn-warning btn-sm" onClick="edit_nilai(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Edit <i class="material-icons">report</i> </button> <button class="btn btn-danger btn-sm" onClick="aksiHapus(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Hapus <i class="material-icons">delete_forever</i> </button>';
 
             return html
           }

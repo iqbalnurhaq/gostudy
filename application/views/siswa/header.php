@@ -210,7 +210,7 @@ Preserve the relative scale, though. */
     -->
       <div class="logo">
         <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-          Creative Tim
+          Go Study
         </a>
       </div>
       <div class="sidebar-wrapper">

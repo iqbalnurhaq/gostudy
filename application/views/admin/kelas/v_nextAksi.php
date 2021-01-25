@@ -130,6 +130,43 @@
   </div>
 </div>
 
+<div class="modal fade bd-example-modal-lg-excel-siswa" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form class="form" action="<?php echo base_url('go_ciclx_usradmin/A_kelas/form') ?>" method="POST"  enctype="multipart/form-data">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Tambah siswa</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">    
+
+         <div class="form-group form-file-upload form-file-multiple">
+              <input type="file" multiple="" class="inputFileHidden" name="file">
+              <div class="input-group">
+                  <input type="text" class="form-control inputFileVisible" placeholder="Single File">
+                  <span class="input-group-btn">
+                      <button type="button" class="btn btn-fab btn-round btn-primary">
+                          <i class="material-icons">attach_file</i>
+                      </button>
+                  </span>
+              </div>
+            </div>
+
+      
+      
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-primary" name="preview" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 <div class="content">
   <div class="container-fluid">
@@ -139,7 +176,7 @@
     <div class="alert alert-warning text-center" id="nama_kelas" role="alert">
       
     </div>
-  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-nilai">Tambah Nilai</button> <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-excel">Tambah Siswa</button>  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg">Tambah Mapel</button>
+  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-nilai">Tambah Nilai</button><button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-excel-siswa">Tambah siswa Excel</button>  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-excel">Tambah Siswa</button>  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg">Tambah Mapel</button>
   </div>
 </div>
 <div class="row">
@@ -152,19 +189,19 @@
             <ul class="nav nav-tabs" data-tabs="tabs">
               <li class="nav-item">
                 <a class="nav-link active" href="#mapel_aktif" data-toggle="tab">
-                  <i class="material-icons">bug_report</i> Daftar Mapel Aktif
+                  <i class="material-icons">class</i> Daftar Mapel Aktif
                   <div class="ripple-container"></div>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#siswa_aktif" data-toggle="tab">
-                  <i class="material-icons">code</i> Daftar Siswa Aktif
+                  <i class="material-icons">person</i> Daftar Siswa Aktif
                   <div class="ripple-container"></div>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#nilai_aktif" data-toggle="tab">
-                  <i class="material-icons">code</i> Daftar Nilai Aktif
+                  <i class="material-icons">file_copy</i> Daftar Nilai Aktif
                   <div class="ripple-container"></div>
                 </a>
               </li>             
@@ -769,6 +806,44 @@ $("#simpan_nilai_aktif").click(function(){
 $('.nav .nav-item a').click(function(){
   $(this).parents('li').addClass("active"); 
 });
+
+
+
+
+// FileInput
+  $('.form-file-simple .inputFileVisible').click(function() {
+    $(this).siblings('.inputFileHidden').trigger('click');
+  });
+
+  $('.form-file-simple .inputFileHidden').change(function() {
+    var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+    $(this).siblings('.inputFileVisible').val(filename);
+  });
+
+  $('.form-file-multiple .inputFileVisible, .form-file-multiple .input-group-btn').click(function() {
+    $(this).parent().parent().find('.inputFileHidden').trigger('click');
+    $(this).parent().parent().addClass('is-focused');
+  });
+
+  $('.form-file-multiple .inputFileHidden').change(function() {
+    var names = '';
+    for (var i = 0; i < $(this).get(0).files.length; ++i) {
+      if (i < $(this).get(0).files.length - 1) {
+        names += $(this).get(0).files.item(i).name + ',';
+      } else {
+        names += $(this).get(0).files.item(i).name;
+      }
+    }
+    $(this).siblings('.input-group').find('.inputFileVisible').val(names);
+  });
+
+  $('.form-file-multiple .btn').on('focus', function() {
+    $(this).parent().siblings().trigger('focus');
+  });
+
+  $('.form-file-multiple .btn').on('focusout', function() {
+    $(this).parent().siblings().trigger('focusout');
+  });
 
 
 

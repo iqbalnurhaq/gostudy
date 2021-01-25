@@ -92,7 +92,7 @@
                   <p>--<?php echo $ber->created_at ?>-- <?php if($kode_user == $ber->user_code){echo '<span class="pull-right"><a href="#" style="color:red; margin-left:10px" onClick="aksi_hapus('.$ber->id.',1)">Hapus</a></span>';}else{} ?>  <span class="pull-right"><a href="#" style="color:blue" onClick="aksi_balas('<?php echo $ber->id ?>', '<?php echo $ber->nama_user ?>', '<?php echo $ber->role ?>')">Balas</a></span> </p>
 
                
-                   
+                   b
                   
                   <hr>
                   <?php if ($com_one) { ?>
