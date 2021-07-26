@@ -4,7 +4,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <button class="btn btn-primary pull-right" onClick="tambah_mapel()">Tambah Mapel</button>
+    <button class="btn btn-primary pull-right" onClick="tambah_kelas()">Tambah Kode</button>
   </div>
 </div>
 
@@ -12,7 +12,7 @@
   <div class="col-lg-12">
     <div class="card">
       <div class="card-header card-header-primary">
-            <h4 class="card-title">Mata Pelajaran</h4>
+            <h4 class="card-title">Kelas</h4>
             
       </div>
       <div class="card-body table-responsive">
@@ -20,8 +20,7 @@
           <thead>
             <tr>
                 <th>No</th>
-                <th>Nama Mapel</th>
-                <th>KKM</th>
+                <th>Kode</th>
                 <th>Aksi</th>
             </tr>
           </thead>
@@ -31,8 +30,7 @@
           <tfoot>
               <tr>
                 <th>No</th>
-                <th>Nama Mapel</th>
-                <th>KKM</th>
+                <th>Kode</th>
                 <th>Aksi</th>
             </tr>
           </tfoot>
@@ -57,6 +55,7 @@
 <script>
 
 $(document).ready(function() {
+    
     var no =1;
     $('#example').DataTable();
     $('#date_time_mask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
@@ -69,8 +68,8 @@ $(document).ready(function() {
 
       "ajax":
       {
-        "dataSrc": "datamapel",
-        "url": "http://localhost/gostudy/go_ciclx_usradmin/A_mapel/load_data_mapel", // URL file untuk proses select datanya
+        "dataSrc": "datakelas",
+        "url": "http://localhost/gostudy/go_ciclx_usradmin/A_cetak/load_data", // URL file untuk proses select datanya
         "type": "GET"
       },
 
@@ -81,12 +80,11 @@ $(document).ready(function() {
             return html
           }
         },
-        { "data": "nama_mapel" }, // Tampilkan nis  
-        { "data": "kkm" }, // Tampilkan nis  
+        { "data": "kode" }, // Tampilkan nis  
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
 
             
-            html = '<button class="btn btn-warning btn-sm" onClick="edit_mapel(\'' + row.kode_mapel + '\' , \'' + row.nama_mapel + '\')"> Edit </button> <button class="btn btn-danger btn-sm" onClick="aksiHapus(\'' + row.kode_mapel + '\' , \'' + row.nama_mapel + '\')"> Hapus  </button>';
+            html = '<button class="btn btn-danger btn-sm" onClick="aksiHapus( '+ row.id + ')"> Hapus </button>';
 
             return html
           }
@@ -96,12 +94,12 @@ $(document).ready(function() {
     
 }); 
 
-function aksiHapus(data, nama){
+function aksiHapus(data){
   var id = data;
-  var namamapel = nama;
+  
   Swal.fire({
   title: 'Are you sure?',
-  text: "Apakah kamu ingin menhapus mapel " + namamapel + "!",
+  text: "Apakah kamu ingin menhapus kode ini?",
   type: 'warning',
   showCancelButton: true,
   confirmButtonColor: '#3085d6',
@@ -110,7 +108,7 @@ function aksiHapus(data, nama){
   }).then((result) => {
     if (result.value) {
       $.ajax({
-        url : "http://localhost/gostudy/go_ciclx_usradmin/A_mapel/hapus_mapel",
+        url : "http://localhost/gostudy/go_ciclx_usradmin/A_cetak/hapus",
         method: 'POST',
         dataType: 'json',
         data: {id : id},
@@ -118,7 +116,7 @@ function aksiHapus(data, nama){
         success: function(data){
           Swal.fire('Deleted!', 'Berhasil menghapus.', 'success');
           setTimeout(function(){
-             window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_mapel'); ?>";
+             window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_cetak'); ?>";
           }, 1100);
 
         },
@@ -140,7 +138,7 @@ async function aksiPilih(data){
   title: 'Select field validation',
   input: 'select',
   inputOptions: data,
-  inputPlaceholder: 'Pilih Mapel',
+  inputPlaceholder: 'Pilih Kode',
   showCancelButton: true,
   inputValidator: (value) => {
     return new Promise((resolve) => {
@@ -155,12 +153,12 @@ if (fruit) {
 }
 }
 
-function aksi_tambah_mapel(mapel, kkm){
+function aksi_tambah_kelas(data){
     $.ajax({
-        url : "http://localhost/gostudy/go_ciclx_usradmin/A_mapel/tmb_mapel",
+        url : "http://localhost/gostudy/go_ciclx_usradmin/A_cetak/tmb_kelas",
         method: 'POST',
         dataType: 'json',
-        data: {nama_mapel : mapel, kkm:kkm},
+        data: {nama_kelas : data},
         contentType: 'application/x-www-form-urlencoded',
         success: function(data){
           $.notify({
@@ -175,7 +173,7 @@ function aksi_tambah_mapel(mapel, kkm){
               }
           });
           setTimeout(function(){
-            window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_mapel'); ?>";
+            window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_cetak'); ?>";
           }, 1000);
         },
         error: function( errorThrown ){
@@ -186,44 +184,10 @@ function aksi_tambah_mapel(mapel, kkm){
     });
 }
 
-// async function tambah_mapel(){
-//     const { value: text } = await Swal.fire({
-//         input: 'text',
-//         inputPlaceholder: 'Masukkan nama mapel',
-//         showCancelButton: true,
-//         inputValidator: (value) => {
-//             if (!value) {
-//             return 'Tidak boleh kosong!'
-//             }
-//         }
-//     })
-
-//     if (text) {
-//       aksi_tambah_mapel(text)
-//     }
-// }
-
-async function tambah_mapel(){
-    const { value: formValues } = await Swal.fire({
-      title: 'Multiple inputs',
-      html:
-        '<input id="swal-input1" class="swal2-input">' +
-        '<input id="swal-input2" class="swal2-input">',
-      focusConfirm: false,
-      preConfirm: () => {
-       
-          var mapel = document.getElementById('swal-input1').value;
-          var kkm = document.getElementById('swal-input2').value;
-           aksi_tambah_mapel(mapel, kkm)
-      }
-    })
-}
-
-
-async function edit_mapel(kode_mapel, nama_mapel){
+async function tambah_kelas(){
     const { value: text } = await Swal.fire({
         input: 'text',
-        inputValue: nama_mapel,
+        inputPlaceholder: 'Masukkan kode',
         showCancelButton: true,
         inputValidator: (value) => {
             if (!value) {
@@ -232,41 +196,16 @@ async function edit_mapel(kode_mapel, nama_mapel){
         }
     })
 
-    if (kode_mapel, text) {
-      aksi_edit_mapel(kode_mapel, text)
+    if (text) {
+      aksi_tambah_kelas(text)
     }
 }
 
-function aksi_edit_mapel(kode_mapel, nama_mapel){
-  $.ajax({
-    url : "http://localhost/gostudy/go_ciclx_usradmin/A_mapel/edit_mapel",
-    method: 'POST',
-    dataType: 'json',
-    data: {kode_mapel : kode_mapel, nama_mapel : nama_mapel},
-    contentType: 'application/x-www-form-urlencoded',
-    success: function(data){
-      $.notify({
-        icon: "done",
-        message: "Data berhasil dirubah."
-        },{
-            type: 'success',
-            timer: 400,
-            placement: {
-                from: 'top',
-                align: 'center'
-            }
-        });
-        setTimeout(function(){
-          window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_mapel'); ?>";
-        }, 1000);
-    },
-    error: function( errorThrown ){
-      console.log( errorThrown);
 
-    }
 
-  });
-}
+
+
+
 
 
 

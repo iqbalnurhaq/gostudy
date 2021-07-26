@@ -6,6 +6,17 @@ class S_materi extends CI_Controller {
     public function __construct()
   	{
 		parent::__construct();
+		$cek = $this->session->userdata('login');
+		if ($cek == 'usr_siswa') {
+			true;
+		}else{
+			redirect('Login');
+		}
+
+		$kode_kelas = $this->session->userdata('kode_kelas');
+		$kode_mapel = $this->session->userdata('kode_mapel');
+		$kode_siswa = $this->session->userdata('kode_siswa');
+		$this->db->query("DELETE FROM has_notif WHERE kode_siswa='$kode_siswa' AND kode_mapel='$kode_mapel' AND kode_kelas='$kode_kelas' AND kode_notif=1");
 		$this->load->library('upload');
 		//Codeigniter : Write Less Do More
 		$this->load->helper('create_random_helper');

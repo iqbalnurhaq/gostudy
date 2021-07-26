@@ -22,7 +22,7 @@
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Material Dashboard by Creative Tim
+    Go Study
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -273,6 +273,12 @@ Preserve the relative scale, though. */
               <p>Nilai Siswa</p>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo site_url('guru_usr_clx/G_cetak'); ?>">
+              <i class="material-icons">list_alt</i>
+              <p>Cetak Raport</p>
+            </a>
+          </li>
           
           
          
@@ -303,7 +309,7 @@ Preserve the relative scale, though. */
                   </p>
                 </a>
               </li>
-              <li class="nav-item dropdown">
+              <!-- <li class="nav-item dropdown">
                 <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">notifications</i>
                   <span class="notification">5</span>
@@ -312,13 +318,14 @@ Preserve the relative scale, though. */
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                  
                   <a class="dropdown-item" href="#">Mike John responded to your email</a>
                   <a class="dropdown-item" href="#">You have 5 new tasks</a>
                   <a class="dropdown-item" href="#">You're now friend with Andrew</a>
                   <a class="dropdown-item" href="#">Another Notification</a>
                   <a class="dropdown-item" href="#">Another One</a>
                 </div>
-              </li>
+              </li> -->
               <li class="nav-item dropdown">
                 <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">person</i>
@@ -328,6 +335,7 @@ Preserve the relative scale, though. */
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
                   <a class="dropdown-item" href="<?php echo site_url("guru_usr_clx/G_profile") ?>">Profile</a>
+                  <a class="dropdown-item" href="<?php echo site_url("guru_usr_clx/G_profile/GantiPass") ?>">Ganti Password</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="<?php echo site_url('guru_usr_clx/Logout') ?>">Log out</a>
                 </div>

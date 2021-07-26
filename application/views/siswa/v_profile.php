@@ -14,7 +14,7 @@
                   <p class="card-category">Complete your profile</p>
                 </div>
                 <div class="card-body">
-                  <form action="<?php echo base_url("guru_usr_clx/G_profile/update_profile") ?>" method="POST">
+                  <form action="<?php echo base_url("siswa/S_profile/update_profile") ?>" method="POST">
                   <?php  
                     foreach ($profile as $val) { ?>
                       
@@ -22,8 +22,8 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label class="bmd-label-floating">NIP/Kode</label>
-                          <input type="text" class="form-control" disabled value="<?php echo $val->nip ?>">
+                          <label class="bmd-label-floating">NIS</label>
+                          <input type="text" class="form-control" disabled value="<?php echo $val->nis ?>">
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -37,8 +37,8 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Nama Guru</label>
-                          <input type="text" class="form-control" disabled value="<?php echo $val->nama_guru ?>">
+                          <label class="bmd-label-floating">Nama Siswa</label>
+                          <input type="text" class="form-control" disabled value="<?php echo $val->nama_siswa ?>">
                         </div>
                       </div>
                        

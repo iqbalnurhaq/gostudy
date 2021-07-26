@@ -5,7 +5,13 @@ class S_nilai extends CI_Controller {
 
     public function __construct()
   	{
-		parent::__construct();
+        parent::__construct();
+        $cek = $this->session->userdata('login');
+		if ($cek == 'usr_siswa') {
+			true;
+		}else{
+			redirect('Login');
+		}
 		$this->load->library('upload');
 		//Codeigniter : Write Less Do More
 		$this->load->helper('create_random_helper');

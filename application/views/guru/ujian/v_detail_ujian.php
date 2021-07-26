@@ -398,6 +398,7 @@
                 <?php if ($jml_soal == 0) { ?>
                   
                   <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-excel">Tambah Soal Excel</button>
+                  <a href="<?php echo site_url('guru_usr_clx/G_ujian/download_template_soal') ?>" class="btn btn-primary pull-right">Download Template</a>
                 <?php }else{ ?>
                     <button type="button" class="btn btn-primary pull-right disabled">Tambah Soal Excel Disabled</button>
                 

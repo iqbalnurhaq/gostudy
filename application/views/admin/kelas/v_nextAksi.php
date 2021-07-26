@@ -176,7 +176,7 @@
     <div class="alert alert-warning text-center" id="nama_kelas" role="alert">
       
     </div>
-  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-nilai">Tambah Nilai</button><button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-excel-siswa">Tambah siswa Excel</button>  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-excel">Tambah Siswa</button>  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg">Tambah Mapel</button>
+  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-nilai">Tambah Nilai</button><a href="<?php echo site_url('go_ciclx_usradmin/A_siswa/download_template') ?>" class="btn btn-primary pull-right">Download Template</a> <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-excel-siswa">Tambah siswa Excel</button>  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg-excel">Tambah Siswa</button>  <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-example-modal-lg">Tambah Mapel</button>
   </div>
 </div>
 <div class="row">
@@ -387,7 +387,7 @@ $(document).ready(function() {
           { "render": function ( data, type, row ) { // Tampilkan kolom aksi
 
               
-              html = '<button class="btn btn-danger btn-sm" onClick="aksiKeluar(\'' + row.kode_kelas + '\' , \'' + row.nama_kelas + '\')"> Keluarkan  </button> ';
+              html = '<button class="btn btn-danger btn-sm" onClick="aksiHapusSiswa(\'' + row.kode_siswa + '\' , \'' + row.nama_siswa + '\')"> Keluarkan  </button> ';
 
               return html
             }
@@ -460,6 +460,7 @@ $(document).ready(function() {
         ],
         });
 
+        var noSiswa = 1;
     tabel4 = $('#example4').DataTable({
 
     "ajax":
@@ -473,7 +474,7 @@ $(document).ready(function() {
     // "aLengthMenu": [[5, 10, 50],[ 5, 10, 50]], // Combobox Limit
     "columns": [
       { "render": function ( data, type, row ) { // Tampilkan kolom aksi
-          var html  = no++;
+          var html  = noSiswa++;
           return html
         }
       },
@@ -491,6 +492,7 @@ $(document).ready(function() {
     ],
     });
 
+    var noNilai = 1;
     tabel5 = $('#example5').DataTable({
 
       "ajax":
@@ -504,7 +506,7 @@ $(document).ready(function() {
       // "aLengthMenu": [[5, 10, 50],[ 5, 10, 50]], // Combobox Limit
       "columns": [
       { "render": function ( data, type, row ) { // Tampilkan kolom aksi
-          var html  = no++;
+          var html  = noNilai++;
           return html
         }
       },
@@ -630,6 +632,78 @@ function aksiHapusMapel(kode_mapel, nama){
   });
 
 }
+function aksiHapusSiswa(kode_siswa, nama){
+  var namasiswa = nama;
+  Swal.fire({
+  title: 'Are you sure?',
+  text: "Apakah kamu ingin menhapus siswa " + namasiswa + "!",
+  type: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url : "http://localhost/gostudy/go_ciclx_usradmin/A_kelas/hapus_siswa",
+        method: 'POST',
+        dataType: 'json',
+        data: {kode_kelas : localStorage.getItem('kode_kelas'), kode_siswa : kode_siswa },
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(data){
+          Swal.fire('Deleted!', 'Berhasil menghapus.', 'success');
+          setTimeout(function(){
+             window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_kelas/nextAksi'); ?>";
+          }, 1100);
+
+        },
+        error: function( errorThrown ){
+          console.log( errorThrown);
+
+        }
+
+      });
+
+    }
+  });
+
+}
+// function aksiHapusMapel(kode_mapel, nama){
+//   var namaMapel = nama;
+//   Swal.fire({
+//   title: 'Are you sure?',
+//   text: "Apakah kamu ingin menhapus mapel " + namaMapel + "!",
+//   type: 'warning',
+//   showCancelButton: true,
+//   confirmButtonColor: '#3085d6',
+//   cancelButtonColor: '#d33',
+//   confirmButtonText: 'Yes, delete it!'
+//   }).then((result) => {
+//     if (result.value) {
+//       $.ajax({
+//         url : "http://localhost/gostudy/go_ciclx_usradmin/A_kelas/hapus_mapel",
+//         method: 'POST',
+//         dataType: 'json',
+//         data: {kode_kelas : localStorage.getItem('kode_kelas'), kode_mapel : kode_mapel },
+//         contentType: 'application/x-www-form-urlencoded',
+//         success: function(data){
+//           Swal.fire('Deleted!', 'Berhasil menghapus.', 'success');
+//           setTimeout(function(){
+//              window.location.href = "<?php echo base_url('go_ciclx_usradmin/A_kelas/nextAksi'); ?>";
+//           }, 1100);
+
+//         },
+//         error: function( errorThrown ){
+//           console.log( errorThrown);
+
+//         }
+
+//       });
+
+//     }
+//   });
+
+// }
 
 
 async function aksiPilih(data, kode_kelas){

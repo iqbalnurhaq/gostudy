@@ -166,10 +166,10 @@ $(document).ready(function() {
             html = '';
             if (row.status == 0) {
               html += ' <button class="btn btn-warning btn-sm" onClick="aksiOpen(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Open </button>'
-              html += '<button class="btn btn-primary btn-sm" onClick="openExcel(\'' + row.kode_nilai + '\')"> Input Excel </button>'
               html += ' <a class="btn btn-primary btn-sm" href="<?php echo site_url('guru_usr_clx/G_nilai/export') ?>"> Download Template </a>'
             }else{
               html += '<a class="btn btn-primary btn-sm" href="<?php echo site_url('guru_usr_clx/G_nilai/link_nilai/')?>'+ row.kode_nilai +'"> Input Nilai </a>'
+              html += '<button class="btn btn-primary btn-sm" onClick="openExcel(\'' + row.kode_nilai + '\')"> Input Excel </button>'
               html += '<button class="btn btn-danger btn-sm" onClick="aksiClear(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Clear </button> ';
             }
             return html

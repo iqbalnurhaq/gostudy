@@ -83,7 +83,7 @@ $(document).ready(function() {
         { "render": function ( data, type, row ) { // Tampilkan kolom aksi
 
             
-            html = '<button class="btn btn-warning btn-sm" onClick="edit_nilai(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Edit <i class="material-icons">report</i> </button> <button class="btn btn-danger btn-sm" onClick="aksiHapus(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Hapus <i class="material-icons">delete_forever</i> </button>';
+            html = '<button class="btn btn-warning btn-sm" onClick="edit_nilai(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Edit  </button> <button class="btn btn-danger btn-sm" onClick="aksiHapus(\'' + row.kode_nilai + '\' , \'' + row.nama_nilai + '\')"> Hapus  </button>';
 
             return html
           }
@@ -133,23 +133,23 @@ function aksiHapus(data, nama){
 
 
 async function aksiPilih(data){
-  const { value: fruit } = await Swal.fire({
-  title: 'Select field validation',
-  input: 'select',
-  inputOptions: data,
-  inputPlaceholder: 'Pilih nilai',
-  showCancelButton: true,
-  inputValidator: (value) => {
-    return new Promise((resolve) => {
-      resolve()
-    })
-  }
-})
+    const { value: fruit } = await Swal.fire({
+    title: 'Select field validation',
+    input: 'select',
+    inputOptions: data,
+    inputPlaceholder: 'Pilih nilai',
+    showCancelButton: true,
+    inputValidator: (value) => {
+      return new Promise((resolve) => {
+        resolve()
+      })
+    }
+  })
 
-if (fruit) {
-  Swal.fire(`You selected: ${fruit}`)
-  
-}
+  if (fruit) {
+    Swal.fire(`You selected: ${fruit}`)
+    
+  }
 }
 
 function aksi_tambah_nilai(data){

@@ -6,11 +6,18 @@ class A_kelas extends CI_Controller {
 
     public function __construct()
   	{
-		parent::__construct();
+        parent::__construct();
+        $cek = $this->session->userdata('login');
+		if ($cek == 'admin') {
+			true;
+		}else{
+			redirect('go_ciclx_usradmin/Login');
+		}
 		//Codeigniter : Write Less Do More
 		$this->load->helper('create_random_helper');
 		$this->load->model('M_a_kelas');
-		$this->load->model('M_a_siswa');
+        $this->load->model('M_a_siswa');
+        
   	}
 
 	public function index()
@@ -312,4 +319,11 @@ class A_kelas extends CI_Controller {
 		$this->session->set_flashdata('message_name', 'Data Berhasil ditambahkan');
 		redirect("go_ciclx_usradmin/A_kelas/nextAksi"); // Redirect ke halaman awal (ke controller siswa fungsi index)
   	}
+      function hapus_siswa(){
+           $kode_kelas = $this->input->post('kode_kelas');
+           $kode_siswa = $this->input->post('kode_siswa');
+           $this->db->query("UPDATE siswa SET kode_kelas=NULL WHERE kode_siswa='$kode_siswa'");
+           $output['msg'] = 'success';
+		    echo json_encode($output);
+        }
 }

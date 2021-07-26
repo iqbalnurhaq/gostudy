@@ -7,6 +7,12 @@ class G_nilai extends CI_Controller {
     public function __construct()
   	{
 		parent::__construct();
+		$cek = $this->session->userdata('login');
+		if ($cek == 'usr_guru') {
+			true;
+		}else{
+			redirect('Login');
+		}
 		$this->load->helper('create_random_helper');
 		$this->load->model('M_g_nilai');
 		$this->load->model('M_g_siswa');
@@ -24,9 +30,10 @@ class G_nilai extends CI_Controller {
     }
     
     function data_nilai(){
+		$kode_mapel = $this->session->userdata('kode_mapel');
 		$kode_kelas = $this->session->userdata('kode_kelas');
 		// $output['data_nilai'] = $this->M_g_nilai->data_siswa($kode_kelas); 
-		$output['data_nilai_siswa'] = $this->M_g_nilai->data_nilai_siswa($kode_kelas);
+		$output['data_nilai_siswa'] = $this->M_g_nilai->data_nilai_siswa($kode_kelas, $kode_mapel);
     	echo json_encode($output);
 	}
     function nilai_siswa(){
@@ -37,7 +44,7 @@ class G_nilai extends CI_Controller {
 		$kode_nilai = $this->session->userdata('kode_nilai');
 		// $output['data_nilai'] = $this->M_g_nilai->data_siswa($kode_kelas); 
 		// $output['data_siswa'] = $this->M_g_nilai->data_siswa($kode_kelas);
-		$output['nilai_siswa'] = $this->M_g_nilai->nilai_siswa($kode_kelas, $kode_nilai);
+		$output['nilai_siswa'] = $this->M_g_nilai->nilai_siswa($kode_kelas, $kode_nilai, $kode_mapel);
     	echo json_encode($output);
 	}
 
@@ -71,7 +78,7 @@ class G_nilai extends CI_Controller {
 			$output['kode_nilai'] = $kode_nilai;
 			echo json_encode($output);  
 		} else {
-			$insert_nilai = $this->M_g_nilai->insert_nilai($nilai, $kode_siswa, $kode_nilai, $kode_guru, $kode_mapel);
+			$insert_nilai = $this->M_g_nilai->insert_nilai($nilai, $kode_siswa, $kode_nilai, $kode_guru, $kode_mapel, $kode_kelas);
 			$output['pesan'] = 'success';
 			$output['kode_nilai'] = $kode_nilai;
 			echo json_encode($output);  

@@ -14,7 +14,7 @@
                   <p class="card-category">Complete your profile</p>
                 </div>
                 <div class="card-body">
-                  <form action="<?php echo base_url("guru_usr_clx/G_profile/update_profile") ?>" method="POST">
+                  <form action="<?php echo base_url("siswa/S_profile/update_profile") ?>" method="POST">
                   <?php  
                     foreach ($profile as $val) { ?>
                       
@@ -22,14 +22,14 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label class="bmd-label-floating">NIP/Kode</label>
-                          <input type="text" class="form-control" disabled value="<?php echo $val->nip ?>">
+                          <label class="bmd-label-floating">NIS</label>
+                          <input type="text" class="form-control" disabled value="<?php echo $val->nis ?>">
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Email</label>
-                          <input type="text" name="email" class="form-control" value="<?php echo $val->email ?>">
+                          <input type="text" name="email" class="form-control" disabled value="<?php echo $val->email ?>">
                         </div>
                       </div>
                      
@@ -37,8 +37,8 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Nama Guru</label>
-                          <input type="text" class="form-control" disabled value="<?php echo $val->nama_guru ?>">
+                          <label class="bmd-label-floating">Nama Siswa</label>
+                          <input type="text" class="form-control" disabled value="<?php echo $val->nama_siswa ?>">
                         </div>
                       </div>
                        
@@ -49,13 +49,13 @@
                         <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">No tlp</label>
-                          <input type="text" class="form-control" name="no_tlp" value="<?php echo $val->no_tlp ?>">
+                          <input type="text" class="form-control" name="no_tlp" disabled value="<?php echo $val->no_tlp ?>">
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Username</label>
-                          <input type="text" class="form-control" name="username" value="<?php echo $val->username ?>">
+                          <input type="text" class="form-control" name="username" disabled value="<?php echo $val->username ?>">
                         </div>
                       </div>
                     </div>
@@ -66,12 +66,12 @@
                           <label>Alamat</label>
                           <div class="form-group">
                             <label class="bmd-label-floating"></label>
-                            <textarea class="form-control" name="alamat" rows="3"><?php echo $val->alamat ?></textarea>
+                            <textarea class="form-control" name="alamat" disabled rows="3"><?php echo $val->alamat ?></textarea>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <button type="submit" class="btn btn-primary pull-right">Update Profile</button>
+                    
                     <div class="clearfix"></div>
                      <?php  }
                   ?>

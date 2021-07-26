@@ -9,6 +9,12 @@ class A_guru extends CI_Controller {
 		//Codeigniter : Write Less Do More
 		$this->load->helper('create_random_helper');
 		$this->load->model('M_a_guru');
+		$cek = $this->session->userdata('login');
+		if ($cek == 'admin') {
+			true;
+		}else{
+			redirect('go_ciclx_usradmin/Login');
+		}
   	}
 
 	public function index()
@@ -246,6 +252,11 @@ class A_guru extends CI_Controller {
   function download_template(){
 		$this->load->helper('download');
 		force_download('excel/template_guru.xlsx', NULL);
+	}
+
+	function data_user(){
+		$output['data_guru'] = $this->db->query("SELECT * FROM guru JOIN users ON guru.user_code=users.kode_user")->result(); 
+		echo json_encode($output);	
 	}
 
 

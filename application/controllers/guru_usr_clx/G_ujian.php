@@ -7,6 +7,12 @@ class G_ujian extends CI_Controller {
     public function __construct()
   	{
 		parent::__construct();
+		$cek = $this->session->userdata('login');
+		if ($cek == 'usr_guru') {
+			true;
+		}else{
+			redirect('Login');
+		}
         $this->load->helper('create_random_helper');
         $this->load->library('pagination');
 		$this->load->model('M_g_ujian');
@@ -97,22 +103,22 @@ class G_ujian extends CI_Controller {
 				);
 
 				if ($years > 0) {
-					$insert_ujian = $this->M_g_ujian->insert_ujian($data_ujian);
+					$insert_ujian = $this->M_g_ujian->insert_ujian($data_ujian, $this->session->userdata('kode_kelas'), $this->session->userdata('kode_mapel'));
 					$r += 1;
 					$this->session->set_flashdata('pesan', 'sukses');
 					redirect('guru_usr_clx/G_ujian');
 				}else if($months > 0){
-					$insert_ujian = $this->M_g_ujian->insert_ujian($data_ujian);
+					$insert_ujian = $this->M_g_ujian->insert_ujian($data_ujian, $this->session->userdata('kode_kelas'), $this->session->userdata('kode_mapel'));
 					$r += 1;
 					$this->session->set_flashdata('pesan', 'sukses');
 					redirect('guru_usr_clx/G_ujian');
 				}else if($days > 0){
-					$insert_ujian = $this->M_g_ujian->insert_ujian($data_ujian);
+					$insert_ujian = $this->M_g_ujian->insert_ujian($data_ujian, $this->session->userdata('kode_kelas'), $this->session->userdata('kode_mapel'));
 					$r += 1;
 					$this->session->set_flashdata('pesan', 'sukses');
 					redirect('guru_usr_clx/G_ujian');
 				}else if($fix > $durasi){
-					$insert_ujian = $this->M_g_ujian->insert_ujian($data_ujian);
+					$insert_ujian = $this->M_g_ujian->insert_ujian($data_ujian, $this->session->userdata('kode_kelas'), $this->session->userdata('kode_mapel'));
 					$r += 1;
 					$this->session->set_flashdata('pesan', 'sukses');
 					redirect('guru_usr_clx/G_ujian');
@@ -149,7 +155,7 @@ class G_ujian extends CI_Controller {
 		// 				'status' => 1
 		// 			);
 
-		// 			$insert_ujian = $this->M_g_ujian->insert_ujian($data_ujian);
+		// 			$insert_ujian = $this->M_g_ujian->insert_ujian($data_ujian, $this->session->userdata('kode_kelas'), $this->session->userdata('kode_mapel'));
 		// 			if ($insert_ujian) {
 		// 				$r += 1;
 		// 				$this->session->set_flashdata('pesan', 'sukses');
@@ -355,7 +361,7 @@ class G_ujian extends CI_Controller {
   }
 
 
-  function download_template(){
+  function _soal(){
 		$this->load->helper('download');
 		force_download('excel/template_guru.xlsx', NULL);
 	}
@@ -522,6 +528,10 @@ class G_ujian extends CI_Controller {
 		$output['pesan'] = 'sukses';
 		$output['soal'] = $this->db->query("SELECT * FROM bank_soal WHERE kode_bank_ujian='$id' ORDER BY no_soal ASC")->result();
 		echo json_encode($output);
+	}
+	 function download_template_soal(){
+		$this->load->helper('download');
+		force_download('excel/template_soal_kuis.xlsx', NULL);
 	}
 
 

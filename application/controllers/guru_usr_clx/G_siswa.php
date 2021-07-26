@@ -6,6 +6,12 @@ class G_siswa extends CI_Controller {
     public function __construct()
   	{
         parent::__construct();
+        $cek = $this->session->userdata('login');
+		if ($cek == 'usr_guru') {
+			true;
+		}else{
+			redirect('Login');
+		}
         $this->load->model('M_g_siswa');
 		if ($this->session->userdata('kode_kelas')) {
             true;

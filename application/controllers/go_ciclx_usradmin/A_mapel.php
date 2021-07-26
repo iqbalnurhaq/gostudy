@@ -5,7 +5,13 @@ class A_mapel extends CI_Controller {
 
     public function __construct()
   	{
-		parent::__construct();
+        parent::__construct();
+        $cek = $this->session->userdata('login');
+		if ($cek == 'admin') {
+			true;
+		}else{
+			redirect('go_ciclx_usradmin/Login');
+		}
 		//Codeigniter : Write Less Do More
 		$this->load->helper('create_random_helper');
 		$this->load->model('M_a_mapel');
@@ -42,7 +48,8 @@ class A_mapel extends CI_Controller {
             $cek_kode_mapel = $this->M_a_mapel->cek_kode_mapel($kode_mapel);
             if ($cek_kode_mapel == 0) {
                 $datamapel = array('kode_mapel' => $kode_mapel,
-                'nama_mapel' => $this->input->post('nama_mapel'));
+                'nama_mapel' => $this->input->post('nama_mapel'),
+                'kkm' => $this->input->post('kkm'));
                 $insert_mapel = $this->M_a_mapel->tambah_mapel($datamapel);
                 if ($insert_mapel) {
                     $r += 1;

@@ -22,7 +22,7 @@
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Material Dashboard by Creative Tim
+     Go Study
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -252,7 +252,7 @@ Preserve the relative scale, though. */
           </li>
           <li class="nav-item">
             <a class="nav-link" href="<?php echo site_url('siswa/S_tugas'); ?>">
-              <i class="material-icons">person</i>
+              <i class="material-icons">book</i>
               <p>Tugas</p>
             </a>
           </li>
@@ -300,20 +300,33 @@ Preserve the relative scale, though. */
                   </p>
                 </a>
               </li>
+              <?php 
+                  $kode_mapel = $this->session->userdata('kode_mapel');
+                  $kode_kelas = $this->session->userdata('kode_kelas');
+                  $kode_siswa = $this->session->userdata('kode_siswa');
+                  $jml = $this->db->query("SELECT * FROM has_notif JOIN notif ON has_notif.kode_notif=notif.id WHERE has_notif.kode_siswa='$kode_siswa' AND has_notif.kode_mapel='$kode_mapel' AND has_notif.kode_kelas='$kode_kelas'")->num_rows();
+              ?>
               <li class="nav-item dropdown">
                 <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">notifications</i>
-                  <span class="notification">5</span>
+                  <span class="notification"><?php echo $jml ?></span>
                   <p class="d-lg-none d-md-block">
                     Some Actions
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Mike John responded to your email</a>
-                  <a class="dropdown-item" href="#">You have 5 new tasks</a>
-                  <a class="dropdown-item" href="#">You're now friend with Andrew</a>
-                  <a class="dropdown-item" href="#">Another Notification</a>
-                  <a class="dropdown-item" href="#">Another One</a>
+                  <?php 
+                      
+                      if ($jml == 0) { ?>
+                         <a class="dropdown-item" href="#">Tidak ada notif </a>
+                      <?php }else{
+                        $notif = $this->db->query("SELECT notif.id, notif.judul_notif, COUNT(notif.id) AS jumlah FROM has_notif JOIN notif ON has_notif.kode_notif=notif.id WHERE has_notif.kode_siswa='$kode_siswa' AND has_notif.kode_mapel='$kode_mapel' AND has_notif.kode_kelas='$kode_kelas' GROUP BY notif.id")->result();
+                        foreach ($notif as $val) { ?>
+                          <a class="dropdown-item" href="#"><?php echo $val->jumlah.' '.$val->judul_notif?> </a>
+                      <?php }
+                        
+                      }
+                  ?>
                 </div>
               </li>
               <li class="nav-item dropdown">
@@ -324,7 +337,8 @@ Preserve the relative scale, though. */
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                  <a class="dropdown-item" href="#">Profile</a>
+                  <a class="dropdown-item" href="<?php echo site_url("siswa/S_profile") ?>">Profile</a>
+                  <a class="dropdown-item" href="<?php echo site_url("siswa/S_profile/GantiPass") ?>">Ganti Pssword</a>
                  
                   <div class="dropdown-divider"></div>
                    <a class="dropdown-item" href="<?php echo site_url('guru_usr_clx/Logout') ?>">Log out</a>

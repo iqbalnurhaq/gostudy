@@ -91,7 +91,7 @@
                    
                    
                     echo "<input type='submit' class='btn btn-primary pull-right' value='Upload Data' style='margin-left:15px; margin-top: 20px;'> ";
-                    echo "<a href='".base_url("A_guru")."' class='btn btn-secondary pull-right' style='margin-top: 20px;'>Cancel</a>";      
+                    echo "<a href='".base_url("go_ciclx_usradmin/A_guru")."' class='btn btn-secondary pull-right' style='margin-top: 20px;'>Cancel</a>";      
                     
                         
                   }

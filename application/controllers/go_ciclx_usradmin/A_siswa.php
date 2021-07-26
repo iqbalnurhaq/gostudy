@@ -6,6 +6,12 @@ class A_siswa extends CI_Controller {
 	public function __construct()
   	{
 		parent::__construct();
+		$cek = $this->session->userdata('login');
+		if ($cek == 'admin') {
+			true;
+		}else{
+			redirect('go_ciclx_usradmin/Login');
+		}
 		//Codeigniter : Write Less Do More
 		$this->load->helper('create_random_helper');
 		$this->load->model('M_a_siswa');
@@ -227,6 +233,11 @@ class A_siswa extends CI_Controller {
 	function download_template(){
 		$this->load->helper('download');
 		force_download('excel/template_siswa.xlsx', NULL);
+	}
+
+	function data_user(){
+		$output['data'] = $this->db->query("SELECT * FROM siswa JOIN users ON siswa.user_code=users.kode_user")->result(); 
+		echo json_encode($output);	
 	}
 
 }

@@ -9,7 +9,18 @@ class M_g_tugas extends CI_Model{
     //Codeigniter : Write Less Do More
   }
 
-  function insert_tugas($data){
+  function insert_tugas($data, $kode_kelas, $kode_mapel){
+    $siswa = $this->db->query("SELECT * FROM siswa WHERE kode_kelas='$kode_kelas'")->result();
+    $notif = array();
+    foreach ($siswa as $val) {
+      array_push($notif, array(
+        'kode_siswa' => $val->kode_siswa,
+        'kode_kelas' => $kode_kelas,
+        'kode_notif' => 2,
+        'kode_mapel' => $kode_mapel
+      ));
+    }
+    $this->db->insert_batch('has_notif', $notif);
     return $this->db->insert('tugas', $data);
   }
 

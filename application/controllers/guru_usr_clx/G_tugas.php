@@ -6,6 +6,12 @@ class G_tugas extends CI_Controller {
     public function __construct()
   	{
 		parent::__construct();
+		$cek = $this->session->userdata('login');
+		if ($cek == 'usr_guru') {
+			true;
+		}else{
+			redirect('Login');
+		}
 		$this->load->helper('create_random_helper');
 		$this->load->model('M_g_tugas');
 		$this->load->model('M_g_ujian');
@@ -64,7 +70,7 @@ class G_tugas extends CI_Controller {
 					'status' => 1
 				);
 
-				$insert_tugas = $this->M_g_tugas->insert_tugas($data_tugas);
+				$insert_tugas = $this->M_g_tugas->insert_tugas($data_tugas, $this->session->userdata('kode_kelas'), $this->session->userdata('kode_mapel'));
 				$r += 1;
 				$this->session->set_flashdata('pesan', 'sukses');
 				redirect('guru_usr_clx/G_tugas');
@@ -179,6 +185,12 @@ class G_tugas extends CI_Controller {
 		$output['pesan'] = 'sukses';
 		$output['kode_tugas'] = $kode_tugas;
 		echo json_encode($output);
+	}
+
+	function aksi_download(){
+		$this->load->helper('download');
+		$nama = $this->uri->segment(4);
+    	force_download('file_upload_tugas/'.$nama, NULL);
 	}
 
 

@@ -5,12 +5,15 @@ class S_dashboard extends CI_Controller {
 
     public function __construct()
   	{
-		parent::__construct();
-		if ($this->session->userdata('kode_kelas')) {
-            true;
-        }else{
-            redirect('Login');
+        parent::__construct();
+        $cek = $this->session->userdata('login');
+		if ($cek == 'usr_siswa') {
+			true;
+		}else{
+			redirect('Login');
         }
+        
+		
 		$this->load->helper('create_random_helper');
        
     }

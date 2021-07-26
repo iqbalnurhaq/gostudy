@@ -14,13 +14,13 @@ class M_g_nilai extends CI_Model{
     return $this->db->get('siswa')->result();
   }
 
-  function data_nilai_siswa($kode_kelas){
-    $sql = "SELECT *, nilai.kode_nilai FROM nilai JOIN has_nilai ON nilai.kode_nilai=has_nilai.kode_nilai WHERE has_nilai.kode_kelas='$kode_kelas'";
+  function data_nilai_siswa($kode_kelas, $kode_mapel){
+    $sql = "SELECT *, nilai.kode_nilai FROM nilai JOIN has_nilai JOIN has_kelas ON nilai.kode_nilai=has_nilai.kode_nilai AND has_nilai.kode_kelas=has_kelas.kode_kelas WHERE has_nilai.kode_kelas='$kode_kelas' AND has_kelas.kode_mapel='$kode_mapel' ORDER BY nilai.nama_nilai";
     return $this->db->query($sql)->result();
   }
 
-  function nilai_siswa($kode_kelas, $kode_nilai){
-    $sql = "SELECT *, siswa.kode_siswa FROM siswa LEFT JOIN nilai_siswa ON siswa.kode_siswa=nilai_siswa.kode_siswa AND nilai_siswa.kode_nilai='$kode_nilai' WHERE siswa.kode_kelas='$kode_kelas' ORDER BY siswa.nis";
+  function nilai_siswa($kode_kelas, $kode_nilai, $kode_mapel){
+    $sql = "SELECT *, siswa.kode_siswa FROM siswa LEFT JOIN nilai_siswa ON siswa.kode_siswa=nilai_siswa.kode_siswa AND nilai_siswa.kode_nilai='$kode_nilai' AND nilai_siswa.kode_mapel='$kode_mapel' WHERE siswa.kode_kelas='$kode_kelas' ORDER BY siswa.nis";
     return $this->db->query($sql)->result();
   }
 
@@ -31,13 +31,15 @@ class M_g_nilai extends CI_Model{
     return $this->db->get('nilai_siswa')->num_rows();
   }
 
-  function insert_nilai($nilai, $kode_siswa, $kode_nilai, $kode_guru, $kode_mapel){
+  function insert_nilai($nilai, $kode_siswa, $kode_nilai, $kode_guru, $kode_mapel, $kode_kelas){
     $ins = array('nilai' => $nilai,
                 'kode_siswa' => $kode_siswa,
                 'kode_nilai' => $kode_nilai,
                 'kode_guru' => $kode_guru,
                 'kode_mapel' => $kode_mapel);
+    $this->db->insert('has_notif', array('kode_siswa' => $kode_siswa, 'kode_notif' => 4, 'kode_kelas' => $kode_kelas));
     return $this->db->insert('nilai_siswa', $ins);
+
   }
   
   function update_nilai($nilai, $kode_siswa, $kode_nilai, $kode_guru, $kode_mapel){

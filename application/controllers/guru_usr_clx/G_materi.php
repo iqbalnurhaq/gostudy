@@ -6,11 +6,19 @@ class G_materi extends CI_Controller {
     public function __construct()
   	{
 		parent::__construct();
+		$cek = $this->session->userdata('login');
+		if ($cek == 'usr_guru') {
+			true;
+		}else{
+			redirect('Login');
+		}
+		
 		$this->load->library('upload');
 		//Codeigniter : Write Less Do More
 		$this->load->helper('create_random_helper');
 		$this->load->model('M_g_materi');
 		// $this->load->model('M_g_materi');
+		
   	}
 
 	public function index()
@@ -59,7 +67,7 @@ class G_materi extends CI_Controller {
 		  'kode_kelas' => $this->session->userdata('kode_kelas')
 		);
 		// $id = $this->session->userdata('id');
-		$this->M_g_materi->upload_file_materi($data);
+		$this->M_g_materi->upload_file_materi($data, $this->session->userdata('kode_kelas'), $this->session->userdata('kode_mapel'));
 	}
 
 	function hapus_materi(){

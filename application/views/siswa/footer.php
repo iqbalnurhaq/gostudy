@@ -289,6 +289,8 @@ $(document).ready(function() {
     });
     //------------- END -----------
     
-  
+  function gantiPass(){
+    alert("wwww")
+}
 });
 </script>

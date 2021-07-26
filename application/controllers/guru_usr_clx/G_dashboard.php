@@ -5,7 +5,13 @@ class G_dashboard extends CI_Controller {
 
     public function __construct()
   	{
-		parent::__construct();
+        parent::__construct();
+        $cek = $this->session->userdata('login');
+		if ($cek == 'usr_guru') {
+			true;
+		}else{
+			redirect('Login');
+		}
 		if ($this->session->userdata('kode_kelas')) {
             true;
         }else{

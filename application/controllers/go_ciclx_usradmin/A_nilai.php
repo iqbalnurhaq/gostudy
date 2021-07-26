@@ -5,7 +5,13 @@ class A_nilai extends CI_Controller {
 
     public function __construct()
   	{
-		parent::__construct();
+        parent::__construct();
+        $cek = $this->session->userdata('login');
+		if ($cek == 'admin') {
+			true;
+		}else{
+			redirect('go_ciclx_usradmin/Login');
+		}
 		//Codeigniter : Write Less Do More
 		$this->load->helper('create_random_helper');
 		$this->load->model('M_a_nilai');

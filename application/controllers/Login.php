@@ -34,6 +34,7 @@ class Login extends CI_Controller {
                         'nip' => $ambil_data['nip'],
                         'user_code' => $ambil_data['user_code'],
                         'role' => 'Guru',
+                        'login' => 'usr_guru'
                     );
                     $this->session->set_userdata($data);
                     redirect('guru_usr_clx/pilih_kelas');
@@ -46,6 +47,7 @@ class Login extends CI_Controller {
                         'nis' => $ambil_data['nis'],
                         'user_code' => $ambil_data['user_code'],
                         'role' => 'Siswa',
+                        'login' => 'usr_siswa'
                     );
                     $this->session->set_userdata($data);
                     redirect('siswa/Pilih_mapel');

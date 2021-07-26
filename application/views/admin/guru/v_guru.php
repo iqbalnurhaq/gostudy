@@ -343,7 +343,7 @@ async function aksiEdit(kode_guru){
 
             title: 'Edit Guru',
             html: '<label style="float: left">NIP</label>' +
-          '<input type="number" class="form-control" name="nip" pattern="[0-9]+" id="swal-input1" value="'+data.data.nip+'">'+
+          '<input type="text" class="form-control" name="nip" pattern="[0-9]+" id="swal-input1" value="'+data.data.nip+'">'+
           '<label style="margin-top: 25px; float: left;">Nama Guru</label>' +
           '<input type="text" class="form-control" name="nama" id="swal-input2" value="'+data.data.nama_guru+'">',
             focusConfirm: false,
